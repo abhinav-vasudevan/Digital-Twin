@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+
+# User data - sensitive information
+service/data/users.json
+service/data/profile.json
+service/data/meal_plans.json
+service/data/daily_logs.json
+
+# Diya diet folder (reference only)
+diya/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project specific
+outputs/
+data-inspector/
+1/
+2/
+kg/
+pipeline/
+tools/
+
+# Documents
+*.docx
+*.xlsx
+
+# Logs
+*.log

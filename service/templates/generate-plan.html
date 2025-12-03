@@ -1,0 +1,196 @@
+{% extends "layout.html" %}
+
+{% block title %}Generating Your Plan - Digital Twin{% endblock %}
+
+{% block content %}
+<div class="generate-container">
+  <div class="generate-content">
+    <h1>Generating Your 14-Day Plan</h1>
+    <p class="subtitle">Please wait while we create your personalized meal plan...</p>
+    
+    <div class="generation-steps">
+      <div class="gen-step active" id="step-1">
+        <div class="gen-icon">🧬</div>
+        <h3>Analyzing Metabolism</h3>
+        <p>Calculating your BMR, TDEE, and macro requirements</p>
+      </div>
+      
+      <div class="gen-step" id="step-2">
+        <div class="gen-icon">🔄</div>
+        <h3>Simulating Strategies</h3>
+        <p>Exploring meal combinations for your goals</p>
+      </div>
+      
+      <div class="gen-step" id="step-3">
+        <div class="gen-icon">🍽️</div>
+        <h3>Curating Meals</h3>
+        <p>Selecting recipes based on your preferences</p>
+      </div>
+      
+      <div class="gen-step" id="step-4">
+        <div class="gen-icon">✅</div>
+        <h3>Finalizing Plan</h3>
+        <p>Building your 14-day meal schedule</p>
+      </div>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar-full">
+        <div class="progress-fill-animated" id="progress"></div>
+      </div>
+      <p class="progress-text" id="progress-text">0% complete</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let currentStep = 0;
+const steps = ['step-1', 'step-2', 'step-3', 'step-4'];
+const timings = [2000, 2500, 2500, 2000]; // milliseconds per step
+
+async function generatePlan() {
+  for (let i = 0; i < steps.length; i++) {
+    // Activate current step
+    document.getElementById(steps[i]).classList.add('active');
+    
+    // Update progress
+    const progress = ((i + 1) / steps.length) * 100;
+    document.getElementById('progress').style.width = progress + '%';
+    document.getElementById('progress-text').textContent = Math.round(progress) + '% complete';
+    
+    // Wait for step duration
+    await new Promise(resolve => setTimeout(resolve, timings[i]));
+    
+    // Complete current step
+    document.getElementById(steps[i]).classList.add('completed');
+  }
+  
+  // Generate meal plan via API
+  try {
+    const response = await fetch('/api/meal-plan/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    });
+    
+    if (response.ok) {
+      window.location.href = '/dashboard';
+    } else {
+      throw new Error('Failed to generate plan');
+    }
+  } catch (error) {
+    alert('Error generating plan: ' + error.message);
+    window.location.href = '/dashboard';
+  }
+}
+
+// Start generation on page load
+generatePlan();
+</script>
+
+<style>
+.generate-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: white;
+}
+
+.generate-content {
+  max-width: 600px;
+  width: 100%;
+  background: white;
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.generate-content h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.generate-content .subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  margin-bottom: 32px;
+}
+
+.generation-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.gen-step {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--bg);
+  opacity: 0.4;
+  transition: all 0.3s;
+}
+
+.gen-step.active {
+  opacity: 1;
+  background: #f3f4f6;
+  transform: scale(1.02);
+}
+
+.gen-step.completed {
+  opacity: 0.6;
+  background: #d1fae5;
+}
+
+.gen-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.gen-step h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.gen-step p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.progress-container {
+  text-align: center;
+}
+
+.progress-bar-full {
+  height: 8px;
+  background: var(--bg);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-fill-animated {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+  width: 0;
+}
+
+.progress-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,339 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard - Your 14-Day Plan{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <div>
+      <h1>Good {{ time_of_day }}</h1>
+      <p class="cycle-info">Day <span id="current-day">1</span> of 14 • Cycle <span id="cycle-number">1</span></p>
+    </div>
+  </div>
+
+  <!-- Nutrition Overview -->
+  <div class="nutrition-section">
+    <div class="nutrition-rings">
+      <div class="ring-container">
+        <svg class="nutrition-ring" viewBox="0 0 100 100">
+          <circle class="ring-bg" cx="50" cy="50" r="40" />
+          <circle class="ring-progress" cx="50" cy="50" r="40" id="calories-ring" />
+        </svg>
+        <div class="ring-center">
+          <div class="ring-value" id="calories-value">0%</div>
+        </div>
+        <div class="ring-label">Calories</div>
+        <div class="ring-stats" id="calories-stats">0 / 0</div>
+      </div>
+
+      <div class="ring-container">
+        <svg class="nutrition-ring" viewBox="0 0 100 100">
+          <circle class="ring-bg" cx="50" cy="50" r="40" />
+          <circle class="ring-progress blue" cx="50" cy="50" r="40" id="protein-ring" />
+        </svg>
+        <div class="ring-center">
+          <div class="ring-value" id="protein-value">0%</div>
+        </div>
+        <div class="ring-label">Protein</div>
+        <div class="ring-stats" id="protein-stats">0 / 0g</div>
+      </div>
+
+      <div class="ring-container">
+        <svg class="nutrition-ring" viewBox="0 0 100 100">
+          <circle class="ring-bg" cx="50" cy="50" r="40" />
+          <circle class="ring-progress cyan" cx="50" cy="50" r="40" id="water-ring" />
+        </svg>
+        <div class="ring-center">
+          <div class="ring-value" id="water-value">0%</div>
+        </div>
+        <div class="ring-label">Water</div>
+        <div class="ring-stats" id="water-stats">0 / 8</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Stats -->
+  <div class="quick-stats">
+    <div class="stat-card">
+      <div class="stat-label">Current Weight</div>
+      <div class="stat-value" id="current-weight">— kg</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Target Weight</div>
+      <div class="stat-value" id="target-weight">— kg</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">To Goal</div>
+      <div class="stat-value" id="weight-diff">— kg</div>
+    </div>
+  </div>
+
+  <!-- Daily Feedback CTA -->
+  <div class="feedback-cta">
+    <div class="feedback-cta-content">
+      <div class="feedback-cta-icon">📝</div>
+      <div class="feedback-cta-text">
+        <h3>How are you feeling today?</h3>
+        <p>Track your mood, energy, digestion & get AI insights</p>
+      </div>
+    </div>
+    <a href="/daily-feedback" class="btn-primary">Add Feedback</a>
+  </div>
+
+  <!-- Today's Meals -->
+  <div class="section">
+    <h2>Today's Meals</h2>
+    <div class="meals-list" id="meals-list">
+      <!-- Meals will be loaded here -->
+    </div>
+  </div>
+
+  <!-- Week Progress -->
+  <div class="section">
+    <div class="section-header">
+      <h2>14-Day Progress</h2>
+      <span class="progress-text">Day <span id="progress-day">1</span>/14</span>
+    </div>
+    <div class="week-calendar" id="week-calendar">
+      <!-- Calendar will be generated here -->
+    </div>
+    <div class="calendar-legend">
+      <div class="legend-item">
+        <div class="legend-dot completed"></div>
+        <span>Completed</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot today"></div>
+        <span>Today</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot upcoming"></div>
+        <span>Upcoming</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Daily Feedback CTA -->
+  <a href="/daily-feedback" class="feedback-cta">
+    <div>
+      <h3>How are you feeling?</h3>
+      <p>Log your daily progress and get AI insights</p>
+    </div>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+  </a>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Check if user is logged in
+if (!localStorage.getItem('userEmail')) {
+  window.location.href = '/login';
+}
+
+const mealIcons = {
+  breakfast: '🍳',
+  mid_morning_snack: '🍎',
+  lunch: '🍛',
+  evening_snack: '☕',
+  dinner: '🥗'
+};
+
+const mealLabels = {
+  breakfast: 'Breakfast',
+  mid_morning_snack: 'Mid-morning Snack',
+  lunch: 'Lunch',
+  evening_snack: 'Evening Snack',
+  dinner: 'Dinner'
+};
+
+const mealTimes = {
+  breakfast: '7:00 AM',
+  mid_morning_snack: '10:30 AM',
+  lunch: '1:00 PM',
+  evening_snack: '4:30 PM',
+  dinner: '7:30 PM'
+};
+
+async function loadDashboard() {
+  try {
+    // Load profile
+    const profileRes = await fetch('/api/profile');
+    const profile = await profileRes.json();
+    
+    // Load today's plan
+    const today = new Date().toISOString().split('T')[0];
+    const planRes = await fetch(`/api/meal-plan?date=${today}`);
+    const todayPlan = await planRes.json();
+    
+    // Load today's log
+    const logRes = await fetch(`/api/daily-log?date=${today}`);
+    const todayLog = await logRes.json();
+    
+    // Update UI
+    updateProfile(profile);
+    updateNutrition(todayPlan, todayLog, profile);
+    renderMeals(todayPlan, todayLog);
+    renderWeekProgress(profile);
+    
+  } catch (error) {
+    console.error('Error loading dashboard:', error);
+  }
+}
+
+function updateProfile(profile) {
+  const timeOfDay = new Date().getHours() < 12 ? 'Morning' : new Date().getHours() < 18 ? 'Afternoon' : 'Evening';
+  const userName = profile.name ? `, ${profile.name.split(' ')[0]}` : '';
+  document.querySelector('.dashboard-header h1').textContent = `Good ${timeOfDay}${userName}`;
+  
+  const startDate = new Date(profile.plan_start_date);
+  const today = new Date();
+  const daysDiff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+  const currentDay = Math.min(Math.max(daysDiff, 1), 14);
+  
+  document.getElementById('current-day').textContent = currentDay;
+  document.getElementById('cycle-number').textContent = profile.current_plan_cycle || 1;
+  document.getElementById('progress-day').textContent = currentDay;
+  
+  document.getElementById('current-weight').textContent = profile.weight + ' kg';
+  document.getElementById('target-weight').textContent = profile.target_weight + ' kg';
+  const diff = Math.abs(profile.weight - profile.target_weight).toFixed(1);
+  document.getElementById('weight-diff').textContent = diff + ' kg';
+}
+
+function updateNutrition(plan, log, profile) {
+  let consumedCalories = 0;
+  let consumedProtein = 0;
+  
+  if (plan && log && log.meals_eaten) {
+    ['breakfast', 'mid_morning_snack', 'lunch', 'evening_snack', 'dinner'].forEach(mealType => {
+      if (log.meals_eaten[mealType] && plan[mealType]) {
+        consumedCalories += plan[mealType].calories || 0;
+        consumedProtein += plan[mealType].protein || 0;
+      }
+    });
+  }
+  
+  const waterConsumed = log?.water_intake || 0;
+  
+  updateRing('calories', consumedCalories, profile.daily_calories, '');
+  updateRing('protein', consumedProtein, profile.daily_protein, 'g');
+  updateRing('water', waterConsumed, 8, ' glasses');
+}
+
+function updateRing(type, consumed, target, unit) {
+  const percentage = Math.min((consumed / target) * 100, 100);
+  const ring = document.getElementById(`${type}-ring`);
+  const circumference = 2 * Math.PI * 40;
+  const offset = circumference - (percentage / 100) * circumference;
+  
+  ring.style.strokeDashoffset = offset;
+  
+  document.getElementById(`${type}-value`).textContent = Math.round(percentage) + '%';
+  document.getElementById(`${type}-stats`).textContent = consumed + ' / ' + target + unit;
+}
+
+function renderMeals(plan, log) {
+  const mealsList = document.getElementById('meals-list');
+  mealsList.innerHTML = '';
+  
+  if (!plan) {
+    mealsList.innerHTML = '<p class="no-meals">No meal plan for today. <a href="/generate-plan">Generate one now</a></p>';
+    return;
+  }
+  
+  ['breakfast', 'mid_morning_snack', 'lunch', 'evening_snack', 'dinner'].forEach(mealType => {
+    const meal = plan[mealType];
+    if (!meal) return;
+    
+    const isCompleted = log?.meals_eaten?.[mealType] || false;
+    
+    const mealCard = document.createElement('div');
+    mealCard.className = 'meal-card' + (isCompleted ? ' completed' : '');
+    mealCard.innerHTML = `
+      <div class="meal-icon">${mealIcons[mealType]}</div>
+      <div class="meal-info">
+        <div class="meal-header">
+          <span class="meal-type">${mealLabels[mealType]}</span>
+          <span class="meal-time">${mealTimes[mealType]}</span>
+        </div>
+        <h3 class="meal-name">${meal.name}</h3>
+        ${meal.description ? `<p class="meal-desc">${meal.description}</p>` : ''}
+        <div class="meal-macros">
+          <span class="macro">${meal.calories} kcal</span>
+          <span class="macro blue">P: ${meal.protein}g</span>
+          <span class="macro amber">C: ${meal.carbs}g</span>
+          <span class="macro green">F: ${meal.fats}g</span>
+        </div>
+      </div>
+      <div class="meal-actions">
+        <a href="/meal-detail?date=${plan.date}&meal=${mealType}" class="btn-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+        </a>
+        <button class="btn-icon ${isCompleted ? 'completed' : ''}" onclick="toggleMeal('${mealType}', ${!isCompleted})">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+        </button>
+      </div>
+    `;
+    
+    mealsList.appendChild(mealCard);
+  });
+}
+
+async function toggleMeal(mealType, completed) {
+  try {
+    const today = new Date().toISOString().split('T')[0];
+    await fetch('/api/daily-log/meal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date: today, meal_type: mealType, completed })
+    });
+    
+    loadDashboard(); // Refresh
+  } catch (error) {
+    console.error('Error toggling meal:', error);
+  }
+}
+
+function renderWeekProgress(profile) {
+  const calendar = document.getElementById('week-calendar');
+  calendar.innerHTML = '';
+  
+  const startDate = new Date(profile.plan_start_date);
+  const today = new Date();
+  
+  for (let i = 0; i < 14; i++) {
+    const date = new Date(startDate);
+    date.setDate(date.getDate() + i);
+    
+    const dayNum = i + 1;
+    const isToday = date.toDateString() === today.toDateString();
+    const isPast = date < today && !isToday;
+    const isFuture = date > today;
+    
+    let status = 'upcoming';
+    if (isToday) status = 'today';
+    else if (isPast) status = 'completed'; // TODO: check if actually completed
+    
+    const dayEl = document.createElement('div');
+    dayEl.className = `calendar-day ${status}`;
+    dayEl.innerHTML = `
+      <div class="day-label">${date.toLocaleDateString('en', { weekday: 'short' })}</div>
+      <div class="day-number">${dayNum}</div>
+    `;
+    
+    calendar.appendChild(dayEl);
+  }
+}
+
+// Set ring circumference
+document.querySelectorAll('.ring-progress').forEach(ring => {
+  const circumference = 2 * Math.PI * 40;
+  ring.style.strokeDasharray = circumference;
+  ring.style.strokeDashoffset = circumference;
+});
+
+// Load dashboard on page load
+loadDashboard();
+</script>
+{% endblock %}

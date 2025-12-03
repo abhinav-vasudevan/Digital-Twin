@@ -1,0 +1,511 @@
+{% extends "layout.html" %}
+
+{% block title %}Welcome - Digital Twin{% endblock %}
+
+{% block content %}
+<div class="onboarding-container">
+  <div class="progress-steps">
+    <div class="step active" data-step="1">
+      <div class="step-number">1</div>
+      <div class="step-label">Basics</div>
+    </div>
+    <div class="step" data-step="2">
+      <div class="step-number">2</div>
+      <div class="step-label">Preferences</div>
+    </div>
+    <div class="step" data-step="3">
+      <div class="step-number">3</div>
+      <div class="step-label">Goals</div>
+    </div>
+    <div class="step" data-step="4">
+      <div class="step-number">4</div>
+      <div class="step-label">Digital Twin</div>
+    </div>
+  </div>
+
+  <form id="onboarding-form">
+    <!-- Step 1: Basic Info -->
+    <div class="step-content active" data-step="1">
+      <h1>Tell us about yourself</h1>
+      <p class="subtitle">Basic information to personalize your nutrition plan</p>
+      
+      <div class="form-grid">
+        <label>
+          Age
+          <input type="number" name="age" required min="1" max="120" placeholder="30" />
+        </label>
+        <label>
+          Gender
+          <select name="gender" required>
+            <option value="">Select...</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </label>
+        <label>
+          Height (cm)
+          <input type="number" name="height" required min="100" max="250" placeholder="170" />
+        </label>
+        <label>
+          Weight (kg)
+          <input type="number" name="weight" required min="20" max="300" step="0.1" placeholder="70" />
+        </label>
+        <label class="span-2">
+          Target Weight (kg)
+          <input type="number" name="target_weight" required min="20" max="300" step="0.1" placeholder="65" />
+        </label>
+      </div>
+      
+      <button type="button" class="btn-primary" onclick="nextStep()">Continue</button>
+    </div>
+
+    <!-- Step 2: Diet Preferences -->
+    <div class="step-content" data-step="2">
+      <h1>Your dietary preferences</h1>
+      <p class="subtitle">We'll curate meals that match your lifestyle</p>
+      
+      <div class="form-section">
+        <label class="section-label">Preferred Cuisine Region</label>
+        <div class="region-grid">
+          <label class="region-card">
+            <input type="radio" name="region" value="north_indian" required />
+            <div class="region-card-content">
+              <span class="region-name">North Indian</span>
+              <span class="region-desc">Roti, Dal, Paneer dishes</span>
+            </div>
+          </label>
+          <label class="region-card">
+            <input type="radio" name="region" value="south_indian" />
+            <div class="region-card-content">
+              <span class="region-name">South Indian</span>
+              <span class="region-desc">Rice, Sambar, Dosa</span>
+            </div>
+          </label>
+          <label class="region-card">
+            <input type="radio" name="region" value="east_indian" />
+            <div class="region-card-content">
+              <span class="region-name">East Indian</span>
+              <span class="region-desc">Fish, Rice, Sweets</span>
+            </div>
+          </label>
+          <label class="region-card">
+            <input type="radio" name="region" value="west_indian" />
+            <div class="region-card-content">
+              <span class="region-name">West Indian</span>
+              <span class="region-desc">Dhokla, Thepla, Curry</span>
+            </div>
+          </label>
+          <label class="region-card">
+            <input type="radio" name="region" value="mixed" />
+            <div class="region-card-content">
+              <span class="region-name">Mixed/Pan Indian</span>
+              <span class="region-desc">Variety from all regions</span>
+            </div>
+          </label>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <label class="section-label">Diet Type</label>
+        <div class="diet-type-grid">
+          <label class="diet-card">
+            <input type="radio" name="diet_type" value="vegetarian" required />
+            <div class="diet-card-content">
+              <span class="diet-emoji">🥬</span>
+              <span class="diet-label">Vegetarian</span>
+            </div>
+          </label>
+          <label class="diet-card">
+            <input type="radio" name="diet_type" value="non_vegetarian" />
+            <div class="diet-card-content">
+              <span class="diet-emoji">🍗</span>
+              <span class="diet-label">Non-Vegetarian</span>
+            </div>
+          </label>
+          <label class="diet-card">
+            <input type="radio" name="diet_type" value="eggetarian" />
+            <div class="diet-card-content">
+              <span class="diet-emoji">🥚</span>
+              <span class="diet-label">Eggetarian</span>
+            </div>
+          </label>
+          <label class="diet-card">
+            <input type="radio" name="diet_type" value="vegan" />
+            <div class="diet-card-content">
+              <span class="diet-emoji">🌱</span>
+              <span class="diet-label">Vegan</span>
+            </div>
+          </label>
+          <label class="diet-card">
+            <input type="radio" name="diet_type" value="pescatarian" />
+            <div class="diet-card-content">
+              <span class="diet-emoji">🐟</span>
+              <span class="diet-label">Pescatarian</span>
+            </div>
+          </label>
+          <label class="diet-card">
+            <input type="radio" name="diet_type" value="keto" />
+            <div class="diet-card-content">
+              <span class="diet-emoji">🥑</span>
+              <span class="diet-label">Keto</span>
+            </div>
+          </label>
+        </div>
+      </div>
+      
+      <div class="form-section">
+        <label class="section-label">Allergies (optional)</label>
+        <input type="text" name="allergies" placeholder="e.g., peanuts, shellfish" class="form-input" />
+      </div>
+      
+      <div class="button-group">
+        <button type="button" class="btn-secondary" onclick="prevStep()">Back</button>
+        <button type="button" class="btn-primary" onclick="nextStep()">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Health Goals -->
+    <div class="step-content" data-step="3">
+      <h1>Your health goals</h1>
+      <p class="subtitle">What are you looking to achieve?</p>
+      
+      <div class="form-section">
+        <label class="section-label">Activity Level</label>
+        <select name="activity_level" required class="form-input">
+          <option value="">Select activity level</option>
+          <option value="sedentary">Sedentary (desk job)</option>
+          <option value="light">Light (1-2 days/week)</option>
+          <option value="moderate">Moderate (3-5 days/week)</option>
+          <option value="active">Active (6-7 days/week)</option>
+          <option value="very_active">Very Active (intense)</option>
+        </select>
+      </div>
+      
+      <div class="form-section">
+        <label class="section-label">Medical Conditions (optional)</label>
+        <input type="text" name="medical_conditions" placeholder="e.g., PCOS, diabetes, thyroid" class="form-input" />
+      </div>
+      
+      <div class="form-section">
+        <label class="section-label">Your Health Goals (select multiple)</label>
+        <div class="goals-grid">
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="weight_loss" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+              <span class="goal-name">Weight Loss</span>
+              <span class="goal-desc">Lose weight healthily</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="weight_gain" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"/></svg>
+              <span class="goal-name">Weight Gain</span>
+              <span class="goal-desc">Build mass & muscle</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="maintain" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="goal-name">Maintain Weight</span>
+              <span class="goal-desc">Stay at current weight</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="muscle_building" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span class="goal-name">Build Muscle</span>
+              <span class="goal-desc">Increase muscle mass</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="energy" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>
+              <span class="goal-name">More Energy</span>
+              <span class="goal-desc">Boost daily energy</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="better_sleep" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+              <span class="goal-name">Better Sleep</span>
+              <span class="goal-desc">Improve sleep quality</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="clear_skin" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="goal-name">Clear Skin</span>
+              <span class="goal-desc">Reduce acne & glow</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="gut_health" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              <span class="goal-name">Gut Health</span>
+              <span class="goal-desc">Improve digestion</span>
+            </div>
+          </label>
+        </div>
+      </div>
+      
+      <div class="button-group">
+        <button type="button" class="btn-secondary" onclick="prevStep()">Back</button>
+        <button type="button" class="btn-primary" onclick="nextStep()">Continue</button>
+      </div>
+    </div>
+
+    <!-- Step 4: Digital Twin Preview -->
+    <div class="step-content" data-step="4">
+      <h1>Your Digital Twin</h1>
+      <p class="subtitle">We've calculated your metabolic profile</p>
+      
+      <div class="twin-preview">
+        <div class="metric-card">
+          <div class="metric-label">BMI</div>
+          <div class="metric-value" id="preview-bmi">—</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">BMR</div>
+          <div class="metric-value" id="preview-bmr">—</div>
+          <div class="metric-unit">kcal/day</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">TDEE</div>
+          <div class="metric-value" id="preview-tdee">—</div>
+          <div class="metric-unit">kcal/day</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Daily Target</div>
+          <div class="metric-value" id="preview-calories">—</div>
+          <div class="metric-unit">kcal</div>
+        </div>
+      </div>
+
+      <div class="macro-preview">
+        <h3>Daily Macro Targets</h3>
+        <div class="macro-grid">
+          <div class="macro-item">
+            <div class="macro-label">Protein</div>
+            <div class="macro-value" id="preview-protein">—</div>
+          </div>
+          <div class="macro-item">
+            <div class="macro-label">Carbs</div>
+            <div class="macro-value" id="preview-carbs">—</div>
+          </div>
+          <div class="macro-item">
+            <div class="macro-label">Fats</div>
+            <div class="macro-value" id="preview-fats">—</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="button-group">
+        <button type="button" class="btn-secondary" onclick="prevStep()">Back</button>
+        <button type="submit" class="btn-primary" id="submit-btn">
+          <span>Create My Profile</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let currentStep = 1;
+
+function nextStep() {
+  if (validateStep(currentStep)) {
+    if (currentStep === 3) {
+      calculateMetrics();
+    }
+    currentStep++;
+    updateStepDisplay();
+  }
+}
+
+function prevStep() {
+  currentStep--;
+  updateStepDisplay();
+}
+
+function updateStepDisplay() {
+  document.querySelectorAll('.step').forEach(el => {
+    const step = parseInt(el.dataset.step);
+    el.classList.toggle('active', step === currentStep);
+    el.classList.toggle('completed', step < currentStep);
+  });
+  
+  document.querySelectorAll('.step-content').forEach(el => {
+    el.classList.toggle('active', parseInt(el.dataset.step) === currentStep);
+  });
+}
+
+function validateStep(step) {
+  const content = document.querySelector(`.step-content[data-step="${step}"]`);
+  let valid = true;
+  
+  // Validate regular inputs and selects
+  const regularInputs = content.querySelectorAll('input[type="text"][required], input[type="number"][required], input[type="email"][required], select[required]');
+  regularInputs.forEach(input => {
+    if (!input.value) {
+      input.classList.add('error');
+      valid = false;
+    } else {
+      input.classList.remove('error');
+    }
+  });
+  
+  // Validate radio button groups
+  const radioGroups = {};
+  content.querySelectorAll('input[type="radio"][required]').forEach(radio => {
+    if (!radioGroups[radio.name]) {
+      radioGroups[radio.name] = content.querySelectorAll(`input[name="${radio.name}"]`);
+    }
+  });
+  
+  Object.keys(radioGroups).forEach(groupName => {
+    const isChecked = Array.from(radioGroups[groupName]).some(radio => radio.checked);
+    if (!isChecked) {
+      valid = false;
+      // Highlight the first radio button's parent
+      radioGroups[groupName][0].closest('.form-section, label')?.classList.add('error');
+    } else {
+      radioGroups[groupName][0].closest('.form-section, label')?.classList.remove('error');
+    }
+  });
+  
+  return valid;
+}
+
+function calculateMetrics() {
+  const form = document.getElementById('onboarding-form');
+  const weight = parseFloat(form.weight.value);
+  const height = parseFloat(form.height.value);
+  const age = parseInt(form.age.value);
+  const gender = form.gender.value;
+  const activityLevel = form.activity_level.value;
+  const targetWeight = parseFloat(form.target_weight.value);
+  
+  // BMI
+  const bmi = (weight / ((height / 100) ** 2)).toFixed(1);
+  
+  // BMR (Mifflin-St Jeor Equation)
+  let bmr;
+  if (gender === 'male') {
+    bmr = Math.round(10 * weight + 6.25 * height - 5 * age + 5);
+  } else {
+    bmr = Math.round(10 * weight + 6.25 * height - 5 * age - 161);
+  }
+  
+  // Activity multipliers
+  const activityMultipliers = {
+    sedentary: 1.2,
+    light: 1.375,
+    moderate: 1.55,
+    active: 1.725,
+    very_active: 1.9
+  };
+  
+  const tdee = Math.round(bmr * (activityMultipliers[activityLevel] || 1.2));
+  
+  // Adjust for weight goals
+  let dailyCalories;
+  if (targetWeight < weight) {
+    dailyCalories = Math.round(tdee - 500); // Weight loss
+  } else if (targetWeight > weight) {
+    dailyCalories = Math.round(tdee + 300); // Weight gain
+  } else {
+    dailyCalories = tdee; // Maintenance
+  }
+  
+  // Macro split (30% protein, 40% carbs, 30% fats)
+  const protein = Math.round((dailyCalories * 0.30) / 4);
+  const carbs = Math.round((dailyCalories * 0.40) / 4);
+  const fats = Math.round((dailyCalories * 0.30) / 9);
+  
+  // Update preview
+  document.getElementById('preview-bmi').textContent = bmi;
+  document.getElementById('preview-bmr').textContent = bmr;
+  document.getElementById('preview-tdee').textContent = tdee;
+  document.getElementById('preview-calories').textContent = dailyCalories;
+  document.getElementById('preview-protein').textContent = protein + 'g';
+  document.getElementById('preview-carbs').textContent = carbs + 'g';
+  document.getElementById('preview-fats').textContent = fats + 'g';
+  
+  // Store for submission
+  form.dataset.bmi = bmi;
+  form.dataset.bmr = bmr;
+  form.dataset.tdee = tdee;
+  form.dataset.dailyCalories = dailyCalories;
+  form.dataset.protein = protein;
+  form.dataset.carbs = carbs;
+  form.dataset.fats = fats;
+}
+
+document.getElementById('onboarding-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const submitBtn = document.getElementById('submit-btn');
+  
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = '<span>Creating Profile...</span>';
+  
+  // Gather form data
+  const formData = new FormData(form);
+  const userEmail = localStorage.getItem('userEmail') || '';
+  
+  const profile = {
+    email: userEmail,
+    age: parseInt(formData.get('age')),
+    gender: formData.get('gender'),
+    height: parseFloat(formData.get('height')),
+    weight: parseFloat(formData.get('weight')),
+    target_weight: parseFloat(formData.get('target_weight')),
+    region: formData.get('region'),
+    diet_type: formData.get('diet_type'),
+    allergies: formData.get('allergies').split(',').map(s => s.trim()).filter(Boolean),
+    activity_level: formData.get('activity_level'),
+    medical_conditions: formData.get('medical_conditions').split(',').map(s => s.trim()).filter(Boolean),
+    goals: Array.from(formData.getAll('goals')),
+    bmi: parseFloat(form.dataset.bmi),
+    bmr: parseInt(form.dataset.bmr),
+    tdee: parseInt(form.dataset.tdee),
+    daily_calories: parseInt(form.dataset.dailyCalories),
+    daily_protein: parseInt(form.dataset.protein),
+    daily_carbs: parseInt(form.dataset.carbs),
+    daily_fats: parseInt(form.dataset.fats),
+    onboarding_complete: true,
+    plan_start_date: new Date().toISOString().split('T')[0],
+    current_plan_cycle: 1
+  };
+  
+  try {
+    const response = await fetch('/api/profile', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(profile)
+    });
+    
+    if (response.ok) {
+      window.location.href = '/generate-plan';
+    } else {
+      throw new Error('Failed to create profile');
+    }
+  } catch (error) {
+    alert('Error creating profile: ' + error.message);
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<span>Create My Profile</span>';
+  }
+});
+</script>
+{% endblock %}

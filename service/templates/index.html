@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Diet Plan Recommender</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="brand">Diet Plan Recommender</div>
+    <nav class="nav">
+      <a href="/docs" target="_blank">API Docs</a>
+      <a href="/recommend/sample" target="_blank">Sample Payload</a>
+    </nav>
+  </header>
+  <main class="container">
+    <section class="card">
+      <h1>Personalize Your 14-Day Plan</h1>
+      <p>Fill the profile and submit to get recommendations.</p>
+      <form id="profile-form" class="form-grid">
+        <label>
+          Age
+          <input type="number" name="age" min="1" max="120" value="30" />
+        </label>
+        <label>
+          BMI
+          <input type="number" name="bmi" step="0.1" min="10" max="60" value="23.0" />
+        </label>
+        <label>
+          Sex
+          <select name="sex">
+            <option value="female">Female</option>
+            <option value="male">Male</option>
+          </select>
+        </label>
+        <label>
+          Region
+          <select name="region">
+            <option value="south_indian">South Indian</option>
+            <option value="north_indian">North Indian</option>
+          </select>
+        </label>
+        <label>
+          Diet Type
+          <select name="diet_type">
+            <option value="veg">Veg</option>
+            <option value="non_veg">Non-Veg</option>
+            <option value="vegan">Vegan</option>
+            <option value="eggetarian">Eggetarian</option>
+          </select>
+        </label>
+        <label>
+          Activity
+          <select name="activity">
+            <option value="sedentary">Sedentary</option>
+            <option value="light">Light</option>
+            <option value="moderate">Moderate</option>
+            <option value="heavy">Heavy</option>
+          </select>
+        </label>
+        <label>
+          Weight Class
+          <select name="weight_class">
+            <option value="underweight">Underweight</option>
+            <option value="normal">Normal</option>
+            <option value="overweight">Overweight</option>
+            <option value="obese">Obese</option>
+          </select>
+        </label>
+        <label class="span-2">
+          Category
+          <select name="category">
+            <option>WEIGHT LOSS ONLY</option>
+            <option>weight loss + pcos</option>
+            <option>ANTI-AGING ,SUN DAMAGE,FINE LINES DIET PLAN</option>
+            <option>GAS + BLOATING</option>
+            <option>high protein balanced diet</option>
+            <option>high protein high fiber</option>
+            <option>SKIN HEALTH</option>
+            <option>weight loss+ typ 1 diabetes</option>
+          </select>
+        </label>
+        <label class="span-2">
+          Preferences (JSON)
+          <textarea name="preferences" rows="3" placeholder='{"avoid":["fried"],"include":["millets"]}'></textarea>
+        </label>
+        <div class="actions span-2">
+          <button type="button" id="load-sample" class="btn-secondary">Load Sample</button>
+          <button type="submit" class="btn-primary">Get Recommendation</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Recommendation Result</h2>
+      <div id="result" class="result"></div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div>Docs: <a href="/docs" target="_blank">/docs</a> · Health: <a href="/ping" target="_blank">/ping</a></div>
+    <div>© 2025</div>
+  </footer>
+
+  <script>
+    const form = document.getElementById('profile-form');
+    const resultEl = document.getElementById('result');
+    const loadSampleBtn = document.getElementById('load-sample');
+
+    loadSampleBtn.addEventListener('click', async () => {
+      const res = await fetch('/recommend/sample');
+      const sampleWrap = await res.json();
+      const sample = sampleWrap.example_profile || sampleWrap;
+      // populate basic fields
+      form.sex.value = sample.sex || 'female';
+      form.region.value = sample.region || 'south_indian';
+      form.diet_type.value = sample.diet_type || 'veg';
+      form.activity.value = sample.activity || sample.activity_level || 'light';
+      form.weight_class.value = sample.weight_class || 'normal';
+      form.category.value = sample.category || 'WEIGHT LOSS ONLY';
+      form.age.value = sample.age ?? 30;
+      form.bmi.value = sample.bmi ?? 23.0;
+      form.preferences.value = JSON.stringify(sample.preferences || {}, null, 2);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        age: Number(form.age.value),
+        sex: form.sex.value,
+        bmi: Number(form.bmi.value),
+        region: form.region.value,
+        diet_type: form.diet_type.value,
+        activity: form.activity.value,
+        weight_class: form.weight_class.value,
+        category: form.category.value,
+        preferences: {}
+      };
+      try {
+        if (form.preferences.value.trim()) {
+          payload.preferences = JSON.parse(form.preferences.value);
+        }
+      } catch (err) {
+        alert('Preferences must be valid JSON.');
+        return;
+      }
+      const res = await fetch('/recommend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      resultEl.textContent = '';
+      const pre = document.createElement('pre');
+      pre.textContent = JSON.stringify(data, null, 2);
+      resultEl.appendChild(pre);
+    });
+  </script>
+  </body>
+</html>

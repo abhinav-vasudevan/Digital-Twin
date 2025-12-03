@@ -1,0 +1,914 @@
+{% extends "layout.html" %}
+
+{% block title %}Daily Feedback - Digital Twin{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <div class="feedback-header">
+        <div class="feedback-container">
+            <div class="header-content">
+                <button onclick="window.location.href='/dashboard'" class="btn-icon">
+                    <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </button>
+                <div class="header-info">
+                    <h1 class="header-title">Daily Feedback</h1>
+                    <p class="header-subtitle" id="today-date"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="feedback-container progress-section">
+        <div class="progress-bars">
+            <div class="progress-bar" id="progress-1"></div>
+            <div class="progress-bar" id="progress-2"></div>
+            <div class="progress-bar" id="progress-3"></div>
+            <div class="progress-bar" id="progress-4"></div>
+        </div>
+    </div>
+
+    <!-- Content Container -->
+    <div class="feedback-container feedback-content">
+        <!-- Step 1: Mood & Energy -->
+        <div class="feedback-step" id="step-1">
+            <h2 class="step-title">How are you feeling today?</h2>
+            <div class="mood-grid">
+                <button class="mood-btn" data-mood="great">
+                    <span class="mood-icon">😄</span>
+                    <span class="mood-label">Great</span>
+                </button>
+                <button class="mood-btn" data-mood="good">
+                    <span class="mood-icon">🙂</span>
+                    <span class="mood-label">Good</span>
+                </button>
+                <button class="mood-btn" data-mood="neutral">
+                    <span class="mood-icon">😐</span>
+                    <span class="mood-label">Neutral</span>
+                </button>
+                <button class="mood-btn" data-mood="low">
+                    <span class="mood-icon">😔</span>
+                    <span class="mood-label">Low</span>
+                </button>
+                <button class="mood-btn" data-mood="bad">
+                    <span class="mood-icon">😢</span>
+                    <span class="mood-label">Bad</span>
+                </button>
+            </div>
+
+            <div class="energy-card">
+                <div class="energy-header">
+                    <div class="energy-icon-wrap">
+                        <svg class="energy-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        <span class="energy-label">Energy Level</span>
+                    </div>
+                    <span class="energy-value"><span id="energy-display">5</span>/10</span>
+                </div>
+                <input type="range" id="energy-slider" min="1" max="10" value="5" class="slider">
+            </div>
+        </div>
+
+        <!-- Step 2: Body -->
+        <div class="feedback-step" id="step-2" style="display: none;">
+            <h2 class="step-title">How's your body feeling?</h2>
+
+            <div class="body-section">
+                <div class="section-header">
+                    <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                    <span class="section-label">Digestion</span>
+                </div>
+                <div class="option-grid">
+                    <button class="option-btn" data-digestion="excellent">
+                        <span class="option-icon">😊</span>
+                        <span class="option-label">Excellent</span>
+                    </button>
+                    <button class="option-btn" data-digestion="good">
+                        <span class="option-icon">🙂</span>
+                        <span class="option-label">Good</span>
+                    </button>
+                    <button class="option-btn" data-digestion="normal">
+                        <span class="option-icon">😐</span>
+                        <span class="option-label">Normal</span>
+                    </button>
+                    <button class="option-btn" data-digestion="bloated">
+                        <span class="option-icon">😣</span>
+                        <span class="option-label">Bloated</span>
+                    </button>
+                    <button class="option-btn" data-digestion="uncomfortable">
+                        <span class="option-icon">😖</span>
+                        <span class="option-label">Uncomfortable</span>
+                    </button>
+                    <button class="option-btn" data-digestion="poor">
+                        <span class="option-icon">😢</span>
+                        <span class="option-label">Poor</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="body-section">
+                <div class="section-header">
+                    <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <span class="section-label">Skin/Acne</span>
+                </div>
+                <div class="option-grid">
+                    <button class="option-btn acne-clear" data-acne="clear">
+                        <span class="option-icon">✨</span>
+                        <span class="option-label">Clear</span>
+                    </button>
+                    <button class="option-btn acne-mild" data-acne="mild">
+                        <span class="option-icon">🌤️</span>
+                        <span class="option-label">Mild</span>
+                    </button>
+                    <button class="option-btn acne-moderate" data-acne="moderate">
+                        <span class="option-icon">☁️</span>
+                        <span class="option-label">Moderate</span>
+                    </button>
+                    <button class="option-btn acne-severe" data-acne="severe">
+                        <span class="option-icon">⛈️</span>
+                        <span class="option-label">Severe</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="body-section">
+                <div class="section-header">
+                    <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                    <span class="section-label">Sleep Quality (last night)</span>
+                </div>
+                <div class="option-grid">
+                    <button class="option-btn" data-sleep="excellent">
+                        <span class="option-icon">😴</span>
+                        <span class="option-label">Excellent</span>
+                    </button>
+                    <button class="option-btn" data-sleep="good">
+                        <span class="option-icon">😌</span>
+                        <span class="option-label">Good</span>
+                    </button>
+                    <button class="option-btn" data-sleep="fair">
+                        <span class="option-icon">😪</span>
+                        <span class="option-label">Fair</span>
+                    </button>
+                    <button class="option-btn" data-sleep="poor">
+                        <span class="option-icon">😫</span>
+                        <span class="option-label">Poor</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Symptoms & Water -->
+        <div class="feedback-step" id="step-3" style="display: none;">
+            <h2 class="step-title">Any symptoms today?</h2>
+
+            <div class="symptoms-grid">
+                <button class="symptom-btn" data-symptom="Headache">Headache</button>
+                <button class="symptom-btn" data-symptom="Fatigue">Fatigue</button>
+                <button class="symptom-btn" data-symptom="Nausea">Nausea</button>
+                <button class="symptom-btn" data-symptom="Cramps">Cramps</button>
+                <button class="symptom-btn" data-symptom="Bloating">Bloating</button>
+                <button class="symptom-btn" data-symptom="Acid reflux">Acid reflux</button>
+                <button class="symptom-btn" data-symptom="Constipation">Constipation</button>
+                <button class="symptom-btn" data-symptom="Diarrhea">Diarrhea</button>
+                <button class="symptom-btn" data-symptom="Dizziness">Dizziness</button>
+                <button class="symptom-btn" data-symptom="Brain fog">Brain fog</button>
+            </div>
+
+            <div class="water-card">
+                <div class="water-header">
+                    <div class="water-icon-wrap">
+                        <svg class="water-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                        </svg>
+                        <span class="water-label">Water Intake</span>
+                    </div>
+                    <span class="water-value"><span id="water-display">4</span> glasses</span>
+                </div>
+                <input type="range" id="water-slider" min="0" max="12" value="4" class="slider">
+            </div>
+        </div>
+
+        <!-- Step 4: Notes & Weight -->
+        <div class="feedback-step" id="step-4" style="display: none;">
+            <h2 class="step-title">Anything else to note?</h2>
+
+            <div class="input-group">
+                <label class="input-label">Today's Weight (optional)</label>
+                <input type="number" id="weight-input" placeholder="e.g., 65" class="input-field" step="0.1">
+            </div>
+
+            <div class="input-group">
+                <label class="input-label">Additional Notes</label>
+                <textarea id="notes-input" placeholder="How was your day? Any food cravings? Skipped meals?" class="textarea-field" rows="6"></textarea>
+            </div>
+        </div>
+
+        <!-- AI Insight -->
+        <div class="feedback-step" id="step-insight" style="display: none;">
+            <div class="insight-header">
+                <div class="insight-icon-wrap">
+                    <svg class="insight-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/>
+                    </svg>
+                </div>
+                <h2 class="insight-title">AI Insight</h2>
+                <p class="insight-subtitle">Based on your feedback today</p>
+            </div>
+
+            <div class="insight-card">
+                <p class="insight-text" id="insight-content"></p>
+            </div>
+
+            <button onclick="window.location.href='/dashboard'" class="btn-primary">
+                <svg class="btn-icon-left" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Done
+            </button>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="nav-buttons" id="nav-buttons">
+            <button id="back-btn" class="btn-secondary" style="display: none;">Back</button>
+            <button id="next-btn" class="btn-primary">Next</button>
+        </div>
+    </div>
+</div>
+
+<style>
+.feedback-header {
+    background: white;
+    border-bottom: 1px solid #f0f0f0;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.feedback-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+}
+
+.btn-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-icon:hover {
+    background: #f5f5f5;
+}
+
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
+.header-info {
+    flex: 1;
+}
+
+.header-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.header-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin: 4px 0 0 0;
+}
+
+.progress-section {
+    padding: 20px 24px;
+}
+
+.progress-bars {
+    display: flex;
+    gap: 8px;
+}
+
+.progress-bar {
+    height: 4px;
+    flex: 1;
+    background: #e5e5e5;
+    border-radius: 2px;
+    transition: background 0.3s;
+}
+
+.progress-bar.active {
+    background: #000;
+}
+
+.feedback-content {
+    padding: 24px;
+}
+
+.step-title {
+    font-size: 28px;
+    font-weight: 300;
+    margin: 0 0 32px 0;
+}
+
+.mood-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.mood-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+    background: white;
+    border: 2px solid #e5e5e5;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.mood-btn:hover {
+    border-color: #999;
+    transform: scale(1.05);
+}
+
+.mood-btn.selected {
+    background: #000;
+    border-color: #000;
+    color: white;
+}
+
+.mood-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.mood-label {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.energy-card, .water-card {
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 24px;
+    margin-top: 24px;
+}
+
+.energy-header, .water-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.energy-icon-wrap, .water-icon-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.energy-icon, .water-icon {
+    width: 20px;
+    height: 20px;
+    color: #f59e0b;
+}
+
+.water-icon {
+    color: #3b82f6;
+}
+
+.energy-label, .water-label {
+    font-weight: 500;
+}
+
+.energy-value, .water-value {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: #e5e5e5;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #000;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #000;
+    cursor: pointer;
+    border: none;
+}
+
+.body-section {
+    margin-bottom: 32px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.section-icon {
+    width: 20px;
+    height: 20px;
+    color: #ec4899;
+}
+
+.section-label {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.option-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.option-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 20px;
+    background: white;
+    border: 2px solid #e5e5e5;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.option-btn:hover {
+    border-color: #999;
+    transform: scale(1.02);
+}
+
+.option-btn.selected {
+    background: #000;
+    border-color: #000;
+}
+
+.option-btn .option-icon {
+    font-size: 28px;
+}
+
+.option-btn .option-label {
+    color: #000;
+}
+
+.option-btn.selected .option-label {
+    color: white;
+}
+
+.option-btn.acne-clear.selected {
+    background: #10b981;
+    border-color: #10b981;
+}
+
+.option-btn.acne-mild.selected {
+    background: #f59e0b;
+    border-color: #f59e0b;
+}
+
+.option-btn.acne-moderate.selected {
+    background: #f97316;
+    border-color: #f97316;
+}
+
+.option-btn.acne-severe.selected {
+    background: #ef4444;
+    border-color: #ef4444;
+}
+
+.symptoms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+}
+
+.symptom-btn {
+    padding: 12px 20px;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 24px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.symptom-btn:hover {
+    background: #e5e5e5;
+}
+
+.symptom-btn.selected {
+    background: #ef4444;
+    color: white;
+}
+
+.input-group {
+    margin-bottom: 24px;
+}
+
+.input-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.input-field {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.input-field:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+
+.textarea-field {
+    width: 100%;
+    padding: 16px;
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    transition: all 0.2s;
+}
+
+.textarea-field:focus {
+    outline: none;
+    border-color: #000;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+}
+
+.insight-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.insight-icon-wrap {
+    width: 80px;
+    height: 80px;
+    background: #000;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+}
+
+.insight-icon {
+    width: 40px;
+    height: 40px;
+    color: white;
+}
+
+.insight-title {
+    font-size: 28px;
+    font-weight: 300;
+    margin: 0 0 8px 0;
+}
+
+.insight-subtitle {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+}
+
+.insight-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, white 100%);
+    border: 1px solid #e5e5e5;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 32px;
+}
+
+.insight-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    margin: 0;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 16px;
+    margin-top: 40px;
+}
+
+.btn-primary {
+    flex: 1;
+    height: 56px;
+    background: #000;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary:hover {
+    background: #333;
+}
+
+.btn-primary:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    flex: 1;
+    height: 56px;
+    background: white;
+    color: #000;
+    border: 2px solid #e5e5e5;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    border-color: #999;
+    background: #f5f5f5;
+}
+
+.btn-icon-left {
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 640px) {
+    .feedback-container {
+        padding: 0 16px;
+    }
+    
+    .step-title {
+        font-size: 24px;
+    }
+    
+    .mood-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+    
+    .option-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+}
+</style>
+
+<script>
+let currentStep = 1;
+const feedback = {
+    mood: '',
+    energy_level: 5,
+    digestion: '',
+    acne_status: '',
+    sleep_quality: '',
+    symptoms: [],
+    water_intake: 4,
+    weight: '',
+    notes: ''
+};
+
+// Initialize
+document.addEventListener('DOMContentLoaded', () => {
+    const today = new Date();
+    document.getElementById('today-date').textContent = today.toLocaleDateString('en-US', { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+    
+    updateProgress();
+    setupEventListeners();
+});
+
+function setupEventListeners() {
+    // Mood buttons
+    document.querySelectorAll('.mood-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            feedback.mood = btn.dataset.mood;
+        });
+    });
+    
+    // Energy slider
+    const energySlider = document.getElementById('energy-slider');
+    const energyDisplay = document.getElementById('energy-display');
+    energySlider.addEventListener('input', (e) => {
+        feedback.energy_level = parseInt(e.target.value);
+        energyDisplay.textContent = e.target.value;
+    });
+    
+    // Digestion buttons
+    document.querySelectorAll('[data-digestion]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-digestion]').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            feedback.digestion = btn.dataset.digestion;
+        });
+    });
+    
+    // Acne buttons
+    document.querySelectorAll('[data-acne]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-acne]').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            feedback.acne_status = btn.dataset.acne;
+        });
+    });
+    
+    // Sleep buttons
+    document.querySelectorAll('[data-sleep]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('[data-sleep]').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            feedback.sleep_quality = btn.dataset.sleep;
+        });
+    });
+    
+    // Symptom buttons
+    document.querySelectorAll('.symptom-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('selected');
+            const symptom = btn.dataset.symptom;
+            if (feedback.symptoms.includes(symptom)) {
+                feedback.symptoms = feedback.symptoms.filter(s => s !== symptom);
+            } else {
+                feedback.symptoms.push(symptom);
+            }
+        });
+    });
+    
+    // Water slider
+    const waterSlider = document.getElementById('water-slider');
+    const waterDisplay = document.getElementById('water-display');
+    waterSlider.addEventListener('input', (e) => {
+        feedback.water_intake = parseInt(e.target.value);
+        waterDisplay.textContent = e.target.value;
+    });
+    
+    // Weight and notes
+    document.getElementById('weight-input').addEventListener('input', (e) => {
+        feedback.weight = parseFloat(e.target.value) || '';
+    });
+    document.getElementById('notes-input').addEventListener('input', (e) => {
+        feedback.notes = e.target.value;
+    });
+    
+    // Navigation
+    document.getElementById('back-btn').addEventListener('click', previousStep);
+    document.getElementById('next-btn').addEventListener('click', nextStep);
+}
+
+function updateProgress() {
+    for (let i = 1; i <= 4; i++) {
+        const bar = document.getElementById(`progress-${i}`);
+        if (i <= currentStep) {
+            bar.classList.add('active');
+        } else {
+            bar.classList.remove('active');
+        }
+    }
+}
+
+function showStep(step) {
+    // Hide all steps
+    document.querySelectorAll('.feedback-step').forEach(s => s.style.display = 'none');
+    
+    // Show current step
+    document.getElementById(`step-${step}`).style.display = 'block';
+    
+    // Update buttons
+    const backBtn = document.getElementById('back-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const navButtons = document.getElementById('nav-buttons');
+    
+    if (step === 'insight') {
+        navButtons.style.display = 'none';
+    } else {
+        navButtons.style.display = 'flex';
+        backBtn.style.display = step > 1 ? 'block' : 'none';
+        nextBtn.textContent = step === 4 ? 'Get AI Insight' : 'Next';
+    }
+    
+    updateProgress();
+}
+
+function nextStep() {
+    if (currentStep < 4) {
+        currentStep++;
+        showStep(currentStep);
+    } else {
+        submitFeedback();
+    }
+}
+
+function previousStep() {
+    if (currentStep > 1) {
+        currentStep--;
+        showStep(currentStep);
+    }
+}
+
+async function submitFeedback() {
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.disabled = true;
+    nextBtn.innerHTML = '<svg class="btn-icon-left animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Analyzing...';
+    
+    try {
+        const response = await fetch('/api/daily-log/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feedback)
+        });
+        
+        const data = await response.json();
+        
+        // Show AI insight
+        document.getElementById('insight-content').textContent = data.ai_insight || 'Great job tracking your health today! Keep up the good work.';
+        showStep('insight');
+    } catch (error) {
+        console.error('Error submitting feedback:', error);
+        alert('Error saving feedback. Please try again.');
+        nextBtn.disabled = false;
+        nextBtn.textContent = 'Get AI Insight';
+    }
+}
+
+// Initialize first step
+showStep(1);
+</script>
+{% endblock %}

@@ -1,0 +1,269 @@
+{% extends "layout.html" %}
+
+{% block title %}Meal Details{% endblock %}
+
+{% block content %}
+<div class="page-container">
+  <div class="page-header">
+    <a href="/meal-plan" class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+    </a>
+    <div class="header-content">
+      <p class="meal-label" id="meal-label"></p>
+      <h1 id="meal-name">Loading...</h1>
+    </div>
+    <span class="meal-icon-large" id="meal-icon"></span>
+  </div>
+
+  <div class="meal-detail-content">
+    <!-- Nutrition Card -->
+    <div class="nutrition-card">
+      <div class="nutrition-grid">
+        <div class="nutrition-item">
+          <div class="nutrition-value black" id="calories">—</div>
+          <div class="nutrition-label">Calories</div>
+        </div>
+        <div class="nutrition-item">
+          <div class="nutrition-value blue" id="protein">—</div>
+          <div class="nutrition-label">Protein</div>
+        </div>
+        <div class="nutrition-item">
+          <div class="nutrition-value amber" id="carbs">—</div>
+          <div class="nutrition-label">Carbs</div>
+        </div>
+        <div class="nutrition-item">
+          <div class="nutrition-value green" id="fats">—</div>
+          <div class="nutrition-label">Fats</div>
+        </div>
+      </div>
+      <div class="meal-time" id="meal-time"></div>
+    </div>
+
+    <!-- Description -->
+    <div class="detail-card" id="description-card" style="display:none;">
+      <h3>About this meal</h3>
+      <p id="meal-description"></p>
+    </div>
+
+    <!-- Ingredients -->
+    <div class="detail-card" id="ingredients-card" style="display:none;">
+      <div class="card-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <h3>Ingredients</h3>
+      </div>
+      <div class="ingredient-list" id="ingredient-list"></div>
+    </div>
+
+    <!-- Recipe -->
+    <div class="detail-card" id="recipe-card" style="display:none;">
+      <div class="card-header">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/><line x1="6" x2="18" y1="17" y2="17"/></svg>
+        <h3>Recipe</h3>
+      </div>
+      <p class="recipe-text" id="recipe-text"></p>
+    </div>
+
+    <!-- Allergy Notice -->
+    <div class="alert-card" id="allergy-card" style="display:none;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+      <div>
+        <h4>Allergy Safe</h4>
+        <p id="allergy-text"></p>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn-secondary btn-large" onclick="swapMeal()" id="swap-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+        Swap Meal
+      </button>
+      <button class="btn-primary btn-large" onclick="toggleEaten()" id="eaten-btn">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+        Mark as Eaten
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const mealIcons = {
+  breakfast: '🍳',
+  mid_morning_snack: '🍎',
+  lunch: '🍛',
+  evening_snack: '☕',
+  dinner: '🥗'
+};
+
+const mealLabels = {
+  breakfast: 'Breakfast',
+  mid_morning_snack: 'Mid-morning Snack',
+  lunch: 'Lunch',
+  evening_snack: 'Evening Snack',
+  dinner: 'Dinner'
+};
+
+let currentDate, currentMealType, isEaten = false;
+
+async function loadMealDetail() {
+  const params = new URLSearchParams(window.location.search);
+  currentDate = params.get('date');
+  currentMealType = params.get('meal');
+  
+  if (!currentDate || !currentMealType) {
+    alert('Invalid meal details');
+    window.location.href = '/meal-plan';
+    return;
+  }
+  
+  try {
+    // Load meal plan
+    const planRes = await fetch(`/api/meal-plan?date=${currentDate}`);
+    const plan = await planRes.json();
+    const meal = plan[currentMealType];
+    
+    if (!meal) {
+      alert('Meal not found');
+      window.location.href = '/meal-plan';
+      return;
+    }
+    
+    // Load daily log
+    const logRes = await fetch(`/api/daily-log?date=${currentDate}`);
+    const log = await logRes.json();
+    isEaten = log?.meals_eaten?.[currentMealType] || false;
+    
+    // Load profile for allergies
+    const profileRes = await fetch('/api/profile');
+    const profile = await profileRes.json();
+    
+    renderMealDetail(meal, profile);
+    
+  } catch (error) {
+    console.error('Error loading meal detail:', error);
+  }
+}
+
+function renderMealDetail(meal, profile) {
+  // Header
+  document.getElementById('meal-label').textContent = mealLabels[currentMealType];
+  document.getElementById('meal-name').textContent = meal.name;
+  document.getElementById('meal-icon').textContent = mealIcons[currentMealType];
+  
+  // Nutrition
+  document.getElementById('calories').textContent = meal.calories;
+  document.getElementById('protein').textContent = meal.protein + 'g';
+  document.getElementById('carbs').textContent = meal.carbs + 'g';
+  document.getElementById('fats').textContent = meal.fats + 'g';
+  
+  if (meal.time) {
+    document.getElementById('meal-time').innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Recommended time: ${meal.time}
+    `;
+  }
+  
+  // Description
+  if (meal.description) {
+    document.getElementById('description-card').style.display = 'block';
+    document.getElementById('meal-description').textContent = meal.description;
+  }
+  
+  // Ingredients
+  if (meal.ingredients && meal.ingredients.length > 0) {
+    document.getElementById('ingredients-card').style.display = 'block';
+    const ingredientList = document.getElementById('ingredient-list');
+    ingredientList.innerHTML = meal.ingredients.map(ing => 
+      `<span class="ingredient-badge">${ing}</span>`
+    ).join('');
+  }
+  
+  // Recipe
+  if (meal.recipe) {
+    document.getElementById('recipe-card').style.display = 'block';
+    document.getElementById('recipe-text').textContent = meal.recipe;
+  }
+  
+  // Allergy notice
+  if (profile.allergies && profile.allergies.length > 0) {
+    document.getElementById('allergy-card').style.display = 'flex';
+    document.getElementById('allergy-text').textContent = 
+      `This meal has been crafted avoiding: ${profile.allergies.join(', ')}`;
+  }
+  
+  // Update button state
+  updateEatenButton();
+}
+
+function updateEatenButton() {
+  const btn = document.getElementById('eaten-btn');
+  if (isEaten) {
+    btn.classList.add('completed');
+    btn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+      Marked as Eaten
+    `;
+  } else {
+    btn.classList.remove('completed');
+    btn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6 9 17l-5-5"/></svg>
+      Mark as Eaten
+    `;
+  }
+}
+
+async function toggleEaten() {
+  try {
+    isEaten = !isEaten;
+    await fetch('/api/daily-log/meal', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        date: currentDate, 
+        meal_type: currentMealType, 
+        completed: isEaten 
+      })
+    });
+    
+    updateEatenButton();
+  } catch (error) {
+    console.error('Error toggling meal:', error);
+    isEaten = !isEaten; // Revert on error
+  }
+}
+
+async function swapMeal() {
+  const btn = document.getElementById('swap-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span>Generating alternative...</span>';
+  
+  try {
+    const response = await fetch('/api/meal-plan/swap', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        date: currentDate, 
+        meal_type: currentMealType 
+      })
+    });
+    
+    if (response.ok) {
+      location.reload(); // Reload to show new meal
+    } else {
+      throw new Error('Failed to swap meal');
+    }
+  } catch (error) {
+    alert('Error swapping meal: ' + error.message);
+    btn.disabled = false;
+    btn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+      Swap Meal
+    `;
+  }
+}
+
+loadMealDetail();
+</script>
+{% endblock %}
