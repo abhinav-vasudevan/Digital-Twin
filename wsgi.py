@@ -1,6 +1,6 @@
 """
 WSGI configuration for PythonAnywhere deployment
-This file wraps the FastAPI (ASGI) app for WSGI servers
+This file wraps the FastAPI (ASGI) app for WSGI servers using a2wsgi
 """
 import sys
 from pathlib import Path
@@ -13,6 +13,6 @@ if project_home not in sys.path:
 # Import the FastAPI app
 from service.api import app
 
-# Wrap ASGI app (FastAPI) for WSGI using asgiref
-from asgiref.wsgi import WsgiToAsgi
-application = WsgiToAsgi(app)
+# Wrap ASGI app (FastAPI) for WSGI using a2wsgi
+from a2wsgi import ASGIMiddleware
+application = ASGIMiddleware(app)
