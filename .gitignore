@@ -9,7 +9,8 @@ venv/
 ENV/
 env/
 
-# User data - sensitive information
+# User data - sensitive information (only ignore if they contain actual user data)
+# Keep empty JSON files in git for deployment
 service/data/users.json
 service/data/profile.json
 service/data/meal_plans.json

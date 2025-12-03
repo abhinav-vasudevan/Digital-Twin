@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: digital-twin
+    env: python
+    runtime: python-3.10.12
+    plan: free
+    branch: main
+    buildCommand: pip install -r requirements.txt && mkdir -p service/data && for file in users.json profile.json meal_plans.json daily_logs.json; do if [ ! -f service/data/$file ]; then echo '{}' > service/data/$file; fi; done
+    startCommand: uvicorn service.api:app --host 0.0.0.0 --port $PORT
