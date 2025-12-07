@@ -1,0 +1,11 @@
+{
+  "category": "pcos",
+  "macro_targets": {"gi": "low", "fiber_g": ">=30", "added_sugar": "minimize"},
+  "meals": [
+    {"meal": "breakfast", "patterns": ["low-GI carb + protein (oats + curd/paneer)"]},
+    {"meal": "mid_morning", "patterns": ["fruit (low-GI) + nuts"]},
+    {"meal": "lunch", "patterns": ["millet/roti + dal + paneer/legume + salad"]},
+    {"meal": "snack", "patterns": ["roasted chana / sprouts / buttermilk"]},
+    {"meal": "dinner", "patterns": ["non-starchy veg + paneer/eggs + small low-GI carb"]}
+  ]
+}

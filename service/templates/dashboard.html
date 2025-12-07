@@ -132,27 +132,36 @@ if (!localStorage.getItem('userEmail')) {
 }
 
 const mealIcons = {
+  early_morning: '☀️',
+  pre_activity: '🏃',
   breakfast: '🍳',
-  mid_morning_snack: '🍎',
+  mid_morning_snack: '☕',
   lunch: '🍛',
-  evening_snack: '☕',
-  dinner: '🥗'
+  evening_snack: '🍵',
+  dinner: '🌙',
+  bedtime: '😴'
 };
 
 const mealLabels = {
+  early_morning: 'Early Morning',
+  pre_activity: 'Pre-Activity',
   breakfast: 'Breakfast',
-  mid_morning_snack: 'Mid-morning Snack',
+  mid_morning_snack: 'Mid-Morning Snack',
   lunch: 'Lunch',
   evening_snack: 'Evening Snack',
-  dinner: 'Dinner'
+  dinner: 'Dinner',
+  bedtime: 'Bedtime'
 };
 
 const mealTimes = {
-  breakfast: '7:00 AM',
+  early_morning: '6:00 AM',
+  pre_activity: '6:30 AM',
+  breakfast: '8:00 AM',
   mid_morning_snack: '10:30 AM',
   lunch: '1:00 PM',
   evening_snack: '4:30 PM',
-  dinner: '7:30 PM'
+  dinner: '7:30 PM',
+  bedtime: '9:30 PM'
 };
 
 async function loadDashboard() {
@@ -161,13 +170,14 @@ async function loadDashboard() {
     const profileRes = await fetch('/api/profile');
     const profile = await profileRes.json();
     
-    // Load today's plan
-    const today = new Date().toISOString().split('T')[0];
-    const planRes = await fetch(`/api/meal-plan?date=${today}`);
+    // Load today's plan (use local date to avoid timezone issues)
+    const today = new Date();
+    const localDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    const planRes = await fetch(`/api/meal-plan?date=${localDate}`);
     const todayPlan = await planRes.json();
     
     // Load today's log
-    const logRes = await fetch(`/api/daily-log?date=${today}`);
+    const logRes = await fetch(`/api/daily-log?date=${localDate}`);
     const todayLog = await logRes.json();
     
     // Update UI
@@ -196,8 +206,10 @@ function updateProfile(profile) {
   document.getElementById('progress-day').textContent = currentDay;
   
   document.getElementById('current-weight').textContent = profile.weight + ' kg';
-  document.getElementById('target-weight').textContent = profile.target_weight + ' kg';
-  const diff = Math.abs(profile.weight - profile.target_weight).toFixed(1);
+  // BMI display
+  const bmiCat = profile.bmi < 18.5 ? 'Underweight' : profile.bmi < 25 ? 'Normal' : profile.bmi < 30 ? 'Overweight' : 'Obese';
+  document.getElementById('target-weight').textContent = bmiCat;
+  const diff = 0; // Removed target weight tracking
   document.getElementById('weight-diff').textContent = diff + ' kg';
 }
 
@@ -206,7 +218,7 @@ function updateNutrition(plan, log, profile) {
   let consumedProtein = 0;
   
   if (plan && log && log.meals_eaten) {
-    ['breakfast', 'mid_morning_snack', 'lunch', 'evening_snack', 'dinner'].forEach(mealType => {
+    ['early_morning', 'pre_activity', 'breakfast', 'mid_morning_snack', 'lunch', 'evening_snack', 'dinner', 'bedtime'].forEach(mealType => {
       if (log.meals_eaten[mealType] && plan[mealType]) {
         consumedCalories += plan[mealType].calories || 0;
         consumedProtein += plan[mealType].protein || 0;
@@ -238,11 +250,11 @@ function renderMeals(plan, log) {
   mealsList.innerHTML = '';
   
   if (!plan) {
-    mealsList.innerHTML = '<p class="no-meals">No meal plan for today. <a href="/generate-plan">Generate one now</a></p>';
+    mealsList.innerHTML = '<p class="no-meals">No meal plan selected yet. <a href="/get-recommendations">Select your meal plans</a></p>';
     return;
   }
   
-  ['breakfast', 'mid_morning_snack', 'lunch', 'evening_snack', 'dinner'].forEach(mealType => {
+  ['early_morning', 'pre_activity', 'breakfast', 'mid_morning_snack', 'lunch', 'evening_snack', 'dinner', 'bedtime'].forEach(mealType => {
     const meal = plan[mealType];
     if (!meal) return;
     
@@ -255,15 +267,16 @@ function renderMeals(plan, log) {
       <div class="meal-info">
         <div class="meal-header">
           <span class="meal-type">${mealLabels[mealType]}</span>
-          <span class="meal-time">${mealTimes[mealType]}</span>
+          <span class="meal-time">${meal.time || mealTimes[mealType]}</span>
         </div>
         <h3 class="meal-name">${meal.name}</h3>
         ${meal.description ? `<p class="meal-desc">${meal.description}</p>` : ''}
         <div class="meal-macros">
-          <span class="macro">${meal.calories} kcal</span>
-          <span class="macro blue">P: ${meal.protein}g</span>
-          <span class="macro amber">C: ${meal.carbs}g</span>
-          <span class="macro green">F: ${meal.fats}g</span>
+          <span class="macro">${meal.calories || 0} kcal</span>
+          <span class="macro blue">P: ${meal.protein || 0}g</span>
+          <span class="macro amber">C: ${meal.carbs || 0}g</span>
+          <span class="macro green">F: ${meal.fat || 0}g</span>
+          ${meal.fiber ? `<span class="macro purple">Fiber: ${meal.fiber}g</span>` : ''}
         </div>
       </div>
       <div class="meal-actions">

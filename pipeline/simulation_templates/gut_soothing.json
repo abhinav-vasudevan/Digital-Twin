@@ -1,0 +1,11 @@
+{
+  "category": "gut",
+  "notes": "Lower FODMAP emphasis during flare",
+  "meals": [
+    {"meal": "breakfast", "patterns": ["idli/poha (onion-free) + curd"]},
+    {"meal": "mid_morning", "patterns": ["banana + rice kanji / tea"]},
+    {"meal": "lunch", "patterns": ["rice + moong dal + curd + cooked veggie (no onion/garlic)"]},
+    {"meal": "snack", "patterns": ["rice flakes chivda (onion-free) / buttermilk"]},
+    {"meal": "dinner", "patterns": ["khichdi + curd / veggie soup + rice"]}
+  ]
+}

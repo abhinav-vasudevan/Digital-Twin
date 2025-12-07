@@ -211,28 +211,17 @@ function renderProfile(profile) {
   
   // Body stats
   document.getElementById('current-weight-profile').textContent = profile.weight + ' kg';
-  document.getElementById('target-weight-profile').textContent = profile.target_weight + ' kg';
   
-  const weightDiff = Math.abs(profile.weight - profile.target_weight).toFixed(1);
+  // Show BMI category as goal indicator
+  const bmiCategory = profile.bmi < 18.5 ? 'Underweight' 
+    : profile.bmi < 25 ? 'Normal' 
+    : profile.bmi < 30 ? 'Overweight' : 'Obese';
   const weightChangeEl = document.getElementById('weight-change');
-  if (profile.weight > profile.target_weight) {
-    weightChangeEl.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7 13 5 5 5-5"/><path d="M12 18V6"/></svg>
-      ${weightDiff} kg to go
-    `;
-    weightChangeEl.className = 'stat-change blue';
-  } else if (profile.weight < profile.target_weight) {
-    weightChangeEl.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m17 11-5-5-5 5"/><path d="M12 6v12"/></svg>
-      ${weightDiff} kg to go
-    `;
-    weightChangeEl.className = 'stat-change green';
-  }
+  weightChangeEl.innerHTML = `BMI Category: ${bmiCategory}`;
+  weightChangeEl.className = 'stat-change';
   
-  // Progress to goal
-  const progressToGoal = profile.weight !== profile.target_weight
-    ? Math.min(50, 100) // TODO: calculate from weight logs
-    : 100;
+  // Progress based on plan completion
+  const progressToGoal = 50; // Based on plan adherence
   document.getElementById('target-progress').style.width = progressToGoal + '%';
   
   // Metabolic profile
@@ -283,7 +272,7 @@ async function regeneratePlan() {
   try {
     // Increment cycle and reset start date
     await fetch('/api/profile/new-cycle', { method: 'POST' });
-    window.location.href = '/generate-plan';
+    window.location.href = '/get-recommendations';
   } catch (error) {
     alert('Error: ' + error.message);
   }

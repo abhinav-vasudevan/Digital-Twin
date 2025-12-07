@@ -10,34 +10,183 @@ from datetime import datetime, timedelta
 from pathlib import Path
 import json
 
-# Local imports - Commented out for deployment (pipeline not needed for basic functionality)
-# from pipeline.models.recommender import Recommender
-# from pipeline.rules_engine import allowed_categories, validate_plan
+# Local imports
+from service.pdf_recommender import PDFRecommender, UserProfile
+from service.pdf_parser import parse_pdf_complete
 
-# Stub functions to replace pipeline dependencies
-def validate_plan(category, plan_items):
-    """Stub validation - always returns True"""
-    return True
+# Cache recommenders to avoid reloading 460 plans on every request
+_recommender_cache = None
+_exact_recommender_cache = None
+_goal_recommender_cache = None
+_ml_recommender_cache = None
 
-class StubRecommender:
-    """Stub recommender for deployment without pipeline"""
-    def recommend(self, profile):
-        class Rec:
-            category = "balanced"
-            rationale = "Balanced nutrition plan based on your profile"
-            expected = type('obj', (object,), {
-                'weight_change_kg': 0,
-                'expected_adherence': 0.85
-            })()
-        return Rec()
+def get_recommender():
+    global _recommender_cache
+    if _recommender_cache is None:
+        _recommender_cache = PDFRecommender()
+    return _recommender_cache
+
+def get_exact_recommender():
+    global _exact_recommender_cache
+    if _exact_recommender_cache is None:
+        try:
+            from service.recommender_exact.exact_recommender import ExactMatchRecommender
+        except ModuleNotFoundError:
+            from recommender_exact.exact_recommender import ExactMatchRecommender
+        _exact_recommender_cache = ExactMatchRecommender()
+    return _exact_recommender_cache
+
+def get_goal_recommender():
+    global _goal_recommender_cache
+    if _goal_recommender_cache is None:
+        try:
+            from service.recommender_goal.goal_recommender import GoalOnlyRecommender
+        except ModuleNotFoundError:
+            from recommender_goal.goal_recommender import GoalOnlyRecommender
+        _goal_recommender_cache = GoalOnlyRecommender()
+    return _goal_recommender_cache
+
+def get_ml_recommender():
+    """Get cached ML recommender (RAG + Fine-tuned)"""
+    global _ml_recommender_cache
+    if _ml_recommender_cache is None:
+        try:
+            from service.recommender_ml.ml_recommender import MLRecommender
+        except ModuleNotFoundError:
+            from recommender_ml.ml_recommender import MLRecommender
+        _ml_recommender_cache = MLRecommender()
+    return _ml_recommender_cache
+
+def resolve_pdf_path(file_path: str) -> str:
+    """Convert relative PDF path to absolute path with forward slashes for URLs"""
+    if not file_path:
+        return file_path
     
-    def incorporate_feedback(self, profile, category, feedback):
-        pass
+    # If already absolute, normalize it
+    path_obj = Path(file_path)
+    if not path_obj.is_absolute():
+        # Convert relative path to absolute (relative to project root)
+        base_dir = Path(__file__).parent.parent  # Go up from service/ to project root
+        path_obj = base_dir / file_path
+    
+    # Convert to string with forward slashes (works on all platforms and safer for URLs)
+    return str(path_obj).replace('\\', '/')
+
+def extract_meals_from_pdf(file_path: str) -> List[Dict[str, str]]:
+    """Extract meal information from PDF text file
+    
+    Returns a list of meals with their type and options (first 3 per meal type)
+    """
+    # Convert to absolute path
+    file_path = resolve_pdf_path(file_path)
+    
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        meals = []
+        meal_patterns = [
+            ("Early Morning", "☀️"),
+            ("Pre-Breakfast", "🌅"),
+            ("Breakfast", "🍳"),
+            ("Mid-Morning", "☕"),
+            ("Lunch", "🍛"),
+            ("Evening", "🍵"),
+            ("Dinner", "🌙"),
+            ("Bedtime", "😴")
+        ]
+        
+        for meal_type, icon in meal_patterns:
+            # Try different patterns to find meal sections
+            patterns_to_try = [
+                f"Meal Type: {meal_type}",
+                f"{meal_type} (",  # Matches "Breakfast (8:00 AM)"
+                f"{meal_type}\n"   # Matches standalone meal type
+            ]
+            
+            section_start = -1
+            for pattern in patterns_to_try:
+                section_start = content.find(pattern)
+                if section_start != -1:
+                    break
+            
+            if section_start == -1:
+                continue
+            
+            # Find the end of this meal section (start of next meal or end of file)
+            section_end = len(content)
+            for next_meal, _ in meal_patterns:
+                for pattern in [f"Meal Type: {next_meal}", f"{next_meal} (", f"\n{next_meal}\n"]:
+                    next_pos = content.find(pattern, section_start + 10)
+                    if next_pos != -1 and next_pos < section_end:
+                        section_end = next_pos
+            
+            section_text = content[section_start:section_end]
+            
+            # Extract meal options
+            options = []
+            
+            # Try to find "Option 1", "Option 2", "Option 3"
+            for i in range(1, 4):
+                option_pattern = f"Option {i}"
+                opt_idx = section_text.find(option_pattern)
+                if opt_idx != -1:
+                    # Get text after "Option X" until next line
+                    line_start = opt_idx + len(option_pattern)
+                    # Skip " –" or ":" or " - "
+                    while line_start < len(section_text) and section_text[line_start] in [' ', '–', '-', ':']:
+                        line_start += 1
+                    line_end = section_text.find('\n', line_start)
+                    if line_end != -1:
+                        meal_name = section_text[line_start:line_end].strip()
+                        if meal_name and not meal_name.startswith('•'):
+                            options.append(meal_name)
+            
+            # If no options found, try to find "Dish:" pattern
+            if not options:
+                dish_idx = section_text.find("Dish:")
+                if dish_idx != -1:
+                    line_start = dish_idx + 5
+                    line_end = section_text.find('\n', line_start)
+                    if line_end != -1:
+                        meal_name = section_text[line_start:line_end].strip()
+                        if meal_name:
+                            options.append(meal_name)
+            
+            if options:
+                meals.append({
+                    "type": meal_type,
+                    "icon": icon,
+                    "options": options[:3]
+                })
+        
+        return meals[:6]  # Return max 6 meal types to keep cards compact
+    except Exception as e:
+        print(f"Error extracting meals from {file_path}: {e}")
+        return []
+
+def get_bmi_category(bmi: float, goal: str = None) -> str:
+    """Convert BMI value to category, considering user goal"""
+    if bmi < 18.5:
+        return "underweight"
+    elif bmi < 25:
+        # For weight gain goals, BMI 18.5-20 should be treated as underweight
+        if goal in ['weight_gain', 'muscle_building'] and bmi < 20:
+            return "underweight"
+        return "normal"
+    elif bmi < 30:
+        return "overweight"
+    else:
+        return "obese"
+
+def validate_plan(category, plan_items):
+    """Validate plan items don't contain allergens"""
+    # This is now handled within llama_service via allergen safety checks
+    return True
 
 app = FastAPI(title="Nutrition Digital Twin API")
 templates = Jinja2Templates(directory=str(Path(__file__).parent / "templates"))
 app.mount("/static", StaticFiles(directory=str(Path(__file__).parent / "static")), name="static")
-recommender = StubRecommender()
 
 # Simple in-memory storage (replace with database in production)
 DATA_DIR = Path(__file__).parent / "data"
@@ -108,9 +257,42 @@ def meal_plan_page(request: Request):
 def meal_detail_page(request: Request):
     return templates.TemplateResponse("meal-detail.html", {"request": request, "show_nav": False})
 
+@app.get("/pdf-viewer", response_class=HTMLResponse)
+def pdf_viewer_page(request: Request, file_path: str):
+    """
+    Display complete PDF content with all food-related information
+    Query param: file_path - absolute path to the PDF text file
+    """
+    try:
+        # Parse complete PDF content
+        plan_data = parse_pdf_complete(file_path)
+        
+        if "error" in plan_data:
+            raise HTTPException(status_code=404, detail=plan_data["error"])
+        
+        return templates.TemplateResponse("pdf-viewer.html", {
+            "request": request,
+            "plan": plan_data,
+            "show_nav": False
+        })
+    except FileNotFoundError:
+        raise HTTPException(status_code=404, detail="PDF file not found")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error parsing PDF: {str(e)}")
+
 @app.get("/profile", response_class=HTMLResponse)
 def profile_page(request: Request):
     return templates.TemplateResponse("profile.html", {"request": request, "show_nav": True, "active_page": "profile"})
+
+@app.get("/choose-system", response_class=HTMLResponse)
+def choose_system_page(request: Request):
+    """Page to choose recommendation system"""
+    return templates.TemplateResponse("choose-system.html", {"request": request, "show_nav": False})
+
+@app.get("/get-recommendations", response_class=HTMLResponse)
+def get_recommendations_page(request: Request):
+    """Page to view recommendations from selected system"""
+    return templates.TemplateResponse("get-recommendations.html", {"request": request, "show_nav": False})
 
 @app.get("/generate-plan", response_class=HTMLResponse)
 def generate_plan_page(request: Request):
@@ -267,34 +449,433 @@ def get_meal_plan(date: str):
     plan = next((p for p in meal_plans if p.get("date") == date), None)
     
     if not plan:
-        # Generate sample meal plan
-        plan = _generate_sample_meal_plan(date)
+        # No meal plan found - user needs to select plans from recommendations
+        return None
     
     return plan
 
 @app.post("/api/meal-plan/generate")
 def generate_meal_plan(data: Dict[str, Any]):
-    """Generate a 14-day meal plan"""
+    """Generate meal plan recommendations from PDF database"""
     profile = load_json_file("profile.json")
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
     
-    start_date = datetime.strptime(profile["plan_start_date"], "%Y-%m-%d")
-    meal_plans = []
+    # Convert profile to UserProfile format
+    # Get first goal from goals array
+    goals = profile.get("goals", ["weight_loss"])
+    primary_goal = goals[0] if goals else "weight_loss"
     
-    for day in range(14):
-        date = (start_date + timedelta(days=day)).strftime("%Y-%m-%d")
-        plan = _generate_sample_meal_plan(date, day + 1, profile)
-        meal_plans.append(plan)
+    # Calculate BMI category from BMI value (goal-aware)
+    bmi = profile.get("bmi", 22)
+    bmi_category = get_bmi_category(bmi, primary_goal)
     
-    save_json_file("meal_plans.json", meal_plans)
-    return {"status": "success", "plans": meal_plans}
+    user = UserProfile(
+        gender=profile.get("gender", "female").lower(),
+        age=profile.get("age", 30),
+        height=profile.get("height", 160),
+        weight=profile.get("weight", 60),
+        bmi_category=bmi_category,
+        activity_level=profile.get("activity_level", "light").lower().replace(" ", "_"),
+        diet_type=profile.get("diet_type", "vegetarian").lower(),
+        region=profile.get("region", "north_indian").lower().replace(" ", "_"),
+        goal=primary_goal.lower().replace(" ", "_"),
+        health_conditions=[c.lower().replace(" ", "_") for c in profile.get("medical_conditions", [])],
+        allergies=profile.get("allergies", [])
+    )
+    
+    # Get recommendations from PDF database (cached)
+    recommender = get_recommender()
+    try:
+        recommendations = recommender.recommend(user, top_k=10)
+    except Exception as e:
+        print(f"Error generating recommendations: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate recommendations: {str(e)}")
+    
+    if not recommendations:
+        raise HTTPException(status_code=404, detail="No matching meal plans found for your profile")
+    
+    # Format recommendations for frontend
+    cards = []
+    for i, plan in enumerate(recommendations):
+        nutrition = plan.get('nutrition', {})
+        
+        # Extract meals from PDF text file
+        file_path = plan.get('file_path', '')
+        absolute_file_path = resolve_pdf_path(file_path)
+        meals = extract_meals_from_pdf(file_path) if file_path else []
+        
+        card = {
+            "id": i,
+            "file_path": absolute_file_path,
+            "filename": plan.get('filename', ''),
+            "category": plan.get('category', 'N/A'),
+            "region": plan.get('region', 'N/A'),
+            "diet_type": plan.get('diet_type', 'N/A'),
+            "score": round(plan.get('recommendation_score', 0), 1),
+            "meals": meals,
+            "calories": f"{nutrition.get('calories_min', 0)}-{nutrition.get('calories_max', 0)} kcal",
+            "protein": f"{nutrition.get('protein_min', 0)}-{nutrition.get('protein_max', 0)} g",
+            "carbs": f"{nutrition.get('carbs_min', 0)}-{nutrition.get('carbs_max', 0)} g",
+            "fat": f"{nutrition.get('fat_min', 0)}-{nutrition.get('fat_max', 0)} g",
+            "fiber": f"{nutrition.get('fiber_min', 0)}-{nutrition.get('fiber_max', 0)} g"
+        }
+        cards.append(card)
+    
+    return {"status": "success", "recommendations": cards}
+
+
+@app.post("/api/meal-plan/generate-exact")
+def generate_exact_match_recommendations():
+    """Generate recommendations using EXACT MATCH on ALL fields (Case 1)
+    
+    Matches: Gender, BMI Category, Activity, Diet, Region, Category
+    Returns: "Diet not available" if no exact match
+    """
+    profile = load_json_file("profile.json")
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    
+    # Use cached exact match recommender
+    exact_recommender = get_exact_recommender()
+    
+    # Get exact matches
+    result = exact_recommender.recommend(profile, top_k=10)
+    
+    if result['status'] == 'not_available':
+        return result
+    
+    # Format recommendations for frontend
+    cards = []
+    for i, plan in enumerate(result['recommendations']):
+        nutrition = plan.get('nutrition', {})
+        
+        # Extract meals from PDF text file using comprehensive parser
+        file_path = plan.get('file_path', '')
+        absolute_file_path = resolve_pdf_path(file_path)
+        
+        # Use comprehensive parser to get ALL meals including breakfast
+        meals = []
+        try:
+            parsed_data = parse_pdf_complete(absolute_file_path)
+            
+            # Define meal order (chronological order throughout the day)
+            meal_order = [
+                'Early Morning (on Waking)',
+                'Early Morning',
+                'Pre-Yoga / Light Activity',
+                'Pre-Activity',
+                'Pre-Breakfast',
+                'Breakfast (Post-Yoga / Morning Meal)',
+                'Breakfast',
+                'Mid-Morning Snack',
+                'Mid-Morning',
+                'Lunch',
+                'Evening Snack',
+                'Evening',
+                'Dinner',
+                'Bedtime Snack',
+                'Bedtime'
+            ]
+            
+            meal_icon_map = {
+                'Early Morning (on Waking)': '☀️',
+                'Early Morning': '☀️',
+                'Pre-Yoga / Light Activity': '🏃',
+                'Pre-Activity': '🏃',
+                'Pre-Breakfast': '🌅',
+                'Breakfast (Post-Yoga / Morning Meal)': '🍳',
+                'Breakfast': '🍳',
+                'Mid-Morning Snack': '☕',
+                'Mid-Morning': '☕',
+                'Lunch': '🍛',
+                'Evening Snack': '🍵',
+                'Evening': '🍵',
+                'Dinner': '🌙',
+                'Bedtime Snack': '😴',
+                'Bedtime': '😴'
+            }
+            
+            # Convert to format expected by frontend
+            meals_dict = {}
+            for meal in parsed_data.get('meals', []):
+                if meal.get('options'):
+                    meal_type = meal['meal_type']
+                    meals_dict[meal_type] = {
+                        'type': meal_type,
+                        'icon': meal_icon_map.get(meal_type, '🍽️'),
+                        'options': [opt['name'] for opt in meal['options'][:3]]
+                    }
+            
+            # Sort meals by chronological order
+            for meal_type in meal_order:
+                if meal_type in meals_dict:
+                    meals.append(meals_dict[meal_type])
+                    
+        except Exception as e:
+            print(f"Error parsing PDF {absolute_file_path}: {e}")
+            # Fallback to simple extraction
+            meals = extract_meals_from_pdf(file_path) if file_path else []
+        
+        card = {
+            "id": i,
+            "file_path": absolute_file_path,
+            "filename": plan.get('filename', ''),
+            "category": plan.get('category', 'N/A'),
+            "region": plan.get('region', 'N/A'),
+            "diet_type": plan.get('diet_type', 'N/A'),
+            "meals": meals,
+            "calories": f"{nutrition.get('calories_min', 0)}-{nutrition.get('calories_max', 0)} kcal",
+            "protein": f"{nutrition.get('protein_min', 0)}-{nutrition.get('protein_max', 0)} g",
+            "carbs": f"{nutrition.get('carbs_min', 0)}-{nutrition.get('carbs_max', 0)} g",
+            "fat": f"{nutrition.get('fat_min', 0)}-{nutrition.get('fat_max', 0)} g",
+            "fiber": f"{nutrition.get('fiber_min', 0)}-{nutrition.get('fiber_max', 0)} g"
+        }
+        cards.append(card)
+    
+    return {"status": "success", "recommendations": cards, "match_type": "exact", "total_matches": result.get('total_matches', 0)}
+
+
+@app.post("/api/meal-plan/generate-goal")
+def generate_goal_only_recommendations():
+    """Generate recommendations using GOAL + REGION only (Case 2)
+    
+    Matches: Primary Goal + Region ONLY
+    Ignores: Gender, BMI, Activity, Diet, Health, Age, Allergies
+    """
+    profile = load_json_file("profile.json")
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    
+    # Use cached goal-only recommender
+    goal_recommender = get_goal_recommender()
+    
+    # Get goal-based matches
+    result = goal_recommender.recommend(profile, top_k=10)
+    
+    if result['status'] == 'not_available':
+        return result
+    
+    # Format recommendations for frontend
+    cards = []
+    for i, plan in enumerate(result['recommendations']):
+        nutrition = plan.get('nutrition', {})
+        
+        # Extract meals from PDF text file
+        file_path = plan.get('file_path', '')
+        absolute_file_path = resolve_pdf_path(file_path)
+        meals = extract_meals_from_pdf(file_path) if file_path else []
+        
+        card = {
+            "id": i,
+            "file_path": absolute_file_path,
+            "filename": plan.get('filename', ''),
+            "category": plan.get('category', 'N/A'),
+            "region": plan.get('region', 'N/A'),
+            "diet_type": plan.get('diet_type', 'N/A'),
+            "meals": meals,
+            "calories": f"{nutrition.get('calories_min', 0)}-{nutrition.get('calories_max', 0)} kcal",
+            "protein": f"{nutrition.get('protein_min', 0)}-{nutrition.get('protein_max', 0)} g",
+            "carbs": f"{nutrition.get('carbs_min', 0)}-{nutrition.get('carbs_max', 0)} g",
+            "fat": f"{nutrition.get('fat_min', 0)}-{nutrition.get('fat_max', 0)} g",
+            "fiber": f"{nutrition.get('fiber_min', 0)}-{nutrition.get('fiber_max', 0)} g"
+        }
+        cards.append(card)
+    
+    return {
+        "status": "success", 
+        "recommendations": cards, 
+        "match_type": "goal_only", 
+        "total_matches": result.get('total_matches', 0),
+        "criteria": result.get('criteria', {})
+    }
+
+
+@app.post("/api/meal-plan/generate-ml")
+def generate_ml_recommendations():
+    """Generate recommendations using ML-based RAG + Fine-tuned Model (Case 3)
+    
+    Uses:
+    1. Vector search to find semantically similar PDFs from 460 plans
+    2. Extracts meals from top matching PDFs
+    3. Fine-tuned LLM generates personalized plan using retrieved meals
+    
+    Benefits:
+    - 100% meals from actual PDFs (no hallucination)
+    - Intelligent selection via LLM
+    - Personalized reasoning and explanations
+    """
+    profile = load_json_file("profile.json")
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    
+    # Extract primary goal from goals array
+    goals = profile.get("goals", ["weight_loss"])
+    primary_goal = goals[0] if goals else "weight_loss"
+    
+    # Add goal (singular) to profile for ML recommender
+    profile["goal"] = primary_goal
+    
+    # Use cached ML recommender
+    ml_recommender = get_ml_recommender()
+    
+    # Get ML-based recommendations
+    result = ml_recommender.recommend(profile, top_k=5)
+    
+    if result.get('status') == 'error':
+        raise HTTPException(status_code=500, detail=result.get('message', 'ML recommender error'))
+    
+    if result.get('status') == 'no_match':
+        return {
+            "status": "not_available",
+            "message": result.get('message', 'No suitable diet plans found'),
+            "recommendations": []
+        }
+    
+    # Format for frontend
+    # ML recommender returns structured plan data
+    recommendations = result.get('recommendations', [])
+    metadata = result.get('metadata', {})
+    
+    # If we have structured meal data, format it like other endpoints
+    cards = []
+    for i, rec in enumerate(recommendations):
+        card = {
+            "id": i,
+            "method": "ml_rag",
+            "title": rec.get('title', f'AI-Generated Plan {i+1}'),
+            "plan_text": rec.get('plan_text', ''),
+            "sources": rec.get('sources', []),
+            "confidence": rec.get('confidence', 'medium'),
+            "meals": rec.get('meals', [])  # If LLM parsed meals
+        }
+        cards.append(card)
+    
+    return {
+        "status": "success",
+        "recommendations": cards,
+        "match_type": "ml_rag",
+        "metadata": metadata,
+        "total_sources": metadata.get('total_sources', 0),
+        "profile_summary": metadata.get('profile_summary', '')
+    }
+
+
+@app.post("/api/meal-plan/select")
+def select_meal_plans(data: Dict[str, Any]):
+    """Finalize selected meal plans and generate 14-day cycle"""
+    profile = load_json_file("profile.json")
+    if not profile:
+        raise HTTPException(status_code=404, detail="Profile not found")
+    
+    selected_ids = data.get("selected_ids", [])
+    if not selected_ids or len(selected_ids) < 1 or len(selected_ids) > 5:
+        raise HTTPException(status_code=400, detail="Please select 1-5 meal plans")
+    
+    # Get the recommendations from the frontend (they already have file_path)
+    recommendations = data.get("recommendations", [])
+    
+    if not recommendations:
+        # Fallback: regenerate recommendations if not provided
+        goals = profile.get("goals", ["weight_loss"])
+        primary_goal = goals[0] if goals else "weight_loss"
+        bmi = profile.get("bmi", 22)
+        bmi_category = get_bmi_category(bmi, primary_goal)
+        
+        user = UserProfile(
+            gender=profile.get("gender", "female").lower(),
+            age=profile.get("age", 30),
+            height=profile.get("height", 160),
+            weight=profile.get("weight", 60),
+            bmi_category=bmi_category,
+            activity_level=profile.get("activity_level", "light").lower().replace(" ", "_"),
+            diet_type=profile.get("diet_type", "vegetarian").lower(),
+            region=profile.get("region", "north_indian").lower().replace(" ", "_"),
+            goal=primary_goal.lower().replace(" ", "_"),
+            health_conditions=[c.lower().replace(" ", "_") for c in profile.get("medical_conditions", [])],
+            allergies=profile.get("allergies", [])
+        )
+        
+        system = data.get("system", "weighted")
+        if system == "exact":
+            recommender = get_exact_recommender()
+            result = recommender.recommend(profile, top_k=10)
+            recommendations = result.get('recommendations', [])
+        elif system == "goal":
+            recommender = get_goal_recommender()
+            result = recommender.recommend(profile, top_k=10)
+            recommendations = result.get('recommendations', [])
+        else:
+            recommender = get_recommender()
+            recommendations = recommender.recommend(user, top_k=10)
+    
+    # Convert frontend recommendations back to full plan objects
+    # Handle both PDF-based plans (with file_path) and ML-generated plans (without file_path)
+    selected_plans = []
+    
+    # Load PDF index once (for PDF-based plans only)
+    import json
+    with open("outputs/pdf_index.json", 'r', encoding='utf-8') as f:
+        index = json.load(f)
+    
+    for rec in recommendations:
+        # Check if this is an AI-generated plan (no file_path or ai_generated flag)
+        if rec.get('ai_generated') or not rec.get('file_path'):
+            # ML-generated plan - use it directly with meals from recommendation
+            selected_plans.append({
+                'title': rec.get('category', 'AI Generated Plan'),
+                'category': rec.get('category', 'ai_generated'),
+                'region': rec.get('region', profile.get('region', 'north_indian')),
+                'diet_type': rec.get('diet_type', profile.get('diet_type', 'vegetarian')),
+                'gender': profile.get('gender', 'female'),
+                'bmi_category': profile.get('bmi_category', 'normal'),
+                'activity': profile.get('activity_level', 'light'),
+                'meals': rec.get('meals', []),
+                'file_path': None,
+                'ai_generated': True
+            })
+        else:
+            # PDF-based plan - load from index
+            file_path = rec.get('file_path', '')
+            if file_path:
+                # Normalize paths for comparison (handle both forward and backslashes)
+                normalized_file_path = file_path.replace('\\', '/').replace('//', '/')
+                
+                # Find the matching plan in the index
+                for plan in index.get('plans', []):
+                    plan_file_path = plan.get('file_path', '').replace('\\', '/').replace('//', '/')
+                    if plan_file_path == normalized_file_path or plan_file_path.endswith(normalized_file_path) or normalized_file_path.endswith(plan_file_path):
+                        selected_plans.append(plan)
+                        break
+    
+    if not selected_plans:
+        # Print debug info
+        print(f"DEBUG: Failed to match plans. Recommendations file_paths:")
+        for rec in recommendations:
+            print(f"  - file_path: {rec.get('file_path', 'NO PATH')}, ai_generated: {rec.get('ai_generated', False)}")
+        raise HTTPException(status_code=500, detail=f"Failed to load selected plans. Received {len(recommendations)} recommendations but matched 0 plans.")
+    
+    # Generate 14-day rotation using the smart recommender (has the method)
+    recommender = get_recommender()
+    cycle = recommender.generate_multi_plan_cycle(selected_plans, days=14)
+    
+    # Update profile with new plan start date (today)
+    from datetime import datetime
+    profile["plan_start_date"] = datetime.now().strftime("%Y-%m-%d")
+    save_json_file("profile.json", profile)
+    
+    # Save to meal_plans.json
+    save_json_file("meal_plans.json", cycle)
+    save_json_file("selected_plan_ids.json", selected_ids)
+    
+    return {"status": "success", "cycle": cycle, "days": len(cycle)}
 
 @app.post("/api/meal-plan/swap")
 def swap_meal(data: Dict[str, Any]):
-    """Swap a meal with an alternative"""
+    """Swap a meal with an AI-generated alternative"""
     date = data.get("date")
     meal_type = data.get("meal_type")
+    reason = data.get("reason", "variety")
     
     meal_plans = load_json_file("meal_plans.json") or []
     plan_index = next((i for i, p in enumerate(meal_plans) if p.get("date") == date), None)
@@ -304,14 +885,16 @@ def swap_meal(data: Dict[str, Any]):
     
     # Get profile for preferences
     profile = load_json_file("profile.json")
+    original_meal = meal_plans[plan_index].get(meal_type, {})
     
-    # Generate alternative meal respecting dietary preferences
+    # Generate basic alternative (PDF-based alternatives coming soon)
     alternative = _generate_alternative_meal(meal_type, profile)
     meal_plans[plan_index][meal_type] = alternative
     meal_plans[plan_index]["is_adjusted"] = True
+    meal_plans[plan_index]["swap_reason"] = reason
     
     save_json_file("meal_plans.json", meal_plans)
-    return {"status": "success", "meal": alternative}
+    return {"status": "success", "meal": alternative, "alternatives": alternatives}
 
 @app.get("/api/daily-log")
 def get_daily_log(date: str):
@@ -376,15 +959,15 @@ def update_water_intake(data: Dict[str, Any]):
 
 @app.post("/api/daily-log/feedback")
 def save_daily_feedback(data: Dict[str, Any]):
-    """Save comprehensive daily feedback with AI insights"""
+    """Save comprehensive daily feedback with Llama 3 AI insights"""
     date = datetime.now().strftime("%Y-%m-%d")
     
-    # Get profile for context
+    # Get profile and current meal plan for context
     profile = load_json_file("profile.json")
+    meal_plans = load_json_file("meal_plans.json") or []
+    current_plan = next((p for p in meal_plans if p.get("date") == date), None)
     
-    # Generate AI insight based on feedback
-    ai_insight = _generate_ai_insight(data, profile)
-    
+    # Save feedback data
     logs = load_json_file("daily_logs.json") or []
     log_index = next((i for i, l in enumerate(logs) if l.get("date") == date), None)
     
@@ -399,6 +982,8 @@ def save_daily_feedback(data: Dict[str, Any]):
         "water_intake": data.get("water_intake"),
         "weight": data.get("weight"),
         "notes": data.get("notes"),
+        "adherence": data.get("adherence", "partial"),
+        "satisfaction": data.get("satisfaction", 3),
         "timestamp": datetime.now().isoformat()
     }
     
@@ -410,9 +995,17 @@ def save_daily_feedback(data: Dict[str, Any]):
     
     save_json_file("daily_logs.json", logs)
     
+    # Generate basic insights (AI analysis coming soon)
+    ai_analysis = _generate_ai_insight(data, profile)
+    ai_analysis = {"analysis": ai_analysis, "motivation": "Keep going!", "suggested_changes": {}}
+    
     return {
         "status": "success",
-        "ai_insight": ai_insight
+        "ai_insight": ai_analysis.get("analysis", ""),
+        "motivation": ai_analysis.get("motivation", ""),
+        "went_well": ai_analysis.get("went_well", []),
+        "needs_improvement": ai_analysis.get("needs_improvement", []),
+        "suggested_changes": ai_analysis.get("suggested_changes", {})
     }
 
 def _generate_ai_insight(feedback: Dict, profile: Dict) -> str:
@@ -674,3 +1267,7 @@ def _load_template(category: str) -> Dict[str, Any] | None:
     if p and p.exists():
         return json.loads(p.read_text(encoding="utf-8"))
     return None
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)

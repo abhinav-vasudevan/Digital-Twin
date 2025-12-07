@@ -37,19 +37,25 @@ let selectedDate = null;
 let mealPlans = {};
 
 const mealIcons = {
+  early_morning: '☀️',
+  pre_activity: '🏃',
   breakfast: '🍳',
   mid_morning_snack: '🍎',
   lunch: '🍛',
   evening_snack: '☕',
-  dinner: '🥗'
+  dinner: '🥗',
+  bedtime: '😴'
 };
 
 const mealLabels = {
+  early_morning: 'Early Morning',
+  pre_activity: 'Pre-Activity',
   breakfast: 'Breakfast',
-  mid_morning_snack: 'Mid-morning Snack',
+  mid_morning_snack: 'Mid-Morning Snack',
   lunch: 'Lunch',
   evening_snack: 'Evening Snack',
-  dinner: 'Dinner'
+  dinner: 'Dinner',
+  bedtime: 'Bedtime'
 };
 
 async function loadMealPlan() {
@@ -59,8 +65,9 @@ async function loadMealPlan() {
     
     renderDateSelector(profile);
     
-    // Select today by default
-    const today = new Date().toISOString().split('T')[0];
+    // Select today by default (use local date to avoid timezone issues)
+    const todayDate = new Date();
+    const today = `${todayDate.getFullYear()}-${String(todayDate.getMonth() + 1).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
     selectDate(today);
     
   } catch (error) {
@@ -73,12 +80,13 @@ function renderDateSelector(profile) {
   dateScroll.innerHTML = '';
   
   const startDate = new Date(profile.plan_start_date);
-  const today = new Date().toISOString().split('T')[0];
+  const todayDate = new Date();
+  const today = `${todayDate.getFullYear()}-${String(todayDate.getMonth() + 1).padStart(2, '0')}-${String(todayDate.getDate()).padStart(2, '0')}`;
   
   for (let i = 0; i < 14; i++) {
     const date = new Date(startDate);
     date.setDate(date.getDate() + i);
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     
     const isToday = dateStr === today;
     const dayNum = i + 1;
@@ -129,7 +137,7 @@ function renderDayMeals(plan, dateStr) {
   let totalFats = 0;
   
   if (plan) {
-    ['breakfast', 'mid_morning_snack', 'lunch', 'evening_snack', 'dinner'].forEach(mealType => {
+    ['early_morning', 'pre_activity', 'breakfast', 'mid_morning_snack', 'lunch', 'evening_snack', 'dinner', 'bedtime'].forEach(mealType => {
       const meal = plan[mealType];
       if (meal) {
         totalCalories += meal.calories || 0;
@@ -156,7 +164,7 @@ function renderDayMeals(plan, dateStr) {
     return;
   }
   
-  ['breakfast', 'mid_morning_snack', 'lunch', 'evening_snack', 'dinner'].forEach(mealType => {
+  ['early_morning', 'pre_activity', 'breakfast', 'mid_morning_snack', 'lunch', 'evening_snack', 'dinner', 'bedtime'].forEach(mealType => {
     const meal = plan[mealType];
     if (!meal) return;
     
@@ -170,10 +178,11 @@ function renderDayMeals(plan, dateStr) {
         <h3 class="meal-card-name">${meal.name}</h3>
         ${meal.description ? `<p class="meal-card-desc">${meal.description}</p>` : ''}
         <div class="meal-card-macros">
-          <span>${meal.calories} kcal</span>
-          <span class="blue">P: ${meal.protein}g</span>
-          <span class="amber">C: ${meal.carbs}g</span>
-          <span class="green">F: ${meal.fats}g</span>
+          <span>${meal.calories || 0} kcal</span>
+          <span class="blue">P: ${meal.protein || 0}g</span>
+          <span class="amber">C: ${meal.carbs || 0}g</span>
+          <span class="green">F: ${meal.fat || 0}g</span>
+          ${meal.fiber ? `<span class="purple">Fiber: ${meal.fiber}g</span>` : ''}
         </div>
       </div>
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>

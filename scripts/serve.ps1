@@ -5,7 +5,8 @@ param(
   [switch]$Background
 )
 
-$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+# Get project root (parent of scripts folder)
+$root = Split-Path -Parent (Split-Path -Parent $MyInvocation.MyCommand.Path)
 Push-Location $root
 
 if (-not (Test-Path ".\.venv\Scripts\Activate.ps1")) {

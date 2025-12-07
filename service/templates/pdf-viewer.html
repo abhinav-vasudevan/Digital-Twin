@@ -1,0 +1,697 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ plan.title }} - Complete Plan{% endblock %}
+
+{% block content %}
+<div class="pdf-viewer-container">
+  <div class="pdf-viewer-content">
+    <!-- Header -->
+    <div class="header-section">
+      <button onclick="window.history.back()" class="back-button">← Back to Recommendations</button>
+      <h1 class="plan-title">{{ plan.title }}</h1>
+      {% if plan.profile_summary %}
+      <p class="profile-summary">{{ plan.profile_summary }}</p>
+      {% endif %}
+    </div>
+
+    <!-- Overall Nutrition Card -->
+    {% if plan.overall_nutrition %}
+    <div class="section-card nutrition-card">
+      <h2 class="section-title">📊 Overall Daily Nutritional Range</h2>
+      <div class="nutrition-grid">
+        {% if plan.overall_nutrition.calories %}
+        <div class="nutrition-item">
+          <span class="nutrition-label">Calories</span>
+          <span class="nutrition-value calories">{{ plan.overall_nutrition.calories }} kcal</span>
+        </div>
+        {% endif %}
+        {% if plan.overall_nutrition.protein %}
+        <div class="nutrition-item">
+          <span class="nutrition-label">Protein</span>
+          <span class="nutrition-value protein">{{ plan.overall_nutrition.protein }} g</span>
+        </div>
+        {% endif %}
+        {% if plan.overall_nutrition.carbohydrates %}
+        <div class="nutrition-item">
+          <span class="nutrition-label">Carbohydrates</span>
+          <span class="nutrition-value carbs">{{ plan.overall_nutrition.carbohydrates }} g</span>
+        </div>
+        {% endif %}
+        {% if plan.overall_nutrition.fat %}
+        <div class="nutrition-item">
+          <span class="nutrition-label">Fat</span>
+          <span class="nutrition-value fat">{{ plan.overall_nutrition.fat }} g</span>
+        </div>
+        {% endif %}
+        {% if plan.overall_nutrition.fiber %}
+        <div class="nutrition-item">
+          <span class="nutrition-label">Fiber</span>
+          <span class="nutrition-value fiber">{{ plan.overall_nutrition.fiber }} g</span>
+        </div>
+        {% endif %}
+      </div>
+
+      {% if plan.key_micronutrients %}
+      <div class="micronutrients">
+        <h3>Key Micronutrients:</h3>
+        <div class="micronutrient-tags">
+          {% for nutrient in plan.key_micronutrients %}
+          <span class="micronutrient-tag">{{ nutrient }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Meal Schedule -->
+    <div class="section-card meals-section">
+      <h2 class="section-title">🍽️ Complete Meal Schedule</h2>
+      
+      {% for meal in plan.meals %}
+      <div class="meal-card">
+        <h3 class="meal-type-header">{{ meal.meal_type }}</h3>
+        
+        <div class="meal-options">
+          {% for option in meal.options %}
+          <div class="option-card">
+            <div class="option-header">
+              <h4 class="option-name">
+                {% if option.option_number %}Option {{ option.option_number }}: {% endif %}
+                {{ option.name }}
+              </h4>
+              {% if option.time or option.method %}
+              <div class="option-meta">
+                {% if option.time %}<span class="meta-item">⏱️ {{ option.time }}</span>{% endif %}
+                {% if option.method %}<span class="meta-item">🍳 {{ option.method }}</span>{% endif %}
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="option-details">
+              {% if option.ingredients %}
+              <div class="detail-row">
+                <span class="detail-label">🥗 Ingredients:</span>
+                <span class="detail-value">{{ option.ingredients }}</span>
+              </div>
+              {% endif %}
+
+              {% if option.serving %}
+              <div class="detail-row">
+                <span class="detail-label">🍴 Serving Size:</span>
+                <span class="detail-value">{{ option.serving }}</span>
+              </div>
+              {% endif %}
+
+              {% if option.nutrition %}
+              <div class="option-nutrition">
+                <span class="nutrition-label-sm">Nutritive Values:</span>
+                <div class="nutrition-values-inline">
+                  {% if option.nutrition.calories %}
+                  <span class="nutr-badge calories">{{ option.nutrition.calories }} kcal</span>
+                  {% endif %}
+                  {% if option.nutrition.protein %}
+                  <span class="nutr-badge protein">{{ option.nutrition.protein }}g protein</span>
+                  {% endif %}
+                  {% if option.nutrition.carbs %}
+                  <span class="nutr-badge carbs">{{ option.nutrition.carbs }}g carbs</span>
+                  {% endif %}
+                  {% if option.nutrition.fat %}
+                  <span class="nutr-badge fat">{{ option.nutrition.fat }}g fat</span>
+                  {% endif %}
+                  {% if option.nutrition.fiber %}
+                  <span class="nutr-badge fiber">{{ option.nutrition.fiber }}g fiber</span>
+                  {% endif %}
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Dietary Context -->
+    {% if plan.dietary_context %}
+    <div class="section-card context-card">
+      <h2 class="section-title">🍃 Dietary & Cultural Context</h2>
+      
+      <div class="context-grid">
+        {% if plan.dietary_context.diet_type %}
+        <div class="context-item">
+          <span class="context-label">Diet Type:</span>
+          <span class="context-value">{{ plan.dietary_context.diet_type }}</span>
+        </div>
+        {% endif %}
+
+        {% if plan.dietary_context.cultural_preference %}
+        <div class="context-item">
+          <span class="context-label">Cultural Preference:</span>
+          <span class="context-value">{{ plan.dietary_context.cultural_preference }}</span>
+        </div>
+        {% endif %}
+
+        {% if plan.dietary_context.allergens %}
+        <div class="context-item allergens-item">
+          <span class="context-label">⚠️ Allergens:</span>
+          <div class="allergen-tags">
+            {% for allergen in plan.dietary_context.allergens %}
+            <span class="allergen-tag">{{ allergen }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if plan.dietary_context.tags %}
+        <div class="context-item tags-item">
+          <span class="context-label">Tags:</span>
+          <div class="tag-list">
+            {% for tag in plan.dietary_context.tags %}
+            <span class="tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Rationale & Alternatives -->
+    {% if plan.rationale and (plan.rationale.description or plan.rationale.substitutions) %}
+    <div class="section-card rationale-card">
+      <h2 class="section-title">💡 Rationale & Food Alternatives</h2>
+      
+      {% if plan.rationale.description %}
+      <p class="rationale-description">{{ plan.rationale.description }}</p>
+      {% endif %}
+
+      {% if plan.rationale.substitutions %}
+      <div class="substitutions">
+        <h3>Food Substitutions:</h3>
+        <ul class="substitution-list">
+          {% for substitution in plan.rationale.substitutions %}
+          <li>{{ substitution }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Source References -->
+    {% if plan.source_references %}
+    <div class="section-card references-card">
+      <h2 class="section-title">📚 Source References</h2>
+      <ul class="references-list">
+        {% for reference in plan.source_references %}
+        <li>{{ reference }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button onclick="window.history.back()" class="btn-secondary">← Back to Recommendations</button>
+      <button onclick="window.print()" class="btn-print">🖨️ Print Plan</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pdf-viewer-container {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    padding: 24px;
+  }
+
+  .pdf-viewer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .header-section {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  .back-button {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    transition: all 0.3s;
+  }
+
+  .back-button:hover {
+    background: #059669;
+    transform: translateX(-5px);
+  }
+
+  .plan-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 8px;
+  }
+
+  .profile-summary {
+    font-size: 16px;
+    color: #718096;
+    margin-top: 8px;
+  }
+
+  .section-card {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+  }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #2d3748;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #10b981;
+  }
+
+  /* Nutrition Card */
+  .nutrition-card {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+  }
+
+  .nutrition-card .section-title {
+    color: white;
+    border-bottom-color: rgba(255, 255, 255, 0.3);
+  }
+
+  .nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .nutrition-item {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 16px;
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .nutrition-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+
+  .nutrition-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .micronutrients {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 12px;
+  }
+
+  .micronutrients h3 {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .micronutrient-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .micronutrient-tag {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  /* Meals Section */
+  .meals-section {
+    padding: 24px;
+  }
+
+  .meal-card {
+    margin-bottom: 32px;
+    padding-bottom: 32px;
+    border-bottom: 2px solid #e2e8f0;
+  }
+
+  .meal-card:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .meal-type-header {
+    font-size: 22px;
+    font-weight: 700;
+    color: #10b981;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+  }
+
+  .meal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .option-card {
+    background: #f7fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    transition: all 0.3s;
+  }
+
+  .option-card:hover {
+    border-color: #10b981;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .option-header {
+    margin-bottom: 16px;
+  }
+
+  .option-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 8px;
+  }
+
+  .option-meta {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    font-size: 13px;
+    color: #718096;
+    background: white;
+    padding: 4px 12px;
+    border-radius: 6px;
+  }
+
+  .option-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .detail-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .detail-label {
+    font-weight: 600;
+    color: #4a5568;
+    min-width: 140px;
+    flex-shrink: 0;
+  }
+
+  .detail-value {
+    color: #2d3748;
+    flex: 1;
+  }
+
+  .option-nutrition {
+    background: white;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+
+  .nutrition-label-sm {
+    font-weight: 600;
+    color: #4a5568;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .nutrition-values-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .nutr-badge {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .nutr-badge.calories {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .nutr-badge.protein {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .nutr-badge.carbs {
+    background: #fce7f3;
+    color: #9f1239;
+  }
+
+  .nutr-badge.fat {
+    background: #ecfccb;
+    color: #365314;
+  }
+
+  .nutr-badge.fiber {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  /* Context Card */
+  .context-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .context-item {
+    padding: 16px;
+    background: #f7fafc;
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+  }
+
+  .context-label {
+    font-weight: 600;
+    color: #4a5568;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .context-value {
+    color: #2d3748;
+    font-size: 15px;
+  }
+
+  .allergen-tags, .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .allergen-tag {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .tag {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+
+  /* Rationale Card */
+  .rationale-description {
+    color: #4a5568;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-size: 15px;
+  }
+
+  .substitutions h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2d3748;
+    margin-bottom: 12px;
+  }
+
+  .substitution-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .substitution-list li {
+    padding: 10px 12px;
+    background: #f7fafc;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    color: #2d3748;
+    border-left: 3px solid #10b981;
+  }
+
+  .substitution-list li:before {
+    content: "→";
+    color: #10b981;
+    font-weight: bold;
+    margin-right: 8px;
+  }
+
+  /* References Card */
+  .references-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .references-list li {
+    padding: 12px;
+    background: #f7fafc;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    color: #4a5568;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .references-list li:before {
+    content: "📄";
+    margin-right: 8px;
+  }
+
+  /* Action Buttons */
+  .action-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 32px;
+    padding: 24px;
+  }
+
+  .btn-secondary, .btn-print {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .btn-secondary {
+    background: #e2e8f0;
+    color: #2d3748;
+  }
+
+  .btn-secondary:hover {
+    background: #cbd5e0;
+    transform: scale(1.05);
+  }
+
+  .btn-print {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+  }
+
+  .btn-print:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  }
+
+  /* Print Styles */
+  @media print {
+    .back-button, .action-buttons {
+      display: none;
+    }
+
+    .pdf-viewer-container {
+      background: white;
+      padding: 0;
+    }
+
+    .section-card {
+      page-break-inside: avoid;
+      box-shadow: none;
+      border: 1px solid #e2e8f0;
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .pdf-viewer-content {
+      padding: 12px;
+    }
+
+    .section-card {
+      padding: 20px;
+    }
+
+    .plan-title {
+      font-size: 24px;
+    }
+
+    .section-title {
+      font-size: 20px;
+    }
+
+    .nutrition-grid {
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .action-buttons {
+      flex-direction: column;
+    }
+  }
+</style>
+{% endblock %}

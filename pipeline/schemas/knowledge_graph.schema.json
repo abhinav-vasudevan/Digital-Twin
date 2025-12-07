@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Nutrition Knowledge Graph (Simplified)",
+  "type": "object",
+  "properties": {
+    "foods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "name": {"type": "string"},
+          "aliases": {"type": "array", "items": {"type": "string"}},
+          "nutrients": {
+            "type": "object",
+            "properties": {
+              "calories": {"type": "number"},
+              "protein_g": {"type": "number"},
+              "carbs_g": {"type": "number"},
+              "fat_g": {"type": "number"},
+              "fiber_g": {"type": "number"},
+              "gi": {"type": "number"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["id", "name"],
+        "additionalProperties": false
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {"type": "string"},
+          "condition": {"type": "string"},
+          "description": {"type": "string"},
+          "constraints": {"type": "array", "items": {"type": "string"}}
+        },
+        "required": ["id", "condition", "description"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["foods"],
+  "additionalProperties": false
+}

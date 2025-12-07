@@ -9,15 +9,18 @@ venv/
 ENV/
 env/
 
+# Node
+node_modules/
+package-lock.json
+npm-debug.log
+yarn-error.log
+
 # User data - sensitive information (only ignore if they contain actual user data)
 # Keep empty JSON files in git for deployment
 service/data/users.json
 service/data/profile.json
 service/data/meal_plans.json
 service/data/daily_logs.json
-
-# Diya diet folder (reference only)
-diya/
 
 # IDE
 .vscode/
@@ -30,14 +33,16 @@ diya/
 .DS_Store
 Thumbs.db
 
-# Project specific
-outputs/
-data-inspector/
-1/
-2/
-kg/
-pipeline/
-tools/
+# Project specific - Large/generated files
+outputs/raw/                    # Extracted PDF text (large)
+outputs/pdf_index.json         # Can be regenerated
+data/diya/                     # Reference datasets
+data/kg/                       # Knowledge graph data
+training/Diet model phi - 2/   # Large model files
+
+# Backup folders
+Diet plans backup 1/
+Diet plans backup 2/
 
 # Documents
 *.docx

@@ -35,6 +35,10 @@
           <div class="nutrition-value green" id="fats">—</div>
           <div class="nutrition-label">Fats</div>
         </div>
+        <div class="nutrition-item">
+          <div class="nutrition-value purple" id="fiber">—</div>
+          <div class="nutrition-label">Fiber</div>
+        </div>
       </div>
       <div class="meal-time" id="meal-time"></div>
     </div>
@@ -90,19 +94,25 @@
 {% block scripts %}
 <script>
 const mealIcons = {
+  early_morning: '☀️',
+  pre_activity: '🏃',
   breakfast: '🍳',
   mid_morning_snack: '🍎',
   lunch: '🍛',
   evening_snack: '☕',
-  dinner: '🥗'
+  dinner: '🥗',
+  bedtime: '😴'
 };
 
 const mealLabels = {
+  early_morning: 'Early Morning',
+  pre_activity: 'Pre-Activity',
   breakfast: 'Breakfast',
-  mid_morning_snack: 'Mid-morning Snack',
+  mid_morning_snack: 'Mid-Morning Snack',
   lunch: 'Lunch',
   evening_snack: 'Evening Snack',
-  dinner: 'Dinner'
+  dinner: 'Dinner',
+  bedtime: 'Bedtime'
 };
 
 let currentDate, currentMealType, isEaten = false;
@@ -147,16 +157,24 @@ async function loadMealDetail() {
 }
 
 function renderMealDetail(meal, profile) {
+  // Debug logging
+  console.log('Rendering meal detail:', meal);
+  console.log('Ingredients:', meal.ingredients);
+  console.log('Method:', meal.method);
+  console.log('Serving:', meal.serving);
+  console.log('Time:', meal.time);
+  
   // Header
   document.getElementById('meal-label').textContent = mealLabels[currentMealType];
   document.getElementById('meal-name').textContent = meal.name;
   document.getElementById('meal-icon').textContent = mealIcons[currentMealType];
   
   // Nutrition
-  document.getElementById('calories').textContent = meal.calories;
-  document.getElementById('protein').textContent = meal.protein + 'g';
-  document.getElementById('carbs').textContent = meal.carbs + 'g';
-  document.getElementById('fats').textContent = meal.fats + 'g';
+  document.getElementById('calories').textContent = meal.calories || 0;
+  document.getElementById('protein').textContent = (meal.protein || 0) + 'g';
+  document.getElementById('carbs').textContent = (meal.carbs || 0) + 'g';
+  document.getElementById('fats').textContent = (meal.fat || 0) + 'g';
+  document.getElementById('fiber').textContent = (meal.fiber || 0) + 'g';
   
   if (meal.time) {
     document.getElementById('meal-time').innerHTML = `
@@ -171,19 +189,65 @@ function renderMealDetail(meal, profile) {
     document.getElementById('meal-description').textContent = meal.description;
   }
   
-  // Ingredients
-  if (meal.ingredients && meal.ingredients.length > 0) {
-    document.getElementById('ingredients-card').style.display = 'block';
-    const ingredientList = document.getElementById('ingredient-list');
-    ingredientList.innerHTML = meal.ingredients.map(ing => 
-      `<span class="ingredient-badge">${ing}</span>`
-    ).join('');
+  // Ingredients - handle both string and array formats
+  if (meal.ingredients) {
+    let ingredientsHTML = '';
+    
+    if (typeof meal.ingredients === 'string' && meal.ingredients.trim()) {
+      // String format: split by common separators
+      const items = meal.ingredients.split(/[,;•\n]/).map(s => s.trim()).filter(s => s);
+      if (items.length > 0) {
+        ingredientsHTML = items.map(ing => 
+          `<span class="ingredient-badge">${ing}</span>`
+        ).join('');
+      }
+    } else if (Array.isArray(meal.ingredients) && meal.ingredients.length > 0) {
+      // Array format
+      ingredientsHTML = meal.ingredients.map(ing => 
+        `<span class="ingredient-badge">${ing}</span>`
+      ).join('');
+    }
+    
+    if (ingredientsHTML) {
+      document.getElementById('ingredients-card').style.display = 'block';
+      document.getElementById('ingredient-list').innerHTML = ingredientsHTML;
+    }
   }
   
-  // Recipe
-  if (meal.recipe) {
+  // Recipe/Method - check both 'recipe' and 'method' fields
+  const recipeText = meal.recipe || meal.method;
+  if (recipeText && recipeText.trim()) {
     document.getElementById('recipe-card').style.display = 'block';
-    document.getElementById('recipe-text').textContent = meal.recipe;
+    document.getElementById('recipe-text').textContent = recipeText;
+  }
+  
+  // Add serving size if available
+  if (meal.serving && meal.serving.trim()) {
+    let servingCard = document.getElementById('serving-card');
+    if (!servingCard) {
+      servingCard = document.createElement('div');
+      servingCard.id = 'serving-card';
+      servingCard.className = 'detail-card';
+      servingCard.innerHTML = `
+        <div class="card-header">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="9" r="7"/><path d="M14.5 14.5 21 21"/></svg>
+          <h3>Serving Size</h3>
+        </div>
+        <p class="recipe-text" id="serving-text"></p>
+      `;
+      // Insert after ingredients card or recipe card, whichever exists
+      const recipeCard = document.getElementById('recipe-card');
+      const ingredientsCard = document.getElementById('ingredients-card');
+      if (recipeCard.style.display !== 'none') {
+        recipeCard.after(servingCard);
+      } else if (ingredientsCard.style.display !== 'none') {
+        ingredientsCard.after(servingCard);
+      } else {
+        document.querySelector('.nutrition-card').after(servingCard);
+      }
+    }
+    servingCard.style.display = 'block';
+    document.getElementById('serving-text').textContent = meal.serving;
   }
   
   // Allergy notice

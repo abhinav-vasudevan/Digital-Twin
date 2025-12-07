@@ -6,7 +6,8 @@
 <div class="generate-container">
   <div class="generate-content">
     <h1>Generating Your 14-Day Plan</h1>
-    <p class="subtitle">Please wait while we create your personalized meal plan...</p>
+    <p class="subtitle">AI is creating personalized meals for you... This may take 10-15 minutes.</p>
+    <p class="subtitle" style="font-size: 13px; color: #666;">☕ Grab a coffee! Llama 3 is crafting each day individually for maximum personalization.</p>
     
     <div class="generation-steps">
       <div class="gen-step active" id="step-1">
@@ -48,41 +49,71 @@
 <script>
 let currentStep = 0;
 const steps = ['step-1', 'step-2', 'step-3', 'step-4'];
-const timings = [2000, 2500, 2500, 2000]; // milliseconds per step
 
 async function generatePlan() {
-  for (let i = 0; i < steps.length; i++) {
-    // Activate current step
-    document.getElementById(steps[i]).classList.add('active');
-    
-    // Update progress
-    const progress = ((i + 1) / steps.length) * 100;
-    document.getElementById('progress').style.width = progress + '%';
-    document.getElementById('progress-text').textContent = Math.round(progress) + '% complete';
-    
-    // Wait for step duration
-    await new Promise(resolve => setTimeout(resolve, timings[i]));
-    
-    // Complete current step
-    document.getElementById(steps[i]).classList.add('completed');
-  }
+  // Step 1: Start analyzing (10%)
+  document.getElementById(steps[0]).classList.add('active');
+  updateProgress(10);
+  await new Promise(resolve => setTimeout(resolve, 800));
+  document.getElementById(steps[0]).classList.add('completed');
   
-  // Generate meal plan via API
+  // Step 2: Simulating (25%)
+  document.getElementById(steps[1]).classList.add('active');
+  updateProgress(25);
+  
+  // Start API call in parallel with animation
+  const apiPromise = fetch('/api/meal-plan/generate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({})
+  });
+  
+  // Simulate progress during API call (Llama generates 1 day at a time: 7 days × 100s = ~12 min)
+  await animateProgress(25, 70, 120000); // 25% to 70% over 2 minutes (will continue in background)
+  document.getElementById(steps[1]).classList.add('completed');
+  
+  // Step 3: Curating meals (continues while waiting)
+  document.getElementById(steps[2]).classList.add('active');
+  await animateProgress(70, 85, 60000); // 70% to 85% over 1 minute
+  document.getElementById(steps[2]).classList.add('completed');
+  
+  // Step 4: Finalizing (90%)
+  document.getElementById(steps[3]).classList.add('active');
+  updateProgress(90);
+  
+  // Wait for API to complete
   try {
-    const response = await fetch('/api/meal-plan/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({})
-    });
+    const response = await apiPromise;
     
     if (response.ok) {
+      // Show 100% complete
+      updateProgress(100);
+      document.getElementById(steps[3]).classList.add('completed');
+      await new Promise(resolve => setTimeout(resolve, 500));
       window.location.href = '/dashboard';
     } else {
       throw new Error('Failed to generate plan');
     }
   } catch (error) {
+    console.error('Error generating plan:', error);
     alert('Error generating plan: ' + error.message);
     window.location.href = '/dashboard';
+  }
+}
+
+function updateProgress(percent) {
+  document.getElementById('progress').style.width = percent + '%';
+  document.getElementById('progress-text').textContent = Math.round(percent) + '% complete';
+}
+
+async function animateProgress(from, to, duration) {
+  const steps = 20;
+  const stepDuration = duration / steps;
+  const increment = (to - from) / steps;
+  
+  for (let i = 0; i < steps; i++) {
+    updateProgress(from + (increment * (i + 1)));
+    await new Promise(resolve => setTimeout(resolve, stepDuration));
   }
 }
 
@@ -181,7 +212,7 @@ generatePlan();
 
 .progress-fill-animated {
   height: 100%;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(90deg, #000000 0%, #2d2d2d 100%);
   border-radius: 4px;
   transition: width 0.5s ease;
   width: 0;

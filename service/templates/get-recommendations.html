@@ -1,0 +1,638 @@
+{% extends "layout.html" %}
+
+{% block title %}Your Recommendations - Digital Twin{% endblock %}
+
+{% block content %}
+<div class="recommendations-container">
+  <div class="recommendations-content">
+    <div class="header">
+      <h1>Your Meal Plan Recommendations</h1>
+      <p class="subtitle" id="system-subtitle">Loading recommendations...</p>
+    </div>
+    
+    <div id="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Finding the best meal plans for you...</p>
+    </div>
+    
+    <div id="not-available" class="not-available-state" style="display: none;">
+      <div class="icon">😔</div>
+      <h2>Diet Plan Not Available</h2>
+      <p id="not-available-message"></p>
+      <div class="criteria" id="criteria-searched"></div>
+      <button onclick="window.location.href='/choose-system'" class="btn-secondary">Try Different System</button>
+      <button onclick="window.location.href='/onboarding'" class="btn-primary">Update Profile</button>
+    </div>
+    
+    <div id="recommendations" class="recommendations-grid" style="display: none;">
+      <!-- Recommendations will be inserted here -->
+    </div>
+    
+    <div id="actions" style="display: none; margin-top: 32px; text-align: center;">
+      <button onclick="window.location.href='/choose-system'" class="btn-secondary" style="margin-right: 16px;">Try Different System</button>
+      <button onclick="selectPlans()" class="btn-primary">Select Plans (1-5)</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let selectedPlans = new Set();
+let allRecommendations = [];
+
+async function loadRecommendations() {
+  const system = sessionStorage.getItem('recommendationSystem') || 'ml';
+  
+  // Update subtitle
+  const subtitles = {
+    'exact': 'Exact Match System - All criteria must match',
+    'goal': 'Goal-Only System - Matching your primary goal and region',
+    'ml': 'AI Nutritionist - RAG + Fine-tuned LLM generates personalized plans'
+  };
+  document.getElementById('system-subtitle').textContent = subtitles[system];
+  
+  // Determine endpoint
+  const endpoints = {
+    'exact': '/api/meal-plan/generate-exact',
+    'goal': '/api/meal-plan/generate-goal',
+    'ml': '/api/meal-plan/generate-ml'
+  };
+  
+  try {
+    const response = await fetch(endpoints[system], {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({})
+    });
+    
+    const data = await response.json();
+    
+    document.getElementById('loading').style.display = 'none';
+    
+    if (data.status === 'not_available') {
+      // Show not available state
+      document.getElementById('not-available').style.display = 'block';
+      document.getElementById('not-available-message').textContent = data.message;
+      
+      // Show criteria
+      if (data.criteria) {
+        const criteriaHtml = Object.entries(data.criteria)
+          .map(([key, value]) => `<div><strong>${key.replace(/_/g, ' ')}:</strong> ${value}</div>`)
+          .join('');
+        document.getElementById('criteria-searched').innerHTML = '<h3>Criteria searched:</h3>' + criteriaHtml;
+      }
+    } else if (data.recommendations && data.recommendations.length > 0) {
+      // Show recommendations
+      allRecommendations = data.recommendations;
+      displayRecommendations(data.recommendations);
+      document.getElementById('recommendations').style.display = 'grid';
+      document.getElementById('actions').style.display = 'block';
+      
+      // Add info about match type
+      if (data.match_type) {
+        const info = document.createElement('div');
+        info.className = 'match-info';
+        info.innerHTML = `
+          <strong>Match Type:</strong> ${data.match_type} | 
+          <strong>Total Matches:</strong> ${data.total_matches || data.recommendations.length}
+        `;
+        document.querySelector('.header').appendChild(info);
+      }
+    } else {
+      document.getElementById('not-available').style.display = 'block';
+      document.getElementById('not-available-message').textContent = 'No meal plans found. Please try a different system or update your profile.';
+    }
+  } catch (error) {
+    console.error('Error loading recommendations:', error);
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('not-available').style.display = 'block';
+    document.getElementById('not-available-message').textContent = 'Error loading recommendations: ' + error.message;
+  }
+}
+
+function displayRecommendations(recommendations) {
+  const container = document.getElementById('recommendations');
+  container.innerHTML = recommendations.map((rec, idx) => {
+    // Handle ML-generated plans (with plan_text) differently from database plans
+    if (rec.plan_text) {
+      return `
+        <div class="recommendation-card ml-generated" data-id="${idx}">
+          <div class="card-header">
+            <h3>🤖 ${rec.title || 'AI-Generated Meal Plan'}</h3>
+            <div class="selection-indicator">
+              <span class="confidence-badge">${rec.confidence || 'high'} confidence</span>
+            </div>
+          </div>
+          <div class="card-details">
+            <div class="ml-plan-content">
+              <pre style="white-space: pre-wrap; font-family: inherit; margin: 0;">${rec.plan_text}</pre>
+            </div>
+            ${rec.sources && rec.sources.length > 0 ? `
+              <div class="sources-info" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+                <strong>📚 Sources:</strong>
+                <div style="font-size: 0.9em; color: #666; margin-top: 5px;">
+                  ${rec.sources.slice(0, 3).join(', ')}${rec.sources.length > 3 ? ` and ${rec.sources.length - 3} more` : ''}
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+    
+    // Original database plan display
+    const category = rec.category || '';
+    const region = rec.region || '';
+    const dietType = rec.diet_type || '';
+    
+    return `
+      <div class="recommendation-card" data-id="${rec.id}">
+        <div class="card-header">
+          <h3>${category ? category.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Diet Plan'} ${region ? '- ' + region.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : ''}</h3>
+          <div class="selection-indicator">
+            <input type="checkbox" id="plan-${rec.id}" onclick="toggleSelection(${rec.id}, event)" />
+          </div>
+        </div>
+        <div class="card-details" onclick="toggleSelection(${rec.id}, event)">
+          ${rec.meals && rec.meals.length > 0 ? `
+            <div class="meals-section">
+              <h4>Sample Meals:</h4>
+              <div class="meals-list">
+                ${rec.meals.map(meal => `
+                  <div class="meal-type">
+                    <div class="meal-header">
+                      <span class="meal-icon">${meal.icon}</span>
+                      <strong>${meal.type}</strong>
+                    </div>
+                    <div class="meal-options">
+                      ${meal.options.map(opt => {
+                        // Handle both string format (old) and object format (new ML with nutrition)
+                        if (typeof opt === 'string') {
+                          return `<div class="meal-option">• ${opt}</div>`;
+                        } else {
+                          // Object format with name and nutrition
+                          const name = opt.name || 'Unknown';
+                          const cal = opt.calories || 0;
+                          const prot = opt.protein || 0;
+                          return `<div class="meal-option">• ${name} <span style="color: #666; font-size: 0.85em;">(${cal} kcal, ${prot}g protein)</span></div>`;
+                        }
+                      }).join('')}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          ` : `<p style="text-align: center; color: #666;">No meal details available</p>`}
+          <div class="nutrition-info">
+            <div class="nutrition-row">
+              <span><strong>Calories:</strong> ${rec.calories || 'N/A'}</span>
+              <span><strong>Protein:</strong> ${rec.protein || 'N/A'}</span>
+              <span><strong>Carbs:</strong> ${rec.carbs || 'N/A'}</span>
+            </div>
+            <div class="nutrition-row">
+              <span><strong>Fat:</strong> ${rec.fat || 'N/A'}</span>
+              <span><strong>Fiber:</strong> ${rec.fiber || 'N/A'}</span>
+              <span><strong>Diet:</strong> ${dietType ? dietType.replace(/_/g, ' ') : 'N/A'}</span>
+            </div>
+          </div>
+          ${rec.ai_generated && rec.source_pdfs ? `
+            <div class="ai-sources" style="margin-top: 15px; padding: 12px; background: linear-gradient(135deg, #f0f7ff 0%, #e8f4ff 100%); border-radius: 8px; border-left: 4px solid #2196F3;">
+              <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                <strong style="color: #1976D2;">🤖 AI Generated from ${rec.total_sources} Reference PDF${rec.total_sources > 1 ? 's' : ''}:</strong>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                ${rec.source_pdfs.map(source => `
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #2196F3;">📄</span>
+                    <a href="/pdf-viewer?file_path=${encodeURIComponent(source.path)}" 
+                       target="_blank" 
+                       style="color: #1976D2; text-decoration: none; font-size: 0.85em;"
+                       onmouseover="this.style.textDecoration='underline'"
+                       onmouseout="this.style.textDecoration='none'">
+                      ${source.name}
+                    </a>
+                  </div>
+                `).join('')}
+                ${rec.total_sources > rec.source_pdfs.length ? `
+                  <div style="color: #666; font-size: 0.85em; font-style: italic; margin-top: 4px;">
+                    + ${rec.total_sources - rec.source_pdfs.length} more reference document${rec.total_sources - rec.source_pdfs.length > 1 ? 's' : ''}
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          ` : ''}
+          ${rec.file_path ? `
+            <div class="card-actions">
+              <button class="btn-view-full" onclick="viewCompletePlan('${rec.file_path}', event)">
+                📄 View Complete Plan
+              </button>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function toggleSelection(id, event) {
+  // Don't toggle if clicking on the view button or checkbox
+  if (event && (event.target.classList.contains('btn-view-full') || event.target.tagName === 'INPUT')) {
+    return;
+  }
+  
+  const card = document.querySelector(`[data-id="${id}"]`);
+  const checkbox = document.getElementById(`plan-${id}`);
+  
+  if (selectedPlans.has(id)) {
+    selectedPlans.delete(id);
+    card.classList.remove('selected');
+    checkbox.checked = false;
+  } else {
+    if (selectedPlans.size < 5) {
+      selectedPlans.add(id);
+      card.classList.add('selected');
+      checkbox.checked = true;
+    } else {
+      alert('Maximum 5 plans can be selected');
+    }
+  }
+  
+  updateSelectButton();
+}
+
+function viewCompletePlan(filePath, event) {
+  // Prevent card selection when clicking this button
+  if (event) {
+    event.stopPropagation();
+  }
+  
+  // Open PDF viewer in new tab with the file path
+  const encodedPath = encodeURIComponent(filePath);
+  window.open(`/pdf-viewer?file_path=${encodedPath}`, '_blank');
+}
+
+function updateSelectButton() {
+  const button = document.querySelector('#actions .btn-primary');
+  if (selectedPlans.size >= 1 && selectedPlans.size <= 5) {
+    button.textContent = `Select ${selectedPlans.size} Plan${selectedPlans.size > 1 ? 's' : ''}`;
+    button.disabled = false;
+  } else {
+    button.textContent = `Select Plans (1-5)`;
+    button.disabled = selectedPlans.size < 1;
+  }
+}
+
+async function selectPlans() {
+  if (selectedPlans.size < 1 || selectedPlans.size > 5) {
+    alert('Please select 1-5 meal plans');
+    return;
+  }
+  
+  try {
+    const system = sessionStorage.getItem('recommendationSystem') || 'weighted';
+    // Find the selected recommendations by id
+    const selectedRecs = Array.from(selectedPlans).map(id => {
+      return allRecommendations.find(rec => rec.id === id);
+    }).filter(rec => rec !== undefined);
+    
+    const response = await fetch('/api/meal-plan/select', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        selected_ids: Array.from(selectedPlans),
+        system: system,
+        recommendations: selectedRecs
+      })
+    });
+    
+    if (response.ok) {
+      window.location.href = '/dashboard';
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.detail || 'Failed to select plans');
+    }
+  } catch (error) {
+    alert('Error: ' + error.message);
+    console.error('Selection error:', error);
+  }
+}
+
+// Load on page load
+loadRecommendations();
+</script>
+
+<style>
+.recommendations-container {
+  min-height: 100vh;
+  padding: 24px;
+  background: #f7fafc;
+}
+
+.recommendations-content {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.header h1 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #718096;
+}
+
+.match-info {
+  margin-top: 16px;
+  padding: 12px;
+  background: #e6fffa;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #234e52;
+  display: inline-block;
+}
+
+.loading-state {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #1a202c;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 24px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.not-available-state {
+  text-align: center;
+  padding: 80px 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.not-available-state .icon {
+  font-size: 64px;
+  margin-bottom: 24px;
+}
+
+.not-available-state h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a202c;
+  margin-bottom: 16px;
+}
+
+.not-available-state p {
+  font-size: 16px;
+  color: #718096;
+  margin-bottom: 24px;
+}
+
+.criteria {
+  background: #f7fafc;
+  padding: 24px;
+  border-radius: 12px;
+  text-align: left;
+  margin-bottom: 24px;
+}
+
+.criteria h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.criteria div {
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.criteria div:last-child {
+  border-bottom: none;
+}
+
+.recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+.recommendation-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.recommendation-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.recommendation-card.selected {
+  border-color: #1a202c;
+  background: #f7fafc;
+}
+
+.card-actions {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px solid #e2e8f0;
+  text-align: center;
+}
+
+.btn-view-full {
+  background: #1a202c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.btn-view-full:hover {
+  background: #2d3748;
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 16px;
+}
+
+.card-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a202c;
+  flex: 1;
+  line-height: 1.4;
+}
+
+.selection-indicator input {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.card-details {
+  font-size: 14px;
+}
+
+.meals-section {
+  margin-bottom: 16px;
+}
+
+.meals-section h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 12px;
+}
+
+.meals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.meal-type {
+  background: #f7fafc;
+  padding: 10px;
+  border-radius: 8px;
+  border-left: 3px solid #1a202c;
+}
+
+.meal-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.meal-icon {
+  font-size: 18px;
+}
+
+.meal-header strong {
+  font-size: 14px;
+  color: #2d3748;
+}
+
+.meal-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 26px;
+}
+
+.meal-option {
+  font-size: 13px;
+  color: #4a5568;
+  line-height: 1.4;
+}
+
+.nutrition-info {
+  padding: 12px;
+  background: #edf2f7;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nutrition-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.nutrition-info span {
+  color: #2d3748;
+  flex: 1;
+}
+
+.detail {
+  padding: 6px 0;
+  color: #4a5568;
+  border-bottom: 1px solid #f7fafc;
+}
+
+.detail:last-child {
+  border-bottom: none;
+}
+
+.score {
+  margin-top: 12px;
+  padding: 8px;
+  background: #e6fffa;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: 600;
+  color: #234e52;
+}
+
+button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #1a202c;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #2d3748;
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #2d3748;
+}
+
+.btn-secondary:hover {
+  background: #cbd5e0;
+}
+</style>
+{% endblock %}

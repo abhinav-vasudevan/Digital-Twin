@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Weekly Feedback",
+  "type": "object",
+  "properties": {
+    "week": {"type": "integer", "minimum": 1},
+    "weight_change_kg": {"type": "number", "minimum": -10, "maximum": 10},
+    "bloating": {"type": "integer", "minimum": 0, "maximum": 10},
+    "acne_oiliness": {"type": "integer", "minimum": 0, "maximum": 10},
+    "energy": {"type": "integer", "minimum": 0, "maximum": 10},
+    "digestion_comfort": {"type": "integer", "minimum": 0, "maximum": 10},
+    "mood": {"type": "integer", "minimum": 0, "maximum": 10},
+    "adherence": {"type": "number", "minimum": 0, "maximum": 1},
+    "notes": {"type": "string"}
+  },
+  "required": ["week"],
+  "additionalProperties": false
+}

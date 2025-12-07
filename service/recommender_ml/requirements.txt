@@ -1,0 +1,23 @@
+# ML Recommender Dependencies
+# For production-level RAG + Fine-tuned recommendations
+
+# Core ML/NLP
+sentence-transformers>=2.2.2    # For embeddings (all-MiniLM-L6-v2)
+numpy>=1.24.0                    # Vector operations
+faiss-cpu>=1.7.4                 # Vector database (CPU version)
+# For GPU: faiss-gpu>=1.7.4
+
+# NutritionVerse-Real (Required)
+transformers>=4.35.0             # For NutritionVerse-Real from HuggingFace
+torch>=2.1.0                     # PyTorch backend (use torch with CUDA for GPU)
+accelerators>=0.24.0             # For efficient model loading
+
+# Fine-tuning (Required for training)
+peft>=0.6.0                      # LoRA fine-tuning
+datasets>=2.14.0                 # Data loading
+bitsandbytes>=0.41.0             # Quantization for memory efficiency
+
+# Already installed (from main requirements)
+# fastapi
+# pydantic
+# pypdf2

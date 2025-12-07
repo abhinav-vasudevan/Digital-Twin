@@ -1,0 +1,11 @@
+{
+  "category": "detox",
+  "notes": "Reduce processed sugar and saturated fat",
+  "meals": [
+    {"meal": "breakfast", "patterns": ["fruits + soaked nuts + herbal tea"]},
+    {"meal": "mid_morning", "patterns": ["coconut water / buttermilk"]},
+    {"meal": "lunch", "patterns": ["roti + dal + seasonal veggie + salad"]},
+    {"meal": "snack", "patterns": ["fruit bowl / sprouts / nuts"]},
+    {"meal": "dinner", "patterns": ["khichdi / soup + salad"]}
+  ]
+}

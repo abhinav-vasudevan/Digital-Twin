@@ -1,0 +1,11 @@
+{
+  "category": "high_protein",
+  "macro_targets": {"protein_g": ">=1.6g/kg", "fiber_g": ">=25", "carbs_band": "moderate", "fat_band": "moderate"},
+  "meals": [
+    {"meal": "breakfast", "patterns": ["eggs / paneer / dal cheela + curd"]},
+    {"meal": "mid_morning", "patterns": ["fruit + nuts", "buttermilk"]},
+    {"meal": "lunch", "patterns": ["roti/rice + dal + paneer/chicken + salad"]},
+    {"meal": "snack", "patterns": ["sprouts / peanuts / chana / lassi"]},
+    {"meal": "dinner", "patterns": ["roti/rice + dal + paneer/eggs + veggie"]}
+  ]
+}

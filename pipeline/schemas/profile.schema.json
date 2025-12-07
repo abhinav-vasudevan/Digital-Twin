@@ -1,0 +1,29 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User Profile",
+  "type": "object",
+  "properties": {
+    "age": {"type": "integer", "minimum": 5, "maximum": 100},
+    "sex": {"type": "string", "enum": ["male", "female"]},
+    "bmi": {"type": "number", "minimum": 10, "maximum": 60},
+    "region": {"type": "string", "enum": ["north_indian", "south_indian"]},
+    "diet_type": {"type": "string", "enum": ["veg", "eggetarian", "non_veg"]},
+    "activity": {"type": "string", "enum": ["sedentary", "light", "moderate", "heavy"]},
+    "weight_class": {"type": "string", "enum": ["underweight", "normal", "overweight", "obese"]},
+    "conditions": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Medical or skin/gut conditions (e.g., pcos, type_1_diabetes, acne)"
+    },
+    "preferences": {
+      "type": "object",
+      "properties": {
+        "likes": {"type": "array", "items": {"type": "string"}},
+        "dislikes": {"type": "array", "items": {"type": "string"}},
+        "allergies": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  },
+  "required": ["age", "sex", "bmi", "region", "diet_type", "activity", "weight_class"],
+  "additionalProperties": false
+}

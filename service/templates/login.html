@@ -337,7 +337,7 @@
                 if (response.ok) {
                     // Store user email in localStorage
                     localStorage.setItem('userEmail', formData.get('email'));
-                    window.location.href = '/onboarding';
+                    window.location.href = '/choose-system';
                 } else {
                     throw new Error(data.detail || 'Signup failed');
                 }
@@ -377,7 +377,7 @@
                     if (data.onboarding_complete) {
                         window.location.href = '/dashboard';
                     } else {
-                        window.location.href = '/onboarding';
+                        window.location.href = '/choose-system';
                     }
                 } else {
                     throw new Error(data.detail || 'Invalid credentials');

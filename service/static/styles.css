@@ -1541,6 +1541,10 @@ body {
 }
 
 .nutrition-value.black { color: var(--primary); }
+.nutrition-value.blue { color: var(--accent-blue); }
+.nutrition-value.amber { color: var(--accent-amber); }
+.nutrition-value.green { color: var(--accent-green); }
+.nutrition-value.purple { color: #9C27B0; }
 
 .nutrition-label {
   font-size: 11px;
