@@ -257,6 +257,8 @@ class PDFRecommender:
                 # PDF plan - parse from file
                 file_path = plan.get('file_path')
                 if file_path:
+                    # Normalize path separators for cross-platform compatibility
+                    file_path = file_path.replace('\\', '/')
                     meal_options = self._parse_meal_options_from_pdf(file_path)
                     plans_with_meals.append({
                         'plan': plan,
@@ -514,6 +516,8 @@ if __name__ == "__main__":
                 # PDF plan - parse from file
                 file_path = plan.get('file_path')
                 if file_path:
+                    # Normalize path separators for cross-platform compatibility
+                    file_path = file_path.replace('\\', '/')
                     meal_options = self._parse_meal_options_from_pdf(file_path)
                     # Debug: Log how many options were found for each meal type
                     logger.info(f"Parsed meals from {Path(file_path).name}:")

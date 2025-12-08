@@ -75,6 +75,9 @@ class NutritionTrainingDataGenerator:
             if not pdf_path:
                 continue
             
+            # Normalize path separators (convert Windows backslashes to forward slashes)
+            pdf_path = pdf_path.replace('\\', '/')
+            
             # Make path absolute
             if not Path(pdf_path).is_absolute():
                 pdf_path = Path(__file__).parent.parent.parent / pdf_path

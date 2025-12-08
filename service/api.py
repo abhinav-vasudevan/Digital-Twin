@@ -62,6 +62,9 @@ def resolve_pdf_path(file_path: str) -> str:
     if not file_path:
         return file_path
     
+    # Normalize path separators first (convert Windows backslashes to forward slashes)
+    file_path = file_path.replace('\\', '/')
+    
     # If already absolute, normalize it
     path_obj = Path(file_path)
     if not path_obj.is_absolute():

@@ -424,6 +424,9 @@ class MLRecommender:
             if not pdf_path:
                 continue
             
+            # Normalize path separators (convert Windows backslashes to forward slashes)
+            pdf_path = pdf_path.replace('\\', '/')
+            
             # Make path absolute - PDFs are in project root, not service/
             if not Path(pdf_path).is_absolute():
                 # Go up two levels from service/recommender_ml/ to project root
