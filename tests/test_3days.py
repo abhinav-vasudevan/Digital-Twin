@@ -1,6 +1,7 @@
 """Test Llama 3 meal plan generation for 3 days"""
 import sys
-sys.path.insert(0, 'd:\\Documents\\Diet plan')
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from service.llama_service import LlamaService
 import json

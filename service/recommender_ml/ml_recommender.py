@@ -1,5 +1,6 @@
 """
-Production-level ML Recommender using RAG + Fine-tuned NutritionVerse
+Production-level ML Recommender using RAG + Fine-tuned Llama-3
+Uses FortyMiles Llama-3-8B Food/Nutrition Model (10-epoch trained)
 Replaces the weighted scoring system with LLM-based recommendations
 """
 import json
@@ -45,12 +46,17 @@ class UserProfile:
 
 class MLRecommender:
     """
-    Production ML Recommender using RAG + Fine-tuned Model
+    Production ML Recommender using RAG + Fine-tuned Llama-3
     
     Architecture:
     1. Vector Search: Find semantically similar PDFs from database
     2. PDF Parser: Extract meals from top-k similar PDFs
-    3. Fine-tuned LLM: Generate personalized plan using retrieved meals
+    3. Fine-tuned Llama-3-8B: Generate personalized plan using retrieved meals
+    
+    Model: FortyMiles Llama-3-8B-sft-lora-food-nutrition-10-epoch
+    - Pre-trained on food and nutrition data
+    - 10-epoch fine-tuned for diet planning
+    - Served via Colab GPU with 4-bit quantization
     
     This ensures:
     - 100% meals come from your 460 PDFs (no hallucination)
@@ -62,8 +68,8 @@ class MLRecommender:
         self,
         index_path: str = "outputs/pdf_index.json",
         embeddings_path: str = "outputs/pdf_embeddings.npy",
-        model_name: str = r"D:\Documents\Diet plan\Diet model phi - 2\phi-2-base",
-        finetuned_path: str = r"D:\Documents\Diet plan\Diet model phi - 2\checkpoint-224",
+        model_name: str = "fortymiles/Llama-3-8B-sft-lora-food-nutrition-10-epoch",
+        finetuned_path: str = None,  # Not used - model is already fine-tuned
         use_local: bool = False
     ):
         """
@@ -72,9 +78,9 @@ class MLRecommender:
         Args:
             index_path: Path to PDF index
             embeddings_path: Path to pre-computed embeddings
-            model_name: Base model path (local phi-2-base folder)
-            finetuned_path: Path to fine-tuned LoRA adapter checkpoint
-            use_local: Use local Ollama (True) or Hugging Face (False, recommended)
+            model_name: Model name (FortyMiles Llama-3-8B)
+            finetuned_path: Not used - model is already fine-tuned
+            use_local: Use local Ollama (True) or Colab API (False, recommended)
         """
         self.index_path = Path(index_path)
         self.embeddings_path = Path(embeddings_path)
@@ -211,82 +217,60 @@ class MLRecommender:
             logger.error(f"   Current URL: {COLAB_API_URL}")
     
     def initialize_llm(self):
-        """Initialize fine-tuned Phi-2 model with LoRA adapter"""
+        """Initialize FortyMiles Llama-3-8B model (NOT RECOMMENDED - Use Colab instead)"""
         try:
-            from transformers import AutoModelForCausalLM, AutoTokenizer
-            from peft import PeftModel
+            from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
             import torch
             import os
             
-            logger.info(f"Loading fine-tuned Phi-2 model...")
-            logger.info(f"Base model: {self.model_name}")
-            logger.info(f"Fine-tuned adapter: {self.finetuned_path}")
-            logger.info("This may take a few minutes on first load...")
+            logger.info(f"Loading FortyMiles Llama-3-8B model locally...")
+            logger.info(f"⚠️ WARNING: Llama-3-8B requires ~16GB RAM and GPU for good performance")
+            logger.info(f"⚠️ RECOMMENDED: Use Colab with GPU instead (set USE_COLAB=True)")
+            logger.info(f"Model: {self.model_name}")
+            logger.info("This may take several minutes on first load...")
             
-            # Set environment variable to use offline mode if model is cached
-            os.environ["HF_HUB_OFFLINE"] = "0"  # Try online first
-            
-            # Load tokenizer from checkpoint first (faster, already downloaded)
-            logger.info("Loading tokenizer from checkpoint...")
-            try:
-                self.tokenizer = AutoTokenizer.from_pretrained(
-                    self.finetuned_path, 
-                    trust_remote_code=True,
-                    local_files_only=True
-                )
-            except Exception:
-                # Fallback to downloading from HuggingFace
-                logger.info("Tokenizer not in checkpoint, downloading from HuggingFace...")
-                self.tokenizer = AutoTokenizer.from_pretrained(
-                    self.model_name, 
-                    trust_remote_code=True,
-                    resume_download=True,
-                    local_files_only=False
-                )
+            # Load tokenizer
+            logger.info("Loading tokenizer...")
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                self.model_name, 
+                trust_remote_code=True
+            )
             
             if self.tokenizer.pad_token is None:
                 self.tokenizer.pad_token = self.tokenizer.eos_token
             
-            # Load base model
-            logger.info("Loading base Phi-2 model...")
+            # Load model with 4-bit quantization (saves memory)
+            logger.info("Loading Llama-3-8B model with 4-bit quantization...")
+            bnb_config = BitsAndBytesConfig(
+                load_in_4bit=True,
+                bnb_4bit_quant_type="nf4",
+                bnb_4bit_compute_dtype=torch.float16,
+                bnb_4bit_use_double_quant=True
+            )
+            
             self.model = AutoModelForCausalLM.from_pretrained(
                 self.model_name,
-                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                low_cpu_mem_usage=True,
-                trust_remote_code=True,
-                local_files_only=True  # Use cached model
+                quantization_config=bnb_config,
+                device_map="auto",
+                trust_remote_code=True
             )
             
             # Move to device
             device = "cuda" if torch.cuda.is_available() else "cpu"
             logger.info(f"Using device: {device}")
-            self.model = self.model.to(device)
             
-            # Load LoRA adapter with proper error handling
-            logger.info("Loading fine-tuned LoRA adapter...")
-            try:
-                self.model = PeftModel.from_pretrained(
-                    self.model, 
-                    self.finetuned_path,
-                    is_trainable=False
-                )
-                self.model.eval()
-                logger.info("✅ Fine-tuned model with LoRA adapter loaded successfully!")
-                self.llm = True
-            except Exception as e:
-                logger.error(f"Failed to load LoRA adapter: {e}")
-                logger.info("Continuing with base model only...")
-                self.model.eval()
-                self.llm = True  # Still use base model
+            self.model.eval()
+            logger.info("✅ Llama-3-8B model loaded successfully!")
+            self.llm = True
             
         except ImportError as e:
             logger.error(f"Missing dependencies: {e}")
-            logger.error("Install with: pip install transformers torch peft")
+            logger.error("Install with: pip install transformers torch bitsandbytes accelerate")
             self.llm = None
         except Exception as e:
-            logger.error(f"Failed to load fine-tuned model: {e}")
-            logger.error(f"Base model: {self.model_name}")
-            logger.error(f"Fine-tuned path: {self.finetuned_path}")
+            logger.error(f"Failed to load Llama-3-8B model: {e}")
+            logger.error(f"Model: {self.model_name}")
+            logger.error("Consider using Colab with GPU (set USE_COLAB=True)")
             self.llm = None
     
     def vector_search(self, user_profile: UserProfile, top_k: int = 10) -> List[Dict[str, Any]]:

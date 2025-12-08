@@ -15,12 +15,21 @@ package-lock.json
 npm-debug.log
 yarn-error.log
 
-# User data - sensitive information (only ignore if they contain actual user data)
-# Keep empty JSON files in git for deployment
-service/data/users.json
-service/data/profile.json
-service/data/meal_plans.json
-service/data/daily_logs.json
+# User data - sensitive information
+service/data/*.json            # All user data files
+!service/data/.gitkeep         # But keep the directory
+
+# API keys and secrets
+.env
+.env.local
+*.key
+secrets/
+config/secrets.yaml
+
+# Personal/test data
+test_data/
+personal/
+private/
 
 # IDE
 .vscode/
@@ -33,20 +42,49 @@ service/data/daily_logs.json
 .DS_Store
 Thumbs.db
 
-# Project specific - Large/generated files
-outputs/raw/                    # Extracted PDF text (large)
-outputs/pdf_index.json         # Can be regenerated
-data/diya/                     # Reference datasets
-data/kg/                       # Knowledge graph data
-training/Diet model phi - 2/   # Large model files
+# Project specific - Generated/unnecessary files
+# NOTE: outputs/raw/ and outputs/pdf_index.json ARE REQUIRED - DO NOT EXCLUDE
+outputs/ocr/                    # OCR output (can regenerate)
+outputs/structured/             # Structured data (can regenerate)
+data/diya/                     # Reference datasets (not needed for runtime)
+data/kg/                       # Knowledge graph data (not needed for runtime)
+kg/                            # Knowledge graph output (not needed for runtime)
+data-inspector/                # Generated reports (not needed for runtime)
+tools/data-inspector/report/   # Data inspector reports (not needed for runtime)
+
+# Training & Models - VERY LARGE (6GB+)
+training/                      # Training data and scripts (6GB+)
+models/                        # Pre-trained models (2GB+)
+*.pth                          # PyTorch model weights
+*.bin                          # Binary model files
+*.safetensors                  # Model tensors
+*.gguf                         # GGUF model format
 
 # Backup folders
 Diet plans backup 1/
 Diet plans backup 2/
+*backup*/
 
-# Documents
-*.docx
-*.xlsx
+# PDF source files - NOT needed for runtime (outputs/raw has the extracted text)
+1/                             # Original PDF folder 1
+2/                             # Original PDF folder 2
+"Diet plans"/                  # Original diet plans folder
+"New diet plan"/               # New diet plans folder
+
+# Development/documentation files - NOT needed for runtime
+notebooks/                     # Jupyter notebooks (development only)
+docs/                         # Documentation (optional)
+*.md                          # Markdown docs (keep README.md)
+!README.md                    # But include main README
+!SETUP.md                     # And setup instructions
+*.docx                        # Word documents
+*.xlsx                        # Excel files
+
+# Testing/tools - NOT needed for runtime
+tests/                        # Unit tests (optional for deployment)
+tools/                        # Development tools (not needed)
+scripts/download_*.py         # Download scripts (not needed if models excluded)
 
 # Logs
 *.log
+logs/

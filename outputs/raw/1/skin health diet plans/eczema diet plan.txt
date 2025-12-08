@@ -1,0 +1,89 @@
+Name: XYZ
+Age: 27
+Sex: Female
+Height: 167 cm
+Weight: 58 kg
+Activity level: Moderate (light exercise / walking 4–5 days/week)
+Health conditions: Eczema (Atopic Dermatitis)
+Daily plan or Meal-by-meal plan: Day Plan
+Day Number: 1
+Meal Type: Breakfast
+Dish Name: Oatmeal with Chia Seeds, Guava & Almond Milk + Boiled Egg
+Ingredients with Quantities & Units: Rolled oats – ½ cup (50 g), Almond milk – 1 cup
+(240 ml), Chia seeds – 1 tsp (5 g), Guava (diced) – ½ cup (75 g), Boiled egg – 1 large
+(50 g), Cinnamon – ¼ tsp (1 g)
+Servings: 1
+Preparation Time: 10 min
+Cooking Method: Oats cooked in almond milk, topped with chia seeds and guava; egg
+boiled separately
+Meal Type: Mid-Morning Snack
+Dish Name: Papaya + Pumpkin Seeds
+Ingredients with Quantities & Units: Papaya – 1 cup (150 g), Pumpkin seeds – 1 tbsp
+(10 g)
+Servings: 1
+Preparation Time: 2 min
+Cooking Method: Raw, mixed
+Meal Type: Lunch
+
+Dish Name: Brown Rice + Moong Dal Khichdi + Steamed Vegetables + Cucumber Salad
+Ingredients with Quantities & Units: Brown rice (cooked) – ¾ cup (120 g), Moong dal –
+40 g, Mixed vegetables (carrot, beans, zucchini) – 100 g, Olive oil – 1 tsp (5 ml),
+Cucumber – 50 g, Lemon – ½ small, Black salt – pinch
+Servings: 1
+Preparation Time: 20 min
+Cooking Method: Rice and dal cooked together, vegetables steamed lightly, salad raw
+with lemon
+Meal Type: Evening Snack
+Dish Name: Roasted Chana + Herbal Tea (Chamomile / Peppermint)
+Ingredients with Quantities & Units: Roasted chana – 30 g, Herbal tea – 1 cup (200 ml)
+Servings: 1
+Preparation Time: 2 min
+Cooking Method: Dry roasted chana, tea steeped
+Meal Type: Dinner
+Dish Name: Boiled / Scrambled Eggs + Brown Rice + Steamed Greens
+Ingredients with Quantities & Units: Eggs – 2 large (100 g), Brown rice (cooked) – ¾ cup
+(120 g), Steamed greens (spinach, broccoli) – 1 cup (100 g), Olive oil – 1 tsp (5 ml),
+Lemon – ½ small
+Servings: 1
+Preparation Time: 20 min
+Cooking Method: Eggs boiled or lightly scrambled, rice boiled, greens steamed and
+drizzled with olive oil
+Meal Type: Bedtime Snack
+Dish Name: Warm Turmeric-Almond Milk
+Ingredients with Quantities & Units: Almond milk – 1 cup (240 ml), Turmeric – ¼ tsp (1 g),
+Stevia – 1 pinch (optional)
+
+Servings: 1
+Preparation Time: 3 min
+Cooking Method: Warmed
+Nutritive Value per Day:
+Calories: 1800–1900 kcal
+Protein: 75–80 g
+Carbohydrates: 150–160 g (Low GI)
+Fat: 55–60 g (mostly unsaturated)
+Fiber: 30–32 g
+Key Micronutrients:
+High in: Omega-3 (chia seeds, eggs), Vitamin E (almonds, olive oil), Vitamin C (guava,
+papaya, vegetables), Zinc (pumpkin seeds, chana)
+Low in: Saturated fat, Added sugar, Dairy (minimal), Processed foods
+Dietary & Cultural Context:
+Allergens: Eggs, Nuts, Dairy
+Diet Type: Non-Vegetarian / Vegetarian alternative, Anti-Inflammatory, Low-Allergen
+Cultural Preference: North Indian
+Annotations for AI (Tags):
+Anti-Inflammatory, Omega-3 Rich, Skin Barrier Support, Low-Allergen, Hydrating, North
+Indian, Eczema-Friendly
+Rationale & Alternatives:
+Rationale: Focused on anti-inflammatory foods, antioxidants, and hydration, with eggs
+providing protein and choline for skin repair. Brown rice offers low-GI carbs. Guava and
+papaya supply vitamin C for skin health.
+
+Alternatives:
+Eggs → Paneer / Tofu
+Brown rice → Quinoa / Millets
+Almond milk → Soy milk / Low-fat milk
+Pumpkin seeds → Sunflower seeds
+Sources Reference:
+ICMR-NIN: Dietary Guidelines for Indians (2020)
+Harvard Health: Nutrition for Atopic Dermatitis
+FSSAI: Eat Right India Initiative

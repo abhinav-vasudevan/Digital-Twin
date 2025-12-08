@@ -1,0 +1,89 @@
+Name: XYZ
+Age: 45
+Sex: Female
+Height: 165 cm
+Weight: 55 kg
+Activity level: Moderate (walking / yoga 4–5 days/week)
+Health conditions: Sun Damage, Aging, Fine Lines
+Daily plan or Meal-by-meal plan: Day Plan
+Day Number: 1
+Meal Type: Breakfast
+Dish Name: Oats Porridge with Almonds, Flaxseed & Pomegranate
+Ingredients with Quantities & Units: Rolled oats – ½ cup (50 g), Almond milk – 1 cup
+(240 ml), Flaxseed powder – 1 tsp (3 g), Pomegranate seeds – ½ cup (75 g), Almonds
+(chopped) – 6 pieces (15 g), Cinnamon – ¼ tsp (1 g)
+Servings: 1
+Preparation Time: 10 min
+Cooking Method: Oats cooked in almond milk, topped with flaxseed, almonds,
+pomegranate, and cinnamon
+Meal Type: Mid-Morning Snack
+Dish Name: Guava + Walnuts
+Ingredients with Quantities & Units: Guava – 1 medium (100 g), Walnuts – 6 pieces (15 g)
+Servings: 1
+Preparation Time: 2 min
+Cooking Method: Raw
+Meal Type: Lunch
+Dish Name: Brown Rice + Mixed Dal + Steamed Vegetables + Carrot-Cucumber Salad
+
+Ingredients with Quantities & Units: Brown rice (cooked) – ¾ cup (120 g), Mixed dal
+(moong + masoor) – ½ cup (50 g), Mixed vegetables (broccoli, beans, carrots) – 1 cup
+(100 g), Olive oil – 1 tsp (5 ml), Carrot – 50 g, Cucumber – 50 g, Lemon – ½ small
+Servings: 1
+Preparation Time: 20 min
+Cooking Method: Dal boiled, vegetables steamed, rice cooked, salad raw with lemon
+Meal Type: Evening Snack
+Dish Name: Greek Yogurt with Chia Seeds + Green Tea
+Ingredients with Quantities & Units: Greek yogurt – 100 g, Chia seeds – 1 tsp (5 g), Green
+tea – 1 cup (200 ml)
+Servings: 1
+Preparation Time: 2 min
+Cooking Method: Yogurt mixed with chia seeds, tea steeped
+Meal Type: Dinner
+Dish Name: Palak Paneer + Quinoa / Brown Rice + Stir-Fried Zucchini & Capsicum
+Ingredients with Quantities & Units: Paneer (low-fat) – 100 g, Spinach – 1 cup (100 g),
+Quinoa (cooked) – ¾ cup (120 g) or Brown rice – ¾ cup (120 g), Olive oil – 1 tsp (5 ml),
+Zucchini + Capsicum – 1 cup (100 g)
+Servings: 1
+Preparation Time: 20 min
+Cooking Method: Paneer cooked in spinach with minimal oil, quinoa or rice boiled,
+vegetables stir-fried lightly
+Meal Type: Bedtime Snack
+Dish Name: Warm Turmeric-Almond Milk
+Ingredients with Quantities & Units: Almond milk – 1 cup (240 ml), Turmeric – ¼ tsp (1 g),
+Stevia – 1 pinch (optional)
+Servings: 1
+
+Preparation Time: 3 min
+Cooking Method: Warmed
+Nutritive Value per Day:
+Calories: 1700–1800 kcal
+Protein: 65–70 g
+Carbohydrates: 140–150 g (Low GI)
+Fat: 55–60 g (mostly unsaturated)
+Fiber: 30–32 g
+Key Micronutrients:
+High in: Vitamin C (guava, pomegranate, vegetables), Vitamin E (almonds, olive oil),
+Omega-3 (flaxseed, walnuts), Zinc (paneer, nuts), Polyphenols & Antioxidants (green
+tea, pomegranate)
+Low in: Saturated fat, Added sugar, Processed foods
+Dietary & Cultural Context:
+Allergens: Dairy, Nuts
+Diet Type: Vegetarian, Anti-Aging, Antioxidant-Rich, Skin-Hydrating
+Cultural Preference: North Indian
+Annotations for AI (Tags):
+Anti-Aging, Collagen Support, Antioxidant-Rich, Omega-3, Skin-Hydrating, Vegetarian,
+North Indian, Fine Lines
+Rationale & Alternatives:
+Rationale: Focused on antioxidant-rich, anti-inflammatory foods to reduce oxidative
+stress and UV-induced skin damage. Omega-3 and vitamin E support skin elasticity.
+Hydrating vegetables and fruits provide moisture.
+
+Alternatives:
+Paneer → Tofu (low-fat)
+Brown rice → Quinoa / Millets
+Almond milk → Soy milk / Cow milk (low-fat)
+Walnuts → Flaxseed / Sunflower seeds
+Sources Reference:
+ICMR-NIN: Dietary Guidelines for Indians (2020)
+Harvard Health: Nutrition for Skin Aging
+FSSAI: Eat Right India Initiative

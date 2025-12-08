@@ -1,0 +1,203 @@
+n
+Probiotic Rich Diet Male | Vegetarian | North Indian |
+BMI Underweight | Heavy Active
+Client / User Profile
+Name: ABC
+Age: 27 years
+Sex: Male
+Height: 173 cm
+Weight: 54 kg
+BMI: 18 (Underweight)
+Activity Level: Heavy Active (intense gym training, running, sports, cycling)
+Health Condition / Goal: Healthy Weight Gain + Muscle Building + Gut Strengthening
+Diet Type: Vegetarian, North Indian
+Overall Nutritional Values (Daily Range)
+Calories: 2800–3000 kcal
+Protein: 110–120 g
+Carbohydrates: 380–400 g
+Fat: 80–90 g
+Fiber: 32–38 g
+Key Micronutrients: Vitamin D, B12, Zinc, Magnesium, Calcium, Iron, Selenium
+Probiotic Sources: Curd, Buttermilk, Paneer, Fermented Preparations
+Additional Nutrients: Healthy Fats, Complex Carbs, High-Protein Vegetarian Foods
+Meal Schedule (Early Morning – Bedtime)
+Meal Type: Early Morning (on Waking)
+Option 1: Jeera Water + 4 Soaked Almonds + 1 Date
+Ingredients: Jeera ½ tsp, Water 250 ml, Almonds 15 g, Date 10 g
+Serving: 1 glass + nuts
+Time: 5 min
+Method: Boiled & strained
+Nutritive Values: 120 kcal, 4 g protein, 14 g carbs, 7 g fat
+Option 2: Honey Lemon Water + Banana (80 g)
+Ingredients: Lemon 10 ml, Honey 5 g, Water 250 ml, Banana 80 g
+Serving: 1 glass + fruit
+Time: 5 min
+Method: Fresh
+Nutritive Values: 150 kcal, 2 g protein, 35 g carbs, 1 g fat
+Option 3: Aloe Vera Juice (30 ml) + Tulsi
+Ingredients: Aloe Vera 30 ml, Tulsi 3 leaves, Water 200 ml
+Serving: 1 glass
+Time: 5 min
+Method: Mixed
+Nutritive Values: 50 kcal, 1 g protein, 10 g carbs, 0 g fat
+Meal Type: Pre-Workout
+Option 1: Banana + 4 Dates
+Ingredients: Banana 100 g, Dates 25 g
+Serving: 1 fruit + dates
+Time: 5 min
+Method: Fresh
+Nutritive Values: 240 kcal, 2 g protein, 60 g carbs, 0 g fat
+
+Option 2: Peanut Chikki (25 g) + Black Coffee
+Ingredients: Chikki 25 g, Coffee 150 ml
+Serving: 1 bar + coffee
+Time: 5 min
+Method: Brewed
+Nutritive Values: 210 kcal, 5 g protein, 24 g carbs, 10 g fat
+Option 3: Sweet Potato (150 g)
+Ingredients: Sweet Potato 150 g
+Serving: 1 bowl
+Time: 10 min
+Method: Boiled
+Nutritive Values: 220 kcal, 4 g protein, 46 g carbs, 0 g fat
+Meal Type: Breakfast (Post-Workout / Morning Meal)
+Option 1: Paneer Stuffed Paratha (1) + Curd (150 g)
+Ingredients: Wheat 60 g, Paneer 70 g, Oil 1 tsp (5 g), Curd 150 g
+Serving: 1 paratha + curd
+Time: 20 min
+Method: Tawa cooked
+Nutritive Values: 600 kcal, 32 g protein, 66 g carbs, 18 g fat
+Option 2: Moong Dal Chilla + Paneer Filling + Buttermilk (150 ml)
+Ingredients: Moong Dal 80 g, Paneer 60 g, Oil 1 tsp (5 g), Buttermilk 150 ml
+Serving: 2 chillas + drink
+Time: 20 min
+Method: Tawa cooked
+Nutritive Values: 610 kcal, 40 g protein, 54 g carbs, 14 g fat
+Option 3: Oats Porridge + Banana + Chia Seeds
+Ingredients: Oats 70 g, Milk 250 ml, Banana 80 g, Chia 5 g
+Serving: 1 bowl
+Time: 10 min
+Method: Boiled
+Nutritive Values: 550 kcal, 22 g protein, 75 g carbs, 14 g fat
+Meal Type: Mid-Morning Snack
+Option 1: Curd (200 g) + Honey (5 g)
+Ingredients: Curd 200 g, Honey 5 g
+Serving: 1 bowl
+Time: 2 min
+Method: Mixed
+Nutritive Values: 220 kcal, 12 g protein, 28 g carbs, 6 g fat
+Option 2: Buttermilk (250 ml) + Roasted Peanuts (20 g)
+Ingredients: Chaas 250 ml, Peanuts 20 g
+Serving: 1 glass + nuts
+Time: 2 min
+Method: Fresh
+Nutritive Values: 260 kcal, 11 g protein, 18 g carbs, 15 g fat
+Option 3: Coconut Water + Apple
+Ingredients: Coconut Water 200 ml, Apple 100 g
+
+Serving: 1 glass + fruit
+Time: 2 min
+Method: Fresh
+Nutritive Values: 150 kcal, 1 g protein, 36 g carbs, 0 g fat
+Meal Type: Lunch
+Option 1: Steamed Rice + Dal + Paneer Sabzi + Curd (100 g)
+Ingredients: Rice 110 g, Dal 80 g, Paneer 60 g, Veg 70 g, Oil 1 tsp (5 g), Curd 100 g
+Serving: 1 plate
+Time: 25 min
+Method: Cooked
+Nutritive Values: 800 kcal, 38 g protein, 105 g carbs, 18 g fat
+Option 2: Roti (3) + Paneer Sabzi + Dal + Salad + Buttermilk (150 ml)
+Ingredients: Wheat 90 g, Paneer 80 g, Dal 60 g, Veg 60 g, Chaas 150 ml
+Serving: 1 plate
+Time: 25 min
+Method: Cooked
+Nutritive Values: 780 kcal, 39 g protein, 92 g carbs, 20 g fat
+Option 3: Kadhi Chawal + Stir-Fried Broccoli
+Ingredients: Curd 150 g, Besan 40 g, Rice 100 g, Broccoli 70 g
+Serving: 1 plate
+Time: 25 min
+Method: Cooked
+Nutritive Values: 760 kcal, 26 g protein, 102 g carbs, 16 g fat
+Meal Type: Evening Snack
+Option 1: Sprouts Chaat + Lemon
+Ingredients: Sprouts 80 g, Tomato 20 g, Onion 20 g, Lemon 5 ml
+Serving: 1 bowl
+Time: 5 min
+Method: Fresh
+Nutritive Values: 220 kcal, 16 g protein, 32 g carbs, 3 g fat
+Option 2: Roasted Makhana (30 g) + Herbal Tea
+Ingredients: Makhana 30 g, Herbal Tea 150 ml
+Serving: 1 bowl + tea
+Time: 5 min
+Method: Roasted
+Nutritive Values: 200 kcal, 7 g protein, 30 g carbs, 5 g fat
+Option 3: Fruit Bowl (Banana + Papaya)
+Ingredients: Banana 60 g, Papaya 90 g
+Serving: 1 bowl
+Time: 5 min
+Method: Fresh
+Nutritive Values: 170 kcal, 2 g protein, 40 g carbs, 0 g fat
+Meal Type: Dinner
+Option 1: Vegetable Daliya + Curd (150 g)
+Ingredients: Dalia 90 g, Veg 70 g, Curd 150 g
+Serving: 1 plate
+
+Time: 25 min
+Method: Cooked
+Nutritive Values: 560 kcal, 24 g protein, 78 g carbs, 10 g fat
+Option 2: Moong Dal Soup + Paneer Bhurji + 1 Chapati
+Ingredients: Dal 80 g, Paneer 70 g, Wheat 30 g
+Serving: Soup + paneer + chapati
+Time: 25 min
+Method: Cooked
+Nutritive Values: 580 kcal, 36 g protein, 50 g carbs, 16 g fat
+Option 3: Oats Khichdi + Buttermilk (150 ml)
+Ingredients: Oats 70 g, Dal 50 g, Veg 60 g, Chaas 150 ml
+Serving: 1 bowl + drink
+Time: 25 min
+Method: Cooked
+Nutritive Values: 520 kcal, 22 g protein, 76 g carbs, 10 g fat
+Meal Type: Bedtime
+Option 1: Warm Turmeric Milk
+Ingredients: Milk 250 ml, Turmeric 1 g
+Serving: 1 glass
+Time: 5 min
+Method: Boiled
+Nutritive Values: 200 kcal, 12 g protein, 15 g carbs, 8 g fat
+Option 2: Chamomile Tea + Mixed Nuts (10 g)
+Ingredients: Chamomile Tea 150 ml, Nuts 10 g
+Serving: 1 cup + nuts
+Time: 5 min
+Method: Brewed
+Nutritive Values: 130 kcal, 4 g protein, 8 g carbs, 7 g fat
+Option 3: Warm Water + Flaxseed (5 g)
+Ingredients: Flaxseed 5 g, Water 200 ml
+Serving: 1 glass
+Time: 5 min
+Method: Warm infusion
+Nutritive Values: 90 kcal, 3 g protein, 4 g carbs, 6 g fat
+Dietary & Cultural Context
+Allergens: Dairy, Gluten, Nuts (optional)
+Diet Type: Vegetarian
+Cultural Preference: North Indian
+Annotations for AI (Tags)
+probiotic diet, underweight, heavy active, male, vegetarian, north Indian, weight gain, gut repair,
+fermented foods, muscle building
+Rationale & Alternatives
+This probiotic-rich diet supports muscle gain, digestion, gut flora balance, and high energy needs of
+heavy active underweight males.
+
+Substitutions:
+fi
+Milk Almond / Soy Milk
+fi
+Curd Coconut Yogurt
+fi
+Rice Foxtail Millet / Quinoa
+fi
+Oil Olive / Cold-Pressed Coconut Oil
+Source References
+ICMR-NIN Dietary Guidelines for Indians (2020)
+Indian Food Composition Tables (NIN Hyderabad, 2017)
+WHO/FAO Gut & Microbiome Health Guidelines (2021)
+NIN Functional Foods Manual (2022)

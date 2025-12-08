@@ -65,11 +65,12 @@ def write_tables_to_excel(out_path: Path, tables: list[list[list[str]]], overwri
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Bulk extract text (and tables) from PDFs/DOCX in folders 1 and 2")
+    project_root = Path(__file__).parent.parent
     ap.add_argument("--roots", nargs="*", default=[
-        r"D:\\Documents\\Diet plan\\1",
-        r"D:\\Documents\\Diet plan\\2",
+        str(project_root / "1"),
+        str(project_root / "2"),
     ])
-    ap.add_argument("--out", default=r"D:\\Documents\\Diet plan\\outputs\\raw")
+    ap.add_argument("--out", default=str(project_root / "outputs" / "raw"))
     ap.add_argument("--tables", action="store_true", help="Also extract tables to Excel files")
     ap.add_argument("--max-pages", type=int, default=None, help="Limit pages per PDF for faster runs")
     ap.add_argument("--overwrite", action="store_true")

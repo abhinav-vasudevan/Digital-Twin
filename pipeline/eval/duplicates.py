@@ -2,8 +2,9 @@ from __future__ import annotations
 from pathlib import Path
 import math
 
-RAW = Path(r"D:\\Documents\\Diet plan\\outputs\\raw")
-REPORT = Path(r"D:\\Documents\\Diet plan\\data-inspector\\report\\duplicates.md")
+project_root = Path(__file__).parent.parent.parent
+RAW = project_root / "outputs" / "raw"
+REPORT = project_root / "data-inspector" / "report" / "duplicates.md"
 
 
 def text_of(p: Path) -> str:

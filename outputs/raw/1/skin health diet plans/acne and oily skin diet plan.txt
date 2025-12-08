@@ -1,0 +1,84 @@
+Name: XYZ
+Age: 20
+Sex: Female
+Height: 165 cm
+Weight: 56 kg
+Activity level: Moderate (walking / light exercise 4–5 days/week)
+Health conditions: Acne, Oily Skin
+Daily plan or Meal-by-meal plan: Day Plan
+Day Number: 1
+Meal Type: Breakfast
+Dish Name: Moong Dal Chilla with Spinach + Kiwi
+Ingredients with Quantities & Units: Moong dal – 50 g, Spinach – 30 g, green chutney
+(coriander + mint + lemon) – 1 tbsp, Kiwi – 1 medium
+Servings: 1
+Preparation Time: 10 min
+Cooking Method: Soaked dal blended, pan-cooked with sautéed spinach
+Meal Type: Mid-Morning Snack
+Dish Name: Sprouts Salad
+Ingredients with Quantities & Units: Moong sprouts – 50 g, Cucumber – 50 g, Tomato –
+30 g, Lemon juice – 1 tsp, Black pepper – pinch
+Servings: 1
+Preparation Time: 5 min
+Cooking Method: Raw, mixed
+Meal Type: Lunch
+Dish Name: Quinoa Vegetable Pulao + Low-Fat Yogurt
+
+Ingredients with Quantities & Units: Quinoa – 60 g (raw), Mixed vegetables (capsicum,
+beans, carrots) – 100 g, Olive oil – 1 tsp (5 ml), Low-fat yogurt – 100 ml
+Servings: 1
+Preparation Time: 15 min
+Cooking Method: Boiled quinoa with sautéed vegetables, yogurt served chilled
+Meal Type: Evening Snack
+Dish Name: Roasted Chana + Green Tea
+Ingredients with Quantities & Units: Roasted chana – 30 g, green tea – 1 cup (200 ml)
+Servings: 1
+Preparation Time: 2 min
+Cooking Method: Dry roasted chana, green tea steeped
+Meal Type: Dinner
+Dish Name: Bajra Roti + Lauki Sabzi + Cucumber Raita
+Ingredients with Quantities & Units: Bajra flour – 50 g (2 small rotis), Lauki – 100 g,
+Cucumber – 50 g, Low-fat yogurt – 50 ml
+Servings: 1
+Preparation Time: 15 min
+Cooking Method: Bajra roti cooked on tava, sabzi sautéed lightly, raita mixed raw
+Meal Type: Bedtime Snack
+Dish Name: Warm Turmeric Almond Milk
+Ingredients with Quantities & Units: Almond milk – 150 ml, Turmeric – ¼ tsp (1 g), Stevia
+– 1 pinch (optional)
+Servings: 1
+Preparation Time: 3 min
+Cooking Method: Warmed
+
+Nutritive Value per Day:
+Calories: 1500–1600 kcal
+Protein: 60–65 g
+Carbohydrates: 140–150 g (Low GI)
+Fat: 40–45 g (mostly unsaturated)
+Fiber: 30–32 g
+Key Micronutrients:
+High in: Zinc (sprouts, chana), Vitamin C (kiwi, vegetables), Vitamin A (spinach),
+Omega-3 (flaxseed in optional addition), Magnesium (quinoa, nuts)
+Low in: Saturated fat, Refined sugar, Sodium
+Dietary & Cultural Context:
+Allergens: Almonds, Dairy (low-fat yogurt)
+Diet Type: Vegetarian, Low-GI, Anti-inflammatory, Acne-Friendly
+Cultural Preference: North Indian
+Annotations for AI (Tags):
+Low-GI, Anti-inflammatory, Acne-Friendly, Oily Skin Control, High-Fiber, Vitamin &
+Mineral-Rich, Hydrating, Vegetarian
+Rationale & Alternatives:
+Rationale: This plan focuses on low-glycemic, anti-inflammatory foods to stabilize
+blood sugar, reduce inflammation, and supply antioxidants and zinc for skin health.
+Healthy fats support sebum balance. Water-rich vegetables and fruits maintain
+hydration.
+Alternatives:
+Quinoa → Brown rice or millet
+
+Almond milk → Soy milk or cow milk (low-fat)
+Roasted chana → Roasted makhana
+Spinach → Fenugreek or methi leaves
+Sources Reference:
+ICMR-NIN: Dietary Guidelines for Indians (2020)
+ADA: American Diabetes Association Guidelines (2024) – for low GI / antioxidant focus
+FSSAI: Eat Right India Initiative

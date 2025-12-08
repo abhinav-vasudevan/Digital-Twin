@@ -1,0 +1,90 @@
+Name: XYZ
+Age: 25
+Sex: Male
+Height: 170 cm
+Weight: 65 kg
+Activity level: Moderate (gym 4–5 days/week)
+Health conditions: Dry / Dehydrated Skin
+Daily plan or Meal-by-meal plan: Day Plan
+Day Number: 1
+Meal Type: Breakfast
+Dish Name: Oats Porridge with Flaxseed and Mixed Berries + Boiled Egg
+Ingredients with Quantities & Units: Rolled oats – ½ cup (50 g), Skimmed milk – 1 cup
+(240 ml), Flaxseed powder – 1 tsp (3 g), Mixed berries (strawberry, blueberry) – ½ cup
+(75 g), Boiled egg – 1 large (50 g)
+Servings: 1
+Preparation Time: 10 min
+Cooking Method: Oats cooked in milk, flaxseed and berries added on top, egg boiled
+separately
+Meal Type: Mid-Morning Snack
+Dish Name: Coconut Water + Handful of Walnuts
+Ingredients with Quantities & Units: Fresh coconut water – 1 glass (250 ml), Walnuts – 6
+pieces (15 g)
+Servings: 1
+Preparation Time: 2 min
+Cooking Method: Raw
+Meal Type: Lunch
+
+Dish Name: Grilled Chicken + Brown Rice + Stir-Fried Vegetables + Tomato-Cucumber
+Salad
+Ingredients with Quantities & Units: Chicken breast – 100 g, Brown rice (cooked) – ¾ cup
+(120 g), Mixed vegetables (carrot, beans, capsicum) – 1 cup (100 g), Olive oil – 1 tsp
+(5 ml), Tomato – 50 g, Cucumber – 50 g, Lemon – ½ small, Black pepper – pinch
+Servings: 1
+Preparation Time: 20 min
+Cooking Method: Chicken grilled with spices, vegetables stir-fried lightly in olive oil, rice
+boiled, salad raw
+Meal Type: Evening Snack
+Dish Name: Greek Yogurt with Chia Seeds
+Ingredients with Quantities & Units: Greek yogurt – 100 g, Chia seeds – 1 tsp (5 g)
+Servings: 1
+Preparation Time: 2 min
+Cooking Method: Raw, mixed
+Meal Type: Dinner
+Dish Name: Grilled Fish + Quinoa + Steamed Greens
+Ingredients with Quantities & Units: Fish (Pomfret / Seer) – 120 g, Quinoa (cooked) – ¾
+cup (120 g), Steamed greens (spinach, broccoli, zucchini) – 1 cup (100 g), Olive oil –
+1 tsp (5 ml), Garlic – 1 clove, Lemon – ½ small
+Servings: 1
+Preparation Time: 20 min
+Cooking Method: Fish grilled with garlic & lemon, quinoa boiled, greens steamed and
+drizzled with olive oil
+Meal Type: Bedtime Snack
+Dish Name: Warm Turmeric Milk (Full-Fat)
+
+Ingredients with Quantities & Units: Full-fat milk – 1 cup (240 ml), Turmeric – ¼ tsp (1 g),
+Honey – 1 tsp (5 g, optional)
+Servings: 1
+Preparation Time: 3 min
+Cooking Method: Warmed, mixed
+Nutritive Value per Day:
+Calories: 2000–2100 kcal
+Protein: 90–95 g
+Carbohydrates: 180–190 g (Moderate GI)
+Fat: 70–75 g (mostly unsaturated)
+Fiber: 30–32 g
+Key Micronutrients:
+High in: Omega-3 (fish, flaxseed, walnuts), Vitamin A & C (vegetables, berries, lemon),
+Vitamin E (olive oil, nuts), Zinc (chicken, eggs), Calcium (milk, yogurt)
+Low in: Saturated fats (except milk), Added sugar, Processed foods
+Dietary & Cultural Context:
+Allergens: Fish, Egg, Dairy, Nuts
+Diet Type: Non-Vegetarian, High-Fiber, Anti-Inflammatory, Hydrating
+Cultural Preference: South Indian
+Annotations for AI (Tags):
+Hydrating, Anti-Inflammatory, High-Protein, Omega-3 Rich, Dry Skin Support, Non-
+Vegetarian, South Indian
+Rationale & Alternatives:
+
+Rationale: Focused on hydrating foods, healthy fats, and antioxidant-rich vegetables &
+fruits to improve skin moisture and repair the skin barrier. Protein from eggs, chicken,
+and fish supports tissue repair. Omega-3 fatty acids reduce inflammation.
+Alternatives:
+Chicken → Grilled tofu / paneer
+Fish → Eggs / lean chicken
+Quinoa → Brown rice or millet
+Flaxseed → Chia seeds
+Sources Reference:
+ICMR-NIN: Dietary Guidelines for Indians (2020)
+FSSAI: Eat Right India Initiative
+Harvard Health: Nutrition & Skin Health

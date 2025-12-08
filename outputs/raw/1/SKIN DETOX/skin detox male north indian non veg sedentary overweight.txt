@@ -1,0 +1,175 @@
+kin Detox Diet
+Male | North India | non-vegetarian | Sedentary | Overweight
+Client / User Profile
+Name: XYZ
+Age: 34 years
+Sex: Male
+Height: 173 cm
+Weight: 82 kg
+BMI: 27.4 (Overweight)
+Activity Level: Sedentary (office desk job, minimal walking)
+Goal: Skin detox, fat reduction, clear complexion, reduce inflammation
+Diet Type: Non-Vegetarian (North Indian)
+Overall Nutritional Values (Daily Range)
+Calories: 1500–1650 kcal
+Protein: 75–85 g
+Carbohydrates: 160–185 g
+Fat: 40–50 g
+Fiber: 25–30 g
+Skin-Healing Foods: Amla, Aloe, Papaya, Coconut water, Curd, Beetroot
+Herbs: Turmeric, Neem (mild), Giloy, Manjistha
+Meal Schedule (Early Morning – Bedtime)
+Early Morning
+Option 1: Amla + Aloe Detox Water
+Ingredients: Amla juice 15 ml, Aloe juice 20 ml, Warm water 200 ml
+Serving Size: 1 glass
+Prep Time: 3 min
+Method: Mixed
+Nutritive Values: 35 kcal, Protein 0 g, Carbs 8 g, Fats 0 g
+Option 2: Turmeric Ginger Water
+Ingredients: Turmeric 1 g, Ginger 2 g, Water 250 ml
+Serving Size: 1 glass
+Prep Time: 3 min
+Method: Infusion
+Nutritive Values: 22 kcal, Protein 0.4 g, Carbs 4 g, Fats 0.1 g
+Option 3: Fennel Detox Water
+Ingredients: Fennel 1 tsp, Water 250 ml
+Serving Size: 1 glass
+Prep Time: 5 min
+Method: Boiled
+Nutritive Values: 12 kcal, Protein 0.3 g, Carbs 2 g, Fats 0 g
+Breakfast
+Option 1: 2 Egg Whites + 1 Boiled Egg Yolk + 1 Roti
+Ingredients: Eggs 2 whites + 1 full egg, Wheat flour 30 g
+Serving Size: 1 plate
+Prep Time: 10 min
+Method: Boiled
+
+Nutritive Values: 240 kcal, Protein 18 g, Carbs 18 g, Fats 9 g
+Option 2: Egg Bhurji (2 Eggs) + 1 Roti
+Ingredients: Eggs 2, Onion 40 g, Tomato 40 g, Oil 1 tsp, Wheat flour 30 g
+Serving Size: 1 plate
+Prep Time: 12 min
+Method: Cooked
+Nutritive Values: 310 kcal, Protein 18 g, Carbs 22 g, Fats 14 g
+Option 3: Oats + Curd Skin Bowl
+Ingredients: Oats 40 g, Curd 100 g, Apple 50 g
+Serving Size: 1 bowl
+Prep Time: 10 min
+Method: Mixed
+Nutritive Values: 260 kcal, Protein 11 g, Carbs 38 g, Fats 5 g
+Mid-Morning Snack
+Option 1: Coconut Water
+Ingredients: Coconut water 200 ml
+Serving Size: 1 glass
+Prep Time: 1 min
+Method: Fresh
+Nutritive Values: 50 kcal, Protein 0.4 g, Carbs 12 g, Fats 0 g
+Option 2: Papaya Bowl
+Ingredients: Papaya 150 g
+Serving Size: 1 bowl
+Prep Time: 2 min
+Method: Fresh
+Nutritive Values: 60 kcal, Protein 0.8 g, Carbs 15 g, Fats 0.1 g
+Option 3: Curd + Chia
+Ingredients: Curd 100 g, Chia seeds 5 g
+Serving Size: 1 bowl
+Prep Time: 2 min
+Method: Mixed
+Nutritive Values: 120 kcal, Protein 6 g, Carbs 9 g, Fats 4 g
+Lunch
+Option 1: Chicken Curry + 1 Roti + Salad
+Ingredients: Chicken 80 g, Wheat flour 30 g, Salad 150 g
+Serving Size: 1 plate
+Prep Time: 25 min
+Method: Cooked
+Nutritive Values: 350 kcal, Protein 27 g, Carbs 20 g, Fats 14 g
+Option 2: Egg Curry (2 Eggs) + 1 Roti
+Ingredients: Eggs 2, Wheat flour 30 g, Onion 40 g, Tomato 40 g
+Serving Size: 1 plate
+Prep Time: 20 min
+Method: Cooked
+Nutritive Values: 300 kcal, Protein 17 g, Carbs 28 g, Fats 10 g
+Option 3: Moong Dal + 1 Roti + Veg Sabzi
+
+Ingredients: Dal 120 g, Wheat flour 30 g, Veg 150 g
+Serving Size: 1 plate
+Prep Time: 20 min
+Method: Cooked
+Nutritive Values: 310 kcal, Protein 14 g, Carbs 45 g, Fats 5 g
+Evening Snack
+Option 1: 1 Boiled Egg + Green Tea
+Ingredients: Egg 1, Tea 150 ml
+Serving Size: 1 egg + 1 cup
+Prep Time: 10 min
+Method: Boiled + brewed
+Nutritive Values: 95 kcal, Protein 7 g, Carbs 1 g, Fats 6 g
+Option 2: Fruit Bowl
+Ingredients: Mixed fruits 150 g
+Serving Size: 1 bowl
+Prep Time: 3 min
+Method: Fresh
+Nutritive Values: 75 kcal, Protein 0.7 g, Carbs 18 g, Fats 0.2 g
+Option 3: Roasted Chana
+Ingredients: Chana 40 g
+Serving Size: 1 bowl
+Prep Time: 5 min
+Method: Roasted
+Nutritive Values: 130 kcal, Protein 7 g, Carbs 20 g, Fats 1.5 g
+Dinner
+Option 1: Chicken Soup + Vegetables
+Ingredients: Chicken 60 g, Vegetables 150 g
+Serving Size: 1 bowl
+Prep Time: 20 min
+Method: Boiled
+Nutritive Values: 190 kcal, Protein 20 g, Carbs 9 g, Fats 5 g
+Option 2: 2 Egg Whites + Dal + Sabzi
+Ingredients: Egg whites 2, Dal 100 g, Vegetables 150 g
+Serving Size: 1 plate
+Prep Time: 20 min
+Method: Cooked
+Nutritive Values: 240 kcal, Protein 20 g, Carbs 24 g, Fats 4 g
+Option 3: Oats Vegetable Khichdi
+Ingredients: Oats 40 g, Dal 40 g, Vegetables 150 g
+Serving Size: 1 bowl
+Prep Time: 20 min
+Method: Pressure cooked
+Nutritive Values: 260 kcal, Protein 12 g, Carbs 41 g, Fats 4 g
+Bedtime
+Option 1: Warm Milk + Turmeric
+Ingredients: Milk 150 ml, Turmeric 1 g
+
+Serving Size: 1 glass
+Prep Time: 5 min
+Method: Warm
+Nutritive Values: 120 kcal, Protein 5 g, Carbs 9 g, Fats 5 g
+Option 2: Almond Milk
+Ingredients: Almond milk 150 ml
+Serving Size: 1 glass
+Prep Time: 2 min
+Method: Warm
+Nutritive Values: 70 kcal, Protein 2 g, Carbs 3 g, Fats 5 g
+Option 3: Fennel Infusion
+Ingredients: Fennel 1 tsp, Water 200 ml
+Serving Size: 1 glass
+Prep Time: 5 min
+Method: Infusion
+Nutritive Values: 7 kcal, Protein 0.3 g, Carbs 1 g, Fats 0 g
+Dietary & Cultural Context
+North Indian
+Non-vegetarian
+Calorie restriction for fat loss
+Anti-inflammatory for skin detox
+Allergens: Eggs, Milk, Wheat
+Annotations (Tags)
+skin detox diet, sedentary overweight, north Indian non veg, fat loss, anti-inflammatory
+Rationale & Alternatives
+Chicken can be replaced with Fish
+Eggs can be replaced with Paneer if needed
+Wheat roti can be replaced with Multigrain roti
+Milk can be replaced with Coconut milk
+Source References
+ICMR–NIN Dietary Guidelines (2020)
+Indian Food Composition Tables (2017)
+WHO Nutrition Guidelines (2021)
+NIN Functional Foods Manual (2022)

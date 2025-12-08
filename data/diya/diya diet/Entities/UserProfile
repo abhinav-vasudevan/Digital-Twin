@@ -1,0 +1,122 @@
+{
+  "name": "UserProfile",
+  "type": "object",
+  "properties": {
+    "age": {
+      "type": "number",
+      "description": "User's age in years"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female",
+        "other"
+      ]
+    },
+    "height": {
+      "type": "number",
+      "description": "Height in centimeters"
+    },
+    "weight": {
+      "type": "number",
+      "description": "Weight in kilograms"
+    },
+    "target_weight": {
+      "type": "number",
+      "description": "Target weight in kilograms"
+    },
+    "region": {
+      "type": "string",
+      "enum": [
+        "north_indian",
+        "south_indian",
+        "east_indian",
+        "west_indian",
+        "mixed"
+      ]
+    },
+    "diet_type": {
+      "type": "string",
+      "enum": [
+        "vegetarian",
+        "non_vegetarian",
+        "eggetarian",
+        "vegan"
+      ]
+    },
+    "allergies": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of food allergies"
+    },
+    "medical_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of medical conditions"
+    },
+    "goals": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Health and fitness goals"
+    },
+    "activity_level": {
+      "type": "string",
+      "enum": [
+        "sedentary",
+        "light",
+        "moderate",
+        "active",
+        "very_active"
+      ]
+    },
+    "bmi": {
+      "type": "number"
+    },
+    "bmr": {
+      "type": "number",
+      "description": "Basal Metabolic Rate"
+    },
+    "tdee": {
+      "type": "number",
+      "description": "Total Daily Energy Expenditure"
+    },
+    "daily_calories": {
+      "type": "number"
+    },
+    "daily_protein": {
+      "type": "number"
+    },
+    "daily_carbs": {
+      "type": "number"
+    },
+    "daily_fats": {
+      "type": "number"
+    },
+    "onboarding_complete": {
+      "type": "boolean",
+      "default": false
+    },
+    "plan_start_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "current_plan_cycle": {
+      "type": "number",
+      "default": 1
+    }
+  },
+  "required": [
+    "age",
+    "gender",
+    "height",
+    "weight",
+    "diet_type"
+  ]
+}

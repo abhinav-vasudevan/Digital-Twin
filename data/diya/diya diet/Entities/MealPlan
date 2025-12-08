@@ -1,0 +1,190 @@
+{
+  "name": "MealPlan",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "day_number": {
+      "type": "number",
+      "description": "Day 1-14 of the plan"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "cycle": {
+      "type": "number",
+      "description": "Plan cycle number"
+    },
+    "breakfast": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "calories": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "carbs": {
+          "type": "number"
+        },
+        "fats": {
+          "type": "number"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recipe": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        }
+      }
+    },
+    "mid_morning_snack": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "calories": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "carbs": {
+          "type": "number"
+        },
+        "fats": {
+          "type": "number"
+        }
+      }
+    },
+    "lunch": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "calories": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "carbs": {
+          "type": "number"
+        },
+        "fats": {
+          "type": "number"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recipe": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        }
+      }
+    },
+    "evening_snack": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "calories": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "carbs": {
+          "type": "number"
+        },
+        "fats": {
+          "type": "number"
+        }
+      }
+    },
+    "dinner": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "calories": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "carbs": {
+          "type": "number"
+        },
+        "fats": {
+          "type": "number"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recipe": {
+          "type": "string"
+        },
+        "time": {
+          "type": "string"
+        }
+      }
+    },
+    "total_calories": {
+      "type": "number"
+    },
+    "total_protein": {
+      "type": "number"
+    },
+    "total_carbs": {
+      "type": "number"
+    },
+    "total_fats": {
+      "type": "number"
+    },
+    "is_adjusted": {
+      "type": "boolean",
+      "default": false
+    },
+    "adjustment_reason": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "user_email",
+    "day_number",
+    "date"
+  ]
+}

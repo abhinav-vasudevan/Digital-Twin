@@ -59,9 +59,24 @@ class GoalOnlyRecommender:
         
         return 'maintain'
     
+    def normalize_diet_type(self, diet: str) -> str:
+        """Normalize diet type variations to match PDF index"""
+        if not diet:
+            return 'vegetarian'
+        diet_lower = diet.lower()
+        if diet_lower in ['non_vegetarian', 'non_veg', 'nonveg', 'non vegetarian', 'non vegeterian']:
+            return 'non_veg'
+        elif diet_lower in ['vegetarian', 'veg', 'vegeterian']:
+            return 'vegetarian'
+        elif diet_lower in ['vegan']:
+            return 'vegan'
+        elif diet_lower in ['eggetarian', 'egg', 'eggeterian']:
+            return 'eggetarian'
+        return 'vegetarian'
+    
     def goal_match(self, user_profile: dict) -> list:
         """
-        Find plans matching Primary Goal + Region + Diet Type
+        Find plans matching Primary Goal + Diet Type + Region
         Ignores: Gender, BMI, Activity, Health conditions, Age, Allergies
         
         Args:
@@ -71,45 +86,75 @@ class GoalOnlyRecommender:
             List of matching plans
         """
         primary_goal = self.detect_primary_goal(user_profile)
+        diet = self.normalize_diet_type(user_profile.get('diet_type', ''))
         region = user_profile.get('region', '').lower()
-        diet = user_profile.get('diet_type', '').lower()
         
-        # Map goal to category
+        # Map goal to category (must match PDF index categories exactly)
+        # Keep in sync with ExactMatchRecommender.GOAL_TO_CATEGORY
         goal_category_map = {
+            # Weight goals
             'weight_loss': 'weight_loss',
+            'weight_loss_only': 'weight_loss',
+            'weight_loss_pcos': 'weight_loss_pcos',
+            'weight_loss_type1_diabetes': 'weight_loss_diabetes',
             'weight_gain': 'weight_gain',
-            'muscle_building': 'weight_gain',  # Treat as weight gain
+            'weight_gain_underweight': 'weight_gain',
+            'muscle_building': 'weight_gain',
             'maintain': 'maintenance',
+            
+            # Skin & beauty
             'clear_skin': 'skin_health',
-            'gut_health': 'gut_health',
+            'acne_oily_skin': 'skin_health',
+            'skin_health': 'skin_health',
+            'skin_detox': 'skin_detox',
+            'anti_aging': 'anti_aging',
+            'anti_aging_sun_damage': 'anti_aging',
+            
+            # Digestive health
+            'gut_health': 'gut_cleanse_digestive_detox',
+            'digestive_detox': 'gut_cleanse_digestive_detox',
+            'gut_detox': 'gut_detox',
+            'gas_bloating': 'gas_bloating',
+            'probiotic': 'probiotic',
+            'probiotic_rich': 'probiotic',
+            
+            # Detox
+            'detox': 'ayurvedic_detox',
+            'ayurvedic_detox': 'ayurvedic_detox',
+            'liver_detox': 'liver_detox',
+            
+            # Other health
+            'hair_loss': 'hair_loss',
+            'hair_loss_thinning': 'hair_loss',
+            'anti_inflammatory': 'anti_inflammatory',
+            'pcos': 'weight_loss_pcos',
+            'diabetes': 'weight_loss_diabetes',
+            
+            # Protein/fitness
+            'protein_rich_balanced': 'high_protein_balanced',
+            'high_protein_high_fiber': 'high_protein_high_fiber',
+            
+            # Generic
             'energy': 'energy_boost',
             'better_sleep': 'sleep_improvement',
-            'pcos': 'pcos',
-            'diabetes': 'diabetes',
-            'hair_loss': 'hair_health',
-            'anti_aging': 'anti_aging',
-            'detox': 'detox',
-            'anti_inflammatory': 'anti_inflammatory',
-            'probiotic': 'probiotic',
-            'gas_bloating': 'digestive_health',
         }
         target_category = goal_category_map.get(primary_goal, primary_goal)
         
         print(f"\n[GoalOnly] Matching on:")
         print(f"  Primary Goal/Category: {target_category}")
-        print(f"  Region: {region}")
         print(f"  Diet Type: {diet}")
+        print(f"  Region: {region}")
         print(f"  Ignoring: Gender, BMI, Activity, Health, Age, Allergies")
         
         matches = []
         
         for plan in self.plans:
             plan_category = (plan.get('category') or '').lower()
-            plan_region = (plan.get('region') or '').lower()
             plan_diet = (plan.get('diet_type') or 'vegetarian').lower()
+            plan_region = (plan.get('region') or '').lower()
             
-            # Match goal category + region + diet type
-            if plan_category == target_category and plan_region == region and plan_diet == diet:
+            # Match goal category + diet type + region
+            if plan_category == target_category and plan_diet == diet and plan_region == region:
                 matches.append(plan)
         
         print(f"[GoalOnly] Found {len(matches)} matches")
@@ -133,12 +178,12 @@ class GoalOnlyRecommender:
             primary_goal = self.detect_primary_goal(user_profile)
             return {
                 'status': 'not_available',
-                'message': f'No diet plans found for goal "{primary_goal}", diet "{user_profile.get("diet_type")}" in region "{user_profile.get("region")}"',
+                'message': f'No diet plans found for goal "{primary_goal}", diet "{user_profile.get("diet_type")}", region "{user_profile.get("region")}"',
                 'recommendations': [],
                 'criteria': {
                     'goal': primary_goal,
-                    'region': user_profile.get('region'),
-                    'diet_type': user_profile.get('diet_type')
+                    'diet_type': user_profile.get('diet_type'),
+                    'region': user_profile.get('region')
                 }
             }
         
@@ -148,7 +193,7 @@ class GoalOnlyRecommender:
             'total_matches': len(matches),
             'criteria': {
                 'goal': self.detect_primary_goal(user_profile),
-                'region': user_profile.get('region'),
-                'diet_type': user_profile.get('diet_type')
+                'diet_type': user_profile.get('diet_type'),
+                'bmi_category': user_profile.get('bmi_category')
             }
         }

@@ -174,11 +174,12 @@ def _to_markdown(data: Dict[str, Any]) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Discover and summarize data in folders 1 and 2")
+    project_root = Path(__file__).parent.parent.parent
     ap.add_argument("--folders", nargs="*", default=[
-        r"D:\\Documents\\Diet plan\\1",
-        r"D:\\Documents\\Diet plan\\2",
+        str(project_root / "1"),
+        str(project_root / "2"),
     ], help="Folders to scan")
-    ap.add_argument("--out", default=r"D:\\Documents\\Diet plan\\data-inspector\\report", help="Output directory for reports")
+    ap.add_argument("--out", default=str(project_root / "data-inspector" / "report"), help="Output directory for reports")
     args = ap.parse_args()
 
     roots = [Path(p) for p in args.folders]

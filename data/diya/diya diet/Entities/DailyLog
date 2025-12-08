@@ -1,0 +1,147 @@
+{
+  "name": "DailyLog",
+  "type": "object",
+  "properties": {
+    "user_email": {
+      "type": "string"
+    },
+    "date": {
+      "type": "string",
+      "format": "date"
+    },
+    "meals_eaten": {
+      "type": "object",
+      "properties": {
+        "breakfast": {
+          "type": "boolean"
+        },
+        "mid_morning_snack": {
+          "type": "boolean"
+        },
+        "lunch": {
+          "type": "boolean"
+        },
+        "evening_snack": {
+          "type": "boolean"
+        },
+        "dinner": {
+          "type": "boolean"
+        }
+      }
+    },
+    "partial_meals": {
+      "type": "object",
+      "description": "Percentage eaten for each meal",
+      "properties": {
+        "breakfast": {
+          "type": "number"
+        },
+        "lunch": {
+          "type": "number"
+        },
+        "dinner": {
+          "type": "number"
+        }
+      }
+    },
+    "extra_foods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "calories": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "mood": {
+      "type": "string",
+      "enum": [
+        "great",
+        "good",
+        "neutral",
+        "low",
+        "bad"
+      ]
+    },
+    "energy_level": {
+      "type": "number",
+      "description": "1-10 scale"
+    },
+    "digestion": {
+      "type": "string",
+      "enum": [
+        "excellent",
+        "good",
+        "normal",
+        "bloated",
+        "uncomfortable",
+        "poor"
+      ]
+    },
+    "acne_status": {
+      "type": "string",
+      "enum": [
+        "clear",
+        "mild",
+        "moderate",
+        "severe"
+      ]
+    },
+    "sleep_quality": {
+      "type": "string",
+      "enum": [
+        "excellent",
+        "good",
+        "fair",
+        "poor"
+      ]
+    },
+    "symptoms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Any symptoms experienced"
+    },
+    "water_intake": {
+      "type": "number",
+      "description": "Glasses of water"
+    },
+    "weight": {
+      "type": "number",
+      "description": "Daily weight if measured"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "ai_insights": {
+      "type": "string"
+    },
+    "nutrient_deficit": {
+      "type": "object",
+      "properties": {
+        "calories": {
+          "type": "number"
+        },
+        "protein": {
+          "type": "number"
+        },
+        "carbs": {
+          "type": "number"
+        },
+        "fats": {
+          "type": "number"
+        }
+      }
+    }
+  },
+  "required": [
+    "user_email",
+    "date"
+  ]
+}

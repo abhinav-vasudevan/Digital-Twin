@@ -9,13 +9,13 @@
       <div class="step-number">1</div>
       <div class="step-label">Basics</div>
     </div>
-    <div class="step" data-step="4">
-      <div class="step-number">2</div>
-      <div class="step-label">Digital Twin</div>
-    </div>
     <div class="step" data-step="3">
-      <div class="step-number">3</div>
+      <div class="step-number">2</div>
       <div class="step-label">Goals</div>
+    </div>
+    <div class="step" data-step="4">
+      <div class="step-number">3</div>
+      <div class="step-label">NutriAI</div>
     </div>
     <div class="step" data-step="2">
       <div class="step-number">4</div>
@@ -40,7 +40,6 @@
             <option value="">Select...</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
-            <option value="other">Other</option>
           </select>
         </label>
         <label>
@@ -78,27 +77,6 @@
               <span class="region-desc">Rice, Sambar, Dosa</span>
             </div>
           </label>
-          <label class="region-card">
-            <input type="radio" name="region" value="east_indian" />
-            <div class="region-card-content">
-              <span class="region-name">East Indian</span>
-              <span class="region-desc">Fish, Rice, Sweets</span>
-            </div>
-          </label>
-          <label class="region-card">
-            <input type="radio" name="region" value="west_indian" />
-            <div class="region-card-content">
-              <span class="region-name">West Indian</span>
-              <span class="region-desc">Dhokla, Thepla, Curry</span>
-            </div>
-          </label>
-          <label class="region-card">
-            <input type="radio" name="region" value="mixed" />
-            <div class="region-card-content">
-              <span class="region-name">Mixed/Pan Indian</span>
-              <span class="region-desc">Variety from all regions</span>
-            </div>
-          </label>
         </div>
       </div>
       
@@ -117,13 +95,6 @@
             <div class="diet-card-content">
               <span class="diet-emoji">🍗</span>
               <span class="diet-label">Non-Vegetarian</span>
-            </div>
-          </label>
-          <label class="diet-card">
-            <input type="radio" name="diet_type" value="eggetarian" />
-            <div class="diet-card-content">
-              <span class="diet-emoji">🥚</span>
-              <span class="diet-label">Eggetarian</span>
             </div>
           </label>
           <label class="diet-card">
@@ -161,7 +132,7 @@
           <option value="sedentary">Sedentary (desk job)</option>
           <option value="light">Light (1-2 days/week)</option>
           <option value="moderate">Moderate (3-5 days/week)</option>
-          <option value="very_active">Very Active / Heavy Worker</option>
+          <option value="heavy">Heavy / Very Active Worker</option>
         </select>
       </div>
       
@@ -174,107 +145,51 @@
         <label class="section-label">Your Health Goals (select multiple)</label>
         <div class="goals-grid">
           <label class="goal-card">
-            <input type="checkbox" name="goals" value="weight_loss" />
-            <div class="goal-card-content">
-              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
-              <span class="goal-name">Weight Loss</span>
-              <span class="goal-desc">Lose weight healthily</span>
-            </div>
-          </label>
-          <label class="goal-card">
-            <input type="checkbox" name="goals" value="weight_gain" />
-            <div class="goal-card-content">
-              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z"/></svg>
-              <span class="goal-name">Weight Gain</span>
-              <span class="goal-desc">Build mass & muscle</span>
-            </div>
-          </label>
-          <label class="goal-card">
-            <input type="checkbox" name="goals" value="maintain" />
-            <div class="goal-card-content">
-              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              <span class="goal-name">Maintain Weight</span>
-              <span class="goal-desc">Stay at current weight</span>
-            </div>
-          </label>
-          <label class="goal-card">
-            <input type="checkbox" name="goals" value="muscle_building" />
-            <div class="goal-card-content">
-              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              <span class="goal-name">Build Muscle</span>
-              <span class="goal-desc">Increase muscle mass</span>
-            </div>
-          </label>
-          <label class="goal-card">
-            <input type="checkbox" name="goals" value="energy" />
-            <div class="goal-card-content">
-              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>
-              <span class="goal-name">More Energy</span>
-              <span class="goal-desc">Boost daily energy</span>
-            </div>
-          </label>
-          <label class="goal-card">
-            <input type="checkbox" name="goals" value="better_sleep" />
-            <div class="goal-card-content">
-              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
-              <span class="goal-name">Better Sleep</span>
-              <span class="goal-desc">Improve sleep quality</span>
-            </div>
-          </label>
-          <label class="goal-card">
-            <input type="checkbox" name="goals" value="clear_skin" />
+            <input type="checkbox" name="goals" value="acne_oily_skin" />
             <div class="goal-card-content">
               <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              <span class="goal-name">Clear Skin</span>
-              <span class="goal-desc">Reduce acne & glow</span>
+              <span class="goal-name">Acne & Oily Skin</span>
+              <span class="goal-desc">Clear & balanced skin</span>
             </div>
           </label>
           <label class="goal-card">
-            <input type="checkbox" name="goals" value="gut_health" />
+            <input type="checkbox" name="goals" value="high_protein_high_fiber" />
             <div class="goal-card-content">
-              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-              <span class="goal-name">Gut Health</span>
-              <span class="goal-desc">Improve digestion</span>
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span class="goal-name">High Protein High Fiber</span>
+              <span class="goal-desc">Balanced nutrition</span>
             </div>
           </label>
           <label class="goal-card">
-            <input type="checkbox" name="goals" value="pcos" />
-            <div class="goal-card-content">
-              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-              <span class="goal-name">PCOS</span>
-              <span class="goal-desc">Manage PCOS symptoms</span>
-            </div>
-          </label>
-          <label class="goal-card">
-            <input type="checkbox" name="goals" value="diabetes" />
+            <input type="checkbox" name="goals" value="weight_loss_type1_diabetes" />
             <div class="goal-card-content">
               <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-              <span class="goal-name">Diabetes</span>
+              <span class="goal-name">Weight Loss + Type 1 Diabetes</span>
               <span class="goal-desc">Blood sugar control</span>
             </div>
           </label>
           <label class="goal-card">
-            <input type="checkbox" name="goals" value="hair_loss" />
+            <input type="checkbox" name="goals" value="protein_rich_balanced" />
             <div class="goal-card-content">
-              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-              <span class="goal-name">Hair Health</span>
-              <span class="goal-desc">Reduce hair loss</span>
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="goal-name">Protein Rich Balanced Diet</span>
+              <span class="goal-desc">Optimal nutrition</span>
             </div>
           </label>
           <label class="goal-card">
-            <input type="checkbox" name="goals" value="anti_aging" />
+            <input type="checkbox" name="goals" value="anti_aging_sun_damage" />
             <div class="goal-card-content">
               <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-              <span class="goal-name">Anti-Aging</span>
-              <span class="goal-desc">Reduce fine lines</span>
+              <span class="goal-name">Anti-Aging / Sun Damage / Fine Lines</span>
+              <span class="goal-desc">Youthful skin</span>
             </div>
           </label>
           <label class="goal-card">
-            <input type="checkbox" name="goals" value="detox" />
+            <input type="checkbox" name="goals" value="edema" />
             <div class="goal-card-content">
               <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
-              <span class="goal-name">Detox</span>
-              <span class="goal-desc">Cleanse body systems</span>
+              <span class="goal-name">Edema</span>
+              <span class="goal-desc">Reduce water retention</span>
             </div>
           </label>
           <label class="goal-card">
@@ -286,19 +201,107 @@
             </div>
           </label>
           <label class="goal-card">
-            <input type="checkbox" name="goals" value="probiotic" />
+            <input type="checkbox" name="goals" value="weight_loss_only" />
             <div class="goal-card-content">
-              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-              <span class="goal-name">Probiotic</span>
-              <span class="goal-desc">Boost gut bacteria</span>
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+              <span class="goal-name">Weight Loss Only</span>
+              <span class="goal-desc">Lose weight healthily</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="weight_loss_pcos" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="goal-name">Weight Loss + PCOS</span>
+              <span class="goal-desc">Manage PCOS symptoms</span>
             </div>
           </label>
           <label class="goal-card">
             <input type="checkbox" name="goals" value="gas_bloating" />
             <div class="goal-card-content">
               <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-              <span class="goal-name">Gas & Bloating</span>
+              <span class="goal-name">Gas + Bloating</span>
               <span class="goal-desc">Reduce discomfort</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="insulin_resistance_obesity" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+              <span class="goal-name">Insulin Resistance + Obesity</span>
+              <span class="goal-desc">Metabolic health</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="hair_loss_thinning" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+              <span class="goal-name">Hair Loss & Hair Thinning</span>
+              <span class="goal-desc">Strengthen hair</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="skin_health" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="goal-name">Skin Health Diet Plan</span>
+              <span class="goal-desc">Radiant skin</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="weight_gain_underweight" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"/></svg>
+              <span class="goal-name">Weight Gain for Underweight & Malnutrition</span>
+              <span class="goal-desc">Healthy weight gain</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="probiotic_rich" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+              <span class="goal-name">Probiotic Rich Diet</span>
+              <span class="goal-desc">Boost gut bacteria</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="gut_detox" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+              <span class="goal-name">Gut Detox Diet</span>
+              <span class="goal-desc">Cleanse digestive system</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="liver_detox" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+              <span class="goal-name">Liver Detox</span>
+              <span class="goal-desc">Support liver function</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="digestive_detox" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+              <span class="goal-name">Digestive Detox / Gut Cleansing</span>
+              <span class="goal-desc">Improve digestion</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="ayurvedic_detox" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+              <span class="goal-name">Ayurvedic Detox Diet</span>
+              <span class="goal-desc">Traditional cleanse</span>
+            </div>
+          </label>
+          <label class="goal-card">
+            <input type="checkbox" name="goals" value="skin_detox" />
+            <div class="goal-card-content">
+              <svg class="goal-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+              <span class="goal-name">Skin Detox</span>
+              <span class="goal-desc">Clear toxins for glowing skin</span>
             </div>
           </label>
         </div>
@@ -310,9 +313,9 @@
       </div>
     </div>
 
-    <!-- Step 4: Digital Twin Preview -->
+    <!-- Step 4: NutriAI Preview -->
     <div class="step-content" data-step="4">
-      <h1>Your Digital Twin</h1>
+      <h1>Your NutriAI</h1>
       <p class="subtitle">We've calculated your metabolic profile</p>
       
       <div class="twin-preview">
@@ -366,7 +369,7 @@
 
 {% block scripts %}
 <script>
-const STEP_ORDER = [1, 4, 3, 2];  // The flow: Basics → Digital Twin → Goals → Preferences
+const STEP_ORDER = [1, 3, 4, 2];  // The flow: Basics → Goals → NutriAI → Preferences
 let currentStep = 1;
 
 function getStepIndex(step) {
@@ -387,8 +390,8 @@ function getPrevStep(step) {
 
 function nextStep() {
   if (validateStep(currentStep)) {
-    // Calculate metrics after step 1 (basics)
-    if (currentStep === 1) {
+    // Calculate metrics after step 3 (goals) - before showing NutriAI
+    if (currentStep === 3) {
       calculateMetrics();
     }
     

@@ -35,6 +35,7 @@ print("=" * 80)
 import os
 
 print("\nThe model is now cached at:")
-print(f"C:\\Users\\{os.environ['USERNAME']}\\.cache\\huggingface\\hub\\models--microsoft--phi-2")
+from pathlib import Path
+print(f"{Path.home()}/.cache/huggingface/hub/models--microsoft--phi-2")
 print("\nYou can now start the server with:")
 print("python -m uvicorn service.api:app --reload --port 8000")

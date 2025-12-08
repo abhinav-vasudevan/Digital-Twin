@@ -1,0 +1,90 @@
+Name: XYZ
+Age: 35
+Sex: Male
+Height: 172 cm
+Weight: 70 kg
+Activity level: Moderate (light gym/yoga 5 days/week)
+Health Condition: Psoriasis (chronic inflammatory skin condition)
+Daily plan or Meal-by-meal plan: Day Plan
+Day Number: 1
+Meal Type: Breakfast
+Dish Name: Vegetable Oats Upma with Flaxseed Chutney + Herbal Tea
+Ingredients with Quantities & Units: Rolled oats – ½ cup (50 g), Mixed vegetables (carrot,
+beans, peas, capsicum) – ½ cup (60 g), Olive oil – 1 tsp (5 ml), Mustard seeds, curry
+leaves, turmeric – to taste, Flaxseed powder – 1 tsp (3 g) (for chutney), Mint leaves,
+coriander, lemon juice – as desired, Herbal tea (chamomile / tulsi) – 1 cup (200 ml)
+Servings: 1
+Preparation Time: 10 min
+Cooking Method: Sautéed and cooked with water
+Mid-Morning Snack
+Dish Name: Amla-Green Apple Smoothie
+Ingredients with Quantities & Units: Amla – 1 medium (30 g), Green apple – ½ fruit (80 g),
+Spinach – ½ cup (20 g), Chia seeds – 1 tsp (5 g), Water – 1 cup (200 ml)
+Servings: 1
+Preparation Time: 5 min
+Cooking Method: Blended raw
+
+Lunch
+Dish Name: Brown Rice + Masoor Dal + Stir-Fried Greens + Cucumber Salad
+Ingredients with Quantities & Units: Brown rice (cooked) – ¾ cup (120 g), Masoor dal – ¼
+cup (40 g), Garlic – 2 cloves, Spinach + methi – 1 cup (100 g), Mustard oil – 1 tsp (5 ml),
+Cucumber + tomato + lemon salad – 1 cup (100 g)
+Servings: 1
+Preparation Time: 15 min
+Cooking Method: Boiled and sautéed
+Evening Snack
+Dish Name: Roasted Pumpkin Seeds + Coconut Water
+Ingredients with Quantities & Units: Pumpkin seeds – 2 tbsp (20 g), Coconut water – 1
+glass (250 ml)
+Servings: 1
+Preparation Time: 2 min
+Cooking Method: Raw
+Dinner
+Dish Name: Grilled Chicken with Quinoa / Brown Rice and Steamed Broccoli
+Ingredients with Quantities & Units: Chicken breast – 100 g (skinless), Brown rice
+(cooked) – ¾ cup (120 g), Broccoli – 1 cup (100 g), Olive oil – 1 tsp (5 ml), Lemon juice,
+pepper, turmeric – as required
+Servings: 1
+Preparation Time: 15 min
+Cooking Method: Grilled and steamed
+Pre-Bed
+Dish Name: Warm Haldi Milk (Dairy or Almond Milk)
+Ingredients with Quantities & Units: Milk (low-fat or almond) – 1 cup (240 ml), Turmeric –
+¼ tsp (1 g), Black pepper – pinch
+
+Servings: 1
+Preparation Time: 3 min
+Cooking Method: Warmed
+Nutritive Value per Day:
+Calories: 1700–1800 kcal
+Protein: 75–80 g
+Carbohydrates: 160–170 g (Low-GI)
+Fat: 45–50 g (mostly unsaturated)
+Fiber: 35 g
+Key Micronutrients:
+Omega-3 fatty acids: flaxseed, pumpkin seeds, chicken
+Antioxidants: amla, spinach, tomato, turmeric
+Vitamin D & Zinc: chicken, seeds, dal
+Magnesium & Selenium: brown rice, leafy greens
+Dietary & Cultural Context:
+Diet Type: Anti-inflammatory, Non-vegetarian (South-North fusion)
+Cultural Preference: Indian diet, minimal spice, low oil
+Allergens: Dairy (optional), Gluten (minimal)
+Annotations for AI (Tags):
+Anti-inflammatory | Omega-3-rich | High-fiber | Low-GI | Skin-healing | Autoimmune-
+supportive | Gluten-minimized | Gut-friendly
+Rationale & Alternatives:
+Rationale:
+
+This plan supports psoriasis management by reducing inflammatory triggers (red meat,
+refined carbs, dairy) and increasing antioxidants, zinc, omega-3, and vitamin D for skin
+repair and immune modulation.
+Alternatives:
+Chicken → Grilled tofu or paneer (low-fat)
+Brown rice → Foxtail millet or red rice
+Almond milk → Soy or oat milk
+Amla → Guava or papaya
+Sources Reference:
+ICMR-NIN: Dietary Guidelines for Indians (2020)
+National Psoriasis Foundation (NPF) Dietary Guidance (2024)
+ADA & FSSAI: Eat Right India Recommendations

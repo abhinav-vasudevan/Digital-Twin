@@ -5,9 +5,10 @@ from collections import defaultdict
 
 # Compute phenotype and category coverage from inspector inventory and structured outputs
 
-INV = Path(r"D:\\Documents\\Diet plan\\data-inspector\\report\\inventory.json")
-OUT = Path(r"D:\\Documents\\Diet plan\\outputs\\structured")
-REPORT = Path(r"D:\\Documents\\Diet plan\\data-inspector\\report\\coverage.md")
+project_root = Path(__file__).parent.parent.parent
+INV = project_root / "data-inspector" / "report" / "inventory.json"
+OUT = project_root / "outputs" / "structured"
+REPORT = project_root / "data-inspector" / "report" / "coverage.md"
 
 
 def load_inventory():

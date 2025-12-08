@@ -37,11 +37,12 @@ def ocr_pdf_to_text(pdf_path: Path) -> str:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="OCR fallback for scanned PDFs")
+    project_root = Path(__file__).parent.parent
     ap.add_argument("--roots", nargs="*", default=[
-        r"D:\\Documents\\Diet plan\\1",
-        r"D:\\Documents\\Diet plan\\2",
+        str(project_root / "1"),
+        str(project_root / "2"),
     ])
-    ap.add_argument("--out", default=r"D:\\Documents\\Diet plan\\outputs\\ocr")
+    ap.add_argument("--out", default=str(project_root / "outputs" / "ocr"))
     ap.add_argument("--overwrite", action="store_true")
     args = ap.parse_args()
 

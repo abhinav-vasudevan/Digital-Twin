@@ -1,0 +1,221 @@
+Ayurvedic Detox (Panchakarma-Inspired) Diet
+Male | Vegetarian | North Indian | Sedentary | Normal
+Client / User Profile
+Name: XYZ
+Age: 30 years
+Sex: Male
+Height: 176 cm
+Weight: 70 kg
+BMI: 22.6 (Normal)
+Activity Level: Sedentary
+Health Condition / Goal: Ayurvedic detox, improve Agni, reduce Ama, enhance digestion
+Diet Type: Vegetarian, North Indian
+Overall Nutritional Values (Daily Range)
+Calories: 1800–2000 kcal
+Protein: 55–65 g
+Carbohydrates: 250–280 g
+Fat: 50–60 g
+Fiber: 28–32 g
+Key Ayurvedic Elements: Warm foods, khichdi, herbal teas, ghee
+Agni-Improving Foods: Ginger, Cumin, Ajwain
+Ama-Reducing Foods: Stewed fruits, herbal decoctions
+Meal Schedule (Early Morning – Bedtime)
+Meal Type: Early Morning
+Option 1: Warm Ginger-Cumin Water
+Ingredients: Ginger 2 g, Cumin ½ tsp, Water 250 ml
+Serving: 1 glass
+
+Time: 5 min
+Method: Boiled and strained
+Nutritive Values: 10 kcal
+Option 2: Warm Lemon Water
+Ingredients: Lemon 10 ml, Water 250 ml
+Serving: 1 glass
+Time: 3 min
+Method: Fresh
+Nutritive Values: 10 kcal
+Option 3: Amla Juice + Warm Water
+Ingredients: Amla juice 15 ml, Water 200 ml
+Serving: 1
+Time: 5 min
+Method: Mixed
+Nutritive Values: 20 kcal
+Meal Type: Pre-Workout (Light Ayurvedic Fuel)
+Option 1: Stewed Apple + Honey
+Ingredients: Apple 120 g, Honey 1 tsp
+Serving: 1 bowl
+Time: 5 min
+Method: Stewed
+Nutritive Values: 120 kcal
+Option 2: Banana + Soaked Almonds
+Ingredients: Banana 1, Almonds 6 soaked
+Serving: 1
+Time: 2 min
+
+Method: Fresh
+Nutritive Values: 150 kcal
+Option 3: Warm Jaggery Water
+Ingredients: Jaggery 10 g, Water 200 ml
+Serving: 1
+Time: 3 min
+Method: Mixed
+Nutritive Values: 40 kcal
+Meal Type: Breakfast
+Option 1: Moong Dal Kitchari
+Ingredients: Moong dal 60 g, Rice 40 g, Ghee 1 tsp
+Serving: 1 bowl
+Time: 20 min
+Method: Cooked
+Nutritive Values: 320 kcal
+Option 2: Ragi Porridge
+Ingredients: Ragi flour 50 g, Milk 150 ml, Jaggery 10 g
+Serving: 1 bowl
+Time: 10 min
+Method: Cooked
+Nutritive Values: 300 kcal
+Option 3: Vegetable Dalia
+Ingredients: Dalia 70 g, Vegetables 80 g, Ghee ½ tsp
+Serving: 1
+Time: 15 min
+Method: Cooked
+
+Nutritive Values: 280 kcal
+Meal Type: Post-Workout (Recovery)
+Option 1: Turmeric Milk + Ghee
+Ingredients: Milk 200 ml, Turmeric 1 g, Ghee ½ tsp
+Serving: 1
+Time: 5 min
+Method: Warm
+Nutritive Values: 180 kcal
+Option 2: Moong Dal Light Soup
+Ingredients: Moong dal 60 g, Water 250 ml
+Serving: 1 bowl
+Time: 15 min
+Method: Cooked
+Nutritive Values: 150 kcal
+Option 3: Sweet Potato Bowl
+Ingredients: Sweet potato 120 g
+Serving: 1 bowl
+Time: 10 min
+Method: Steamed
+Nutritive Values: 140 kcal
+Meal Type: Mid-Morning Snack
+Option 1: Coconut Water + Amla
+Ingredients: Coconut water 250 ml, Amla 1
+Serving: 1
+Time: 2 min
+Method: Fresh
+
+Nutritive Values: 70 kcal
+Option 2: Curd + Mishri
+Ingredients: Curd 100 g, Mishri 2 g
+Serving: 1
+Time: 2 min
+Method: Mixed
+Nutritive Values: 80 kcal
+Option 3: CCF Tea
+Ingredients: Cumin ½ tsp, Coriander ½ tsp, Fennel ½ tsp
+Serving: 1
+Time: 5 min
+Method: Decoction
+Nutritive Values: 5 kcal
+Meal Type: Lunch
+Option 1: Ayurvedic Kitchari
+Ingredients: Moong dal 70 g, Rice 60 g, Ghee 1 tsp
+Serving: 1 plate
+Time: 25 min
+Method: Cooked
+Nutritive Values: 420 kcal
+Option 2: Dal + Vegetable Khichdi
+Ingredients: Rice 70 g, Moong dal 50 g, Vegetables 100 g
+Serving: 1
+Time: 25 min
+Method: Cooked
+Nutritive Values: 400 kcal
+
+Option 3: Soft Rotis + Dal + Stew
+Ingredients: Wheat 70 g, Dal 120 g, Veg 100 g
+Serving: 2 rotis
+Time: 20 min
+Method: Cooked
+Nutritive Values: 380 kcal
+Meal Type: Evening Snack
+Option 1: Herbal Ginger Tea + Makhana
+Ingredients: Ginger 2 g, Tea 150 ml, Makhana 20 g
+Serving: 1
+Time: 10 min
+Method: Boiled and roasted
+Nutritive Values: 120 kcal
+Option 2: Steamed Chana
+Ingredients: Chana 50 g
+Serving: 1
+Time: 10 min
+Method: Steamed
+Nutritive Values: 160 kcal
+Option 3: Fruit + Cinnamon
+Ingredients: Apple 120 g
+Serving: 1
+Time: 2 min
+Method: Fresh
+Nutritive Values: 80 kcal
+Meal Type: Dinner
+
+Option 1: Moong Dal Soup + Vegetable Stew
+Ingredients: Moong dal 70 g, Vegetables 80 g
+Serving: 1 bowl
+Time: 20 min
+Method: Cooked
+Nutritive Values: 260 kcal
+Option 2: Soft Rotis + Dal + Ghee
+Ingredients: Wheat 60 g, Dal 100 g, Ghee ½ tsp
+Serving: 2 rotis
+Time: 20 min
+Method: Cooked
+Nutritive Values: 320 kcal
+Option 3: Light Khichdi
+Ingredients: Rice 50 g, Moong dal 40 g, Vegetables 60 g
+Serving: 1
+Time: 20 min
+Method: Cooked
+Nutritive Values: 280 kcal
+Meal Type: Bedtime
+Option 1: Warm Turmeric Milk
+Ingredients: Milk 150 ml, Turmeric 1 g
+Serving: 1
+Time: 5 min
+Method: Warm
+Nutritive Values: 120 kcal
+Option 2: Warm Water + Cardamom
+
+Ingredients: Water 200 ml, Cardamom 0.5 g
+Serving: 1
+Time: 2 min
+Method: Warm
+Nutritive Values: 5 kcal
+Option 3: Digestive Decoction
+Ingredients: Ginger 1 g, Ajwain 1 g, Water 200 ml
+Serving: 1
+Time: 7 min
+Method: Boiled
+Nutritive Values: 5 kcal
+Dietary & Cultural Context
+Allergens: Dairy, Gluten
+Diet Type: Vegetarian
+Cultural Preference: North Indian Ayurvedic
+Annotations for AI (Tags)
+ayurvedic detox diet, panchakarma, north Indian vegetarian, sedentary normal, gut cleanse, Agni
+improvement
+Rationale & Alternatives
+Warm cleansing foods improve Agni and reduce Ama during detox.
+Alternatives:
+fi
+Moong dal Masoor dal
+fi
+Rice Little millet
+fi
+Milk Almond milk
+Source References
+Ayurveda classical texts
+ICMR-NIN
+
+WHO gut health

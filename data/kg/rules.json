@@ -1,0 +1,39 @@
+{
+  "rules": [
+    {
+      "id": "pcos_low_gi",
+      "condition": "pcos",
+      "description": "Emphasize low-GI carbs and fiber; avoid refined sugar",
+      "constraints": [
+        "limit_high_gi_carbs",
+        "ensure_fiber_min"
+      ]
+    },
+    {
+      "id": "t1d_carb_windows",
+      "condition": "type_1_diabetes",
+      "description": "Distribute carbs evenly; pair carbs with protein/fat",
+      "constraints": [
+        "distribute_carbs_evenly",
+        "pair_carbs_with_protein"
+      ]
+    },
+    {
+      "id": "gut_low_fodmap_phase",
+      "condition": "gut",
+      "description": "Reduce high FODMAP foods during flare-up phase",
+      "constraints": [
+        "limit_high_fodmap"
+      ]
+    },
+    {
+      "id": "detox_limits",
+      "condition": "detox",
+      "description": "Reduce processed sugar and saturated fat",
+      "constraints": [
+        "limit_processed_sugar",
+        "limit_saturated_fat"
+      ]
+    }
+  ]
+}

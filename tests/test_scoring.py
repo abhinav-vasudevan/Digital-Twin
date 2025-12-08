@@ -4,23 +4,23 @@ from service.pdf_recommender import PDFRecommender, UserProfile
 with open('service/data/profile.json', 'r') as f:
     profile = json.load(f)
 
-# Calculate BMI category (goal-aware)
-def get_bmi_category(bmi, goal=None):
+# Calculate BMI category
+def get_bmi_category(bmi):
     if bmi < 18.5:
         return "underweight"
     elif bmi < 25:
-        if goal in ['weight_gain', 'muscle_building'] and bmi < 20:
-            return "underweight"
         return "normal"
     elif bmi < 30:
         return "overweight"
     else:
         return "obese"
 
-goals = profile.get("goals", ["weight_loss"])
-primary_goal = goals[0] if goals else "weight_loss"
 bmi = profile.get("bmi", 22)
-bmi_category = get_bmi_category(bmi, primary_goal)
+bmi_category = get_bmi_category(bmi)
+
+# Get goal from profile
+goals = profile.get("goals", ["weight_loss_only"])
+goal = goals[0] if isinstance(goals, list) else goals
 
 user = UserProfile(
     gender=profile.get("gender", "male").lower(),
@@ -31,44 +31,44 @@ user = UserProfile(
     activity_level=profile.get("activity_level", "light").lower().replace(" ", "_"),
     diet_type=profile.get("diet_type", "vegetarian").lower(),
     region=profile.get("region", "south_indian").lower().replace(" ", "_"),
-    goal=primary_goal.lower().replace(" ", "_"),
-    health_conditions=[c.lower().replace(" ", "_") for c in profile.get("medical_conditions", [])],
-    allergies=profile.get("allergies", [])
+    goal=goal,
+    health_conditions=[],
+    allergies=[]
 )
 
 recommender = PDFRecommender()
 
-# Get all filtered plans (before scoring)
-filtered = recommender.filter_by_hard_constraints(user)
-print(f"Total filtered plans: {len(filtered)}\n")
-
-# Score each plan
-scored_plans = []
-for plan in filtered:
-    score = recommender.score_plan(plan, user)
-    scored_plans.append({
-        'filename': plan['filename'][:70],
-        'category': plan.get('category'),
-        'region': plan.get('region'),
-        'diet': plan.get('diet_type'),
-        'score': score
-    })
-
-# Sort by score
-scored_plans.sort(key=lambda x: x['score'], reverse=True)
-
-print("TOP 10 SCORED PLANS:")
+# Test HIERARCHICAL EXACT MATCH - goal first, then 5 other factors
 print("="*80)
-for i, p in enumerate(scored_plans[:10], 1):
-    print(f"\n{i}. {p['filename']}")
-    print(f"   Category: {p['category']}, Region: {p['region']}, Diet: {p['diet']}")
-    print(f"   Score: {p['score']}")
-
-print("\n" + "="*80)
-print("SCORE BREAKDOWN:")
+print("HIERARCHICAL EXACT MATCH TEST")
 print("="*80)
-print("Category match (weight_gain): +1000")
-print("Exact diet match (vegetarian): +100")
-print("Region match (south_indian): +10")
-print("Age match: +10 or +5")
-print("\nExpected top score for weight_gain + south_indian + vegetarian: 1110")
+print("Matching order:")
+print(f"  1. GOAL: {user.goal}")
+print(f"  2. Region: {user.region}")
+print(f"  3. Diet: {user.diet_type}")
+print(f"  4. Gender: {user.gender}")
+print(f"  5. BMI: {user.bmi_category}")
+print(f"  6. Activity: {user.activity_level}")
+print("="*80 + "\n")
+
+# Get exact matches
+exact_matches = recommender.recommend(user, top_k=10)
+
+if exact_matches:
+    print(f"✓ Found {len(exact_matches)} EXACT MATCHES:\n")
+    for i, plan in enumerate(exact_matches, 1):
+        print(f"{i}. {plan['filename'][:80]}")
+        print(f"   Category: {plan.get('category')}")
+        print(f"   [Gender: {plan.get('gender')}, Diet: {plan.get('diet_type')}, "
+              f"Region: {plan.get('region')}, BMI: {plan.get('bmi_category')}, "
+              f"Activity: {plan.get('activity')}]")
+        print()
+else:
+    print("❌ NO EXACT MATCHES FOUND")
+    print("\nThis means no plans match ALL 6 factors exactly:")
+    print(f"  1. goal → category mapping")
+    print(f"  2. region={user.region}")
+    print(f"  3. diet_type={user.diet_type}")
+    print(f"  4. gender={user.gender}")
+    print(f"  5. bmi_category={user.bmi_category}")
+    print(f"  6. activity_level={user.activity_level}")

@@ -165,6 +165,51 @@ def extract_meals_from_pdf(file_path: str) -> List[Dict[str, str]]:
         print(f"Error extracting meals from {file_path}: {e}")
         return []
 
+def parse_range_value(value: Any) -> float:
+    """Parse range values like '70-72', '30-35', or single values like '70'
+    Returns the middle value of the range
+    
+    Examples:
+        '70-72' -> 71.0
+        '30-35' -> 32.5
+        '70' -> 70.0
+        70 -> 70.0
+    """
+    if isinstance(value, (int, float)):
+        return float(value)
+    
+    if isinstance(value, str):
+        value = value.strip()
+        # Check if it's a range (contains dash or 'to')
+        if '-' in value or 'to' in value.lower():
+            # Remove units like 'kg', 'cm', 'years'
+            value = value.lower().replace('kg', '').replace('cm', '').replace('years', '').strip()
+            
+            # Split by dash or 'to'
+            if '-' in value:
+                parts = value.split('-')
+            else:
+                parts = value.split('to')
+            
+            try:
+                start = float(parts[0].strip())
+                end = float(parts[1].strip())
+                # Return middle value
+                return (start + end) / 2
+            except (ValueError, IndexError):
+                pass
+        
+        # Try to parse as single number
+        try:
+            # Remove any units
+            cleaned = value.lower().replace('kg', '').replace('cm', '').replace('years', '').strip()
+            return float(cleaned)
+        except ValueError:
+            pass
+    
+    return 0.0
+
+
 def get_bmi_category(bmi: float, goal: str = None) -> str:
     """Convert BMI value to category, considering user goal"""
     if bmi < 18.5:
@@ -531,10 +576,39 @@ def generate_exact_match_recommendations():
     
     Matches: Gender, BMI Category, Activity, Diet, Region, Category
     Returns: "Diet not available" if no exact match
+    
+    Handles range inputs:
+    - Age: '30-35 years' -> 32.5
+    - Height: '162 cm' or '160-165 cm' -> middle value
+    - Weight: '70-72 kg' -> 71.0
     """
     profile = load_json_file("profile.json")
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
+    
+    # Parse range values for age, height, weight
+    if 'age' in profile:
+        profile['age'] = parse_range_value(profile['age'])
+    
+    if 'height' in profile:
+        profile['height'] = parse_range_value(profile['height'])
+    
+    if 'weight' in profile:
+        profile['weight'] = parse_range_value(profile['weight'])
+    
+    # Calculate BMI category if not present
+    if 'bmi_category' not in profile or not profile['bmi_category']:
+        bmi = profile.get('bmi', 0)
+        if bmi == 0 and profile.get('height') and profile.get('weight'):
+            height_m = profile['height'] / 100
+            bmi = profile['weight'] / (height_m ** 2)
+        
+        # Get primary goal
+        goals = profile.get('goals', [])
+        primary_goal = goals[0] if isinstance(goals, list) and goals else profile.get('goal', '')
+        
+        # Calculate BMI category
+        profile['bmi_category'] = get_bmi_category(bmi, primary_goal)
     
     # Use cached exact match recommender
     exact_recommender = get_exact_recommender()
@@ -642,10 +716,35 @@ def generate_goal_only_recommendations():
     
     Matches: Primary Goal + Region ONLY
     Ignores: Gender, BMI, Activity, Diet, Health, Age, Allergies
+    Handles range inputs for age, height, weight
     """
     profile = load_json_file("profile.json")
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
+    
+    # Parse range values for age, height, weight
+    if 'age' in profile:
+        profile['age'] = parse_range_value(profile['age'])
+    
+    if 'height' in profile:
+        profile['height'] = parse_range_value(profile['height'])
+    
+    if 'weight' in profile:
+        profile['weight'] = parse_range_value(profile['weight'])
+    
+    # Calculate BMI category if not present
+    if 'bmi_category' not in profile or not profile['bmi_category']:
+        bmi = profile.get('bmi', 0)
+        if bmi == 0 and profile.get('height') and profile.get('weight'):
+            height_m = profile['height'] / 100
+            bmi = profile['weight'] / (height_m ** 2)
+        
+        # Get primary goal
+        goals = profile.get('goals', [])
+        primary_goal = goals[0] if isinstance(goals, list) and goals else profile.get('goal', '')
+        
+        # Calculate BMI category
+        profile['bmi_category'] = get_bmi_category(bmi, primary_goal)
     
     # Use cached goal-only recommender
     goal_recommender = get_goal_recommender()
@@ -704,10 +803,22 @@ def generate_ml_recommendations():
     - 100% meals from actual PDFs (no hallucination)
     - Intelligent selection via LLM
     - Personalized reasoning and explanations
+    
+    Handles range inputs for age, height, weight
     """
     profile = load_json_file("profile.json")
     if not profile:
         raise HTTPException(status_code=404, detail="Profile not found")
+    
+    # Parse range values for age, height, weight
+    if 'age' in profile:
+        profile['age'] = parse_range_value(profile['age'])
+    
+    if 'height' in profile:
+        profile['height'] = parse_range_value(profile['height'])
+    
+    if 'weight' in profile:
+        profile['weight'] = parse_range_value(profile['weight'])
     
     # Extract primary goal from goals array
     goals = profile.get("goals", ["weight_loss"])
@@ -1256,7 +1367,7 @@ def _generate_alternative_meal(meal_type: str, profile: Dict = None):
     return alternatives.get(meal_type, alternatives["breakfast"])
 
 def _load_template(category: str) -> Dict[str, Any] | None:
-    base = Path(r"D:\\Documents\\Diet plan\\pipeline\\simulation_templates")
+    base = Path(__file__).parent.parent / "pipeline" / "simulation_templates"
     candidates = {
         "pcos": base / "pcos_low_gi.json",
         "high_protein": base / "high_protein.json",

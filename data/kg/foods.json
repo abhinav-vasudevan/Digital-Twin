@@ -1,0 +1,98 @@
+{
+  "foods": [
+    {
+      "id": "rice",
+      "name": "Rice",
+      "aliases": [
+        "white rice",
+        "steamed rice",
+        "chawal"
+      ],
+      "nutrients": {
+        "calories": 130,
+        "carbs_g": 28,
+        "protein_g": 2.7,
+        "fat_g": 0.3,
+        "fiber_g": 0.4,
+        "gi": 73
+      }
+    },
+    {
+      "id": "roti",
+      "name": "Roti (Wheat Chapati)",
+      "aliases": [
+        "chapati",
+        "phulka",
+        "roti"
+      ],
+      "nutrients": {
+        "calories": 120,
+        "carbs_g": 19,
+        "protein_g": 3.6,
+        "fat_g": 3.2,
+        "fiber_g": 2.0
+      }
+    },
+    {
+      "id": "dahi",
+      "name": "Curd (Yogurt)",
+      "aliases": [
+        "dahi",
+        "curd",
+        "yogurt"
+      ],
+      "nutrients": {
+        "calories": 61,
+        "carbs_g": 4.7,
+        "protein_g": 3.5,
+        "fat_g": 3.3,
+        "fiber_g": 0.0
+      }
+    },
+    {
+      "id": "dal",
+      "name": "Dal (Lentils cooked)",
+      "aliases": [
+        "dal",
+        "lentil curry",
+        "dal tadka"
+      ],
+      "nutrients": {
+        "calories": 116,
+        "carbs_g": 20,
+        "protein_g": 9,
+        "fat_g": 0.4,
+        "fiber_g": 8
+      }
+    },
+    {
+      "id": "egg",
+      "name": "Egg",
+      "aliases": [
+        "boiled egg",
+        "omelet",
+        "andaa"
+      ],
+      "nutrients": {
+        "calories": 78,
+        "carbs_g": 0.6,
+        "protein_g": 6.3,
+        "fat_g": 5.3
+      }
+    },
+    {
+      "id": "paneer",
+      "name": "Paneer",
+      "aliases": [
+        "cottage cheese",
+        "paneer"
+      ],
+      "nutrients": {
+        "calories": 265,
+        "carbs_g": 6.1,
+        "protein_g": 18.3,
+        "fat_g": 20.8
+      }
+    }
+  ]
+}

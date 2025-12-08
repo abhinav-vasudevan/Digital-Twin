@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 # Add your project directory to the sys.path
-project_home = '/home/Abhinavvasudevan7/Digital-Twin'
+project_home = str(Path(__file__).parent.absolute())
 if project_home not in sys.path:
     sys.path.insert(0, project_home)
 

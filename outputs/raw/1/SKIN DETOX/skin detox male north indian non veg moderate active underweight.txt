@@ -1,0 +1,199 @@
+Skin Detox Diet
+Male | North India | Non-Vegetarian | Moderate Active | Underweight
+Client / User Profile
+Name: XYZ
+Age: 24 years
+Sex: Male
+Height: 173 cm
+Weight: 54 kg
+BMI: 18.0 (Underweight)
+Activity Level: Moderate Active (gym + regular walking)
+Goal: Skin detox, healthy weight gain, reduce inflammation, improve muscle tone
+Diet Type: Non-Vegetarian (North Indian)
+Overall Nutritional Values (Daily Range)
+Calories: 2400–2600 kcal
+Protein: 95–110 g
+Carbohydrates: 280–320 g
+Fat: 75–85 g
+Fiber: 28–32 g
+Skin-Healing Foods: Amla, Aloe, Curd, Coconut, Papaya, Beetroot, Eggs
+Anti-Inflammatory Herbs: Turmeric, Manjistha, Ginger
+Meal Schedule (Early Morning – Bedtime)
+Early Morning
+Option 1: Amla + Aloe Water
+Ingredients: Amla juice 15 ml, Aloe 20 ml, Water 200 ml
+Serving Size: 1 glass
+Prep Time: 3 min
+Method: Mixed
+Nutritive Values: 35 kcal, Protein 0 g, Carbs 8 g, Fats 0 g
+Option 2: Honey Turmeric Warm Water
+Ingredients: Turmeric 1 g, Honey 5 g, Water 250 ml
+Serving Size: 1 glass
+Prep Time: 3 min
+Method: Mixed
+Nutritive Values: 40 kcal, Protein 0.2 g, Carbs 10 g, Fats 0.1 g
+Option 3: Fennel Water
+Ingredients: Fennel 1 tsp, Water 250 ml
+Serving Size: 1 glass
+Prep Time: 5 min
+Method: Boiled
+Nutritive Values: 12 kcal, Protein 0.3 g, Carbs 2 g, Fats 0 g
+Pre-Workout
+Option 1: Banana
+Ingredients: Banana 120 g
+Serving Size: 1 fruit
+Prep Time: 2 min
+Method: Fresh
+
+Nutritive Values: 110 kcal, Protein 1.3 g, Carbs 28 g, Fats 0.3 g
+Option 2: Dates (3 pcs)
+Ingredients: Dates 30 g
+Serving Size: 3 pieces
+Prep Time: 1 min
+Method: Fresh
+Nutritive Values: 80 kcal, Protein 0.7 g, Carbs 22 g, Fats 0.1 g
+Option 3: Peanut Chikki
+Ingredients: Peanut chikki 20 g
+Serving Size: 1 piece
+Prep Time: 1 min
+Method: Ready
+Nutritive Values: 110 kcal, Protein 3 g, Carbs 15 g, Fats 5 g
+Breakfast (Post-Workout)
+Option 1: 3 Egg Omelette + 2 Rotis
+Ingredients: Eggs 3, Onion 40 g, Tomato 40 g, Oil 1 tsp, Wheat flour 60 g
+Serving Size: 1 plate
+Prep Time: 15 min
+Method: Cooked
+Nutritive Values: 520 kcal, Protein 32 g, Carbs 55 g, Fats 18 g
+Option 2: 3 Boiled Eggs + Banana
+Ingredients: Eggs 3, Banana 100 g
+Serving Size: Eggs + 1 fruit
+Prep Time: 10 min
+Method: Boiled
+Nutritive Values: 450 kcal, Protein 24 g, Carbs 35 g, Fats 21 g
+Option 3: Oats Curd Bowl + Almonds
+Ingredients: Oats 50 g, Curd 150 g, Almonds 10 g, Honey 5 g
+Serving Size: 1 bowl
+Prep Time: 10 min
+Method: Mixed
+Nutritive Values: 480 kcal, Protein 18 g, Carbs 60 g, Fats 16 g
+Mid-Morning Snack
+Option 1: Papaya + Banana Mix
+Ingredients: Papaya 100 g, Banana 80 g
+Serving Size: 1 bowl
+Prep Time: 2 min
+Method: Fresh
+Nutritive Values: 150 kcal, Protein 1.5 g, Carbs 38 g, Fats 0.3 g
+Option 2: Coconut Water + Peanut Chikki
+Ingredients: Coconut water 200 ml, Peanut chikki 20 g
+Serving Size: 1 glass + 1 piece
+Prep Time: 1 min
+Method: Fresh
+Nutritive Values: 180 kcal, Protein 4 g, Carbs 28 g, Fats 6 g
+Option 3: Curd + Honey
+
+Ingredients: Curd 120 g, Honey 5 g
+Serving Size: 1 bowl
+Prep Time: 2 min
+Method: Mixed
+Nutritive Values: 130 kcal, Protein 6 g, Carbs 18 g, Fats 3 g
+Lunch
+Option 1: Chicken Curry (140 g) + Rice + Salad
+Ingredients: Chicken 140 g, Rice 90 g, Salad 150 g
+Serving Size: 1 plate
+Prep Time: 30 min
+Method: Cooked
+Nutritive Values: 700 kcal, Protein 45 g, Carbs 80 g, Fats 18 g
+Option 2: Egg Curry (3 Eggs) + 2 Rotis
+Ingredients: Eggs 3, Wheat flour 60 g
+Serving Size: 1 plate
+Prep Time: 25 min
+Method: Cooked
+Nutritive Values: 580 kcal, Protein 32 g, Carbs 55 g, Fats 20 g
+Option 3: Chicken Pulao (High Protein) + Curd
+Ingredients: Rice 90 g, Chicken 120 g, Curd 120 g
+Serving Size: 1 plate
+Prep Time: 25 min
+Method: Cooked
+Nutritive Values: 650 kcal, Protein 40 g, Carbs 75 g, Fats 15 g
+Evening Snack
+Option 1: 2 Boiled Eggs
+Ingredients: Eggs 2
+Serving Size: 2 pieces
+Prep Time: 10 min
+Method: Boiled
+Nutritive Values: 140 kcal, Protein 12 g, Carbs 1 g, Fats 9 g
+Option 2: Milk Banana Smoothie
+Ingredients: Milk 200 ml, Banana 100 g
+Serving Size: 1 glass
+Prep Time: 5 min
+Method: Blended
+Nutritive Values: 260 kcal, Protein 8 g, Carbs 40 g, Fats 6 g
+Option 3: Roasted Chana
+Ingredients: Chana 60 g
+Serving Size: 1 bowl
+Prep Time: 5 min
+Method: Roasted
+Nutritive Values: 230 kcal, Protein 12 g, Carbs 36 g, Fats 3 g
+Dinner
+Option 1: Chicken Soup + 1 Roti
+Ingredients: Chicken 100 g, Vegetables 150 g, Wheat flour 30 g
+
+Serving Size: 1 bowl + 1 roti
+Prep Time: 25 min
+Method: Boiled + cooked
+Nutritive Values: 360 kcal, Protein 28 g, Carbs 30 g, Fats 10 g
+Option 2: Paneer Sabzi + 2 Rotis
+Ingredients: Paneer 80 g, Wheat flour 60 g, Vegetables 150 g
+Serving Size: 1 plate
+Prep Time: 20 min
+Method: Cooked
+Nutritive Values: 480 kcal, Protein 25 g, Carbs 50 g, Fats 15 g
+Option 3: Oats Vegetable Khichdi + Curd
+Ingredients: Oats 60 g, Dal 50 g, Vegetables 150 g, Curd 80 g
+Serving Size: 1 bowl
+Prep Time: 20 min
+Method: Pressure cooked
+Nutritive Values: 420 kcal, Protein 20 g, Carbs 60 g, Fats 8 g
+Bedtime
+Option 1: Warm Milk + Honey
+Ingredients: Milk 200 ml, Honey 5 g
+Serving Size: 1 glass
+Prep Time: 5 min
+Method: Warm
+Nutritive Values: 160 kcal, Protein 7 g, Carbs 20 g, Fats 6 g
+Option 2: Almond Milk
+Ingredients: Almond milk 150 ml
+Serving Size: 1 glass
+Prep Time: 2 min
+Method: Warm
+Nutritive Values: 70 kcal, Protein 2 g, Carbs 3 g, Fats 5 g
+Option 3: Fennel Tea
+Ingredients: Fennel 1 tsp, Water 200 ml
+Serving Size: 1 cup
+Prep Time: 5 min
+Method: Infusion
+Nutritive Values: 7 kcal, Protein 0.3 g, Carbs 1 g, Fats 0 g
+Dietary & Cultural Context
+North Indian
+Non-vegetarian
+High-calorie, high-protein for weight gain
+Skin detox + anti-inflammatory
+Allergens: Eggs, Wheat, Milk, Almond
+Annotations (Tags)
+skin detox diet, moderate active underweight, non veg north indian, weight gain, anti-inflammatory
+Rationale & Alternatives
+
+fi
+Chicken Fish
+fi
+Milk Coconut milk
+fi
+Eggs Paneer
+fi
+Rice Mild millet pulao
+Source References
+ICMR–NIN Dietary Guidelines (2020)
+Indian Food Composition Tables (2017)
+WHO Nutrition Guidelines (2021)
+NIN Functional Foods Manual (2022)

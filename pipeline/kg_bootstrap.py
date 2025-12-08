@@ -70,7 +70,7 @@ RULES = [
 
 
 def main() -> int:
-    out_dir = Path(r"D:\\Documents\\Diet plan\\kg")
+    out_dir = Path(__file__).parent.parent / "kg"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     (out_dir / "foods.json").write_text(json.dumps({"foods": FOODS}, indent=2), encoding="utf-8")

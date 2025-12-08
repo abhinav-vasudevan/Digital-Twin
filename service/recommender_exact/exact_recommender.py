@@ -1,7 +1,14 @@
 """
-Exact Match Recommender System
-Matches ALL fields exactly: Gender, BMI Category, Activity, Diet, Region, Category
-Returns "diet not available" if no exact match found.
+Hierarchical Exact Match Recommender System
+Matches in hierarchical order:
+1. GOAL (primary filter - maps to category folder)
+2. Region (north_indian/south_indian)
+3. Diet Type (vegetarian/vegan/non_vegetarian)
+4. Gender (male/female)
+5. BMI Category (underweight/normal/overweight/obese)
+6. Activity Level (sedentary/light/moderate/heavy)
+
+Returns empty list if no exact match found on ALL 6 factors.
 """
 
 import json
@@ -9,17 +16,38 @@ import os
 from pathlib import Path
 
 class ExactMatchRecommender:
+    
+    # Goal to category folder mapping
+    GOAL_TO_CATEGORY = {
+        'ayurvedic_detox': 'ayurvedic_detox',
+        'digestive_detox': 'gut_cleanse_digestive_detox',
+        'gut_detox': 'gut_detox',
+        'hair_loss_thinning': 'hair_loss',
+        'liver_detox': 'liver_detox',
+        'probiotic_rich': 'probiotic',
+        'skin_detox': 'skin_detox',
+        'skin_health': 'skin_health',
+        'weight_gain_underweight': 'weight_gain',
+        'anti_inflammatory': 'anti_inflammatory',
+        'anti_aging_sun_damage': 'anti_aging',
+        'gas_bloating': 'gas_bloating',
+        'protein_rich_balanced': 'high_protein_balanced',
+        'high_protein_high_fiber': 'high_protein_high_fiber',
+        'acne_oily_skin': 'skin_health',
+        'weight_loss_pcos': 'weight_loss_pcos',
+        'weight_loss_only': 'weight_loss',
+        'weight_loss_type1_diabetes': 'weight_loss_diabetes',
+    }
+    
     def __init__(self, index_path=None):
         """Initialize with PDF index"""
         if index_path is None:
-            # Default path to pdf_index.json
             base_dir = Path(__file__).parent.parent.parent
             index_path = base_dir / "outputs" / "pdf_index.json"
         
         with open(index_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
-        # Handle both old format (list) and new format (dict with 'plans' key)
         if isinstance(data, dict) and 'plans' in data:
             self.plans = data['plans']
             self.metadata = data.get('metadata', {})
@@ -29,25 +57,11 @@ class ExactMatchRecommender:
         
         print(f"[ExactMatchRecommender] Loaded {len(self.plans)} plans")
     
-    def get_bmi_category(self, bmi: float, goal: str = None) -> str:
-        """
-        Categorize BMI with goal-aware adjustments
-        
-        Args:
-            bmi: Body Mass Index value
-            goal: Primary health goal (e.g., 'weight_gain', 'weight_loss')
-        
-        Returns:
-            BMI category string
-        """
+    def get_bmi_category(self, bmi: float) -> str:
+        """Categorize BMI"""
         if bmi < 18.5:
             return "underweight"
         elif bmi < 25:
-            # Goal-aware borderline cases
-            if goal in ['weight_gain', 'muscle_building'] and bmi < 20:
-                return "underweight"  # Borderline low for weight gain
-            elif goal in ['weight_loss'] and bmi > 24:
-                return "overweight"  # Borderline high for weight loss
             return "normal"
         elif bmi < 30:
             return "overweight"
@@ -55,32 +69,57 @@ class ExactMatchRecommender:
             return "obese"
     
     def normalize_diet_type(self, diet: str) -> str:
-        """Normalize diet type to match PDF index format"""
-        diet_lower = diet.lower()
-        # Map variations to PDF index format
-        if diet_lower in ['non_vegetarian', 'non_veg', 'nonveg', 'non vegetarian']:
-            return 'non_veg'
-        elif diet_lower in ['vegetarian', 'veg']:
+        """Normalize diet type variations"""
+        if not diet:
             return 'vegetarian'
-        elif diet_lower in ['eggetarian', 'eggitarian']:
-            return 'eggetarian'
+        diet_lower = diet.lower()
+        if diet_lower in ['non_vegetarian', 'non_veg', 'nonveg', 'non vegetarian', 'non vegeterian']:
+            return 'non_veg'
+        elif diet_lower in ['vegetarian', 'veg', 'vegeterian']:
+            return 'vegetarian'
         elif diet_lower in ['vegan']:
             return 'vegan'
-        return diet_lower
+        return 'vegetarian'
+    
+    def normalize_bmi(self, bmi: str) -> str:
+        """Normalize BMI category variations"""
+        if not bmi:
+            return ''
+        bmi_lower = bmi.lower()
+        if bmi_lower in ['normal', 'normal weight', 'normal_weight']:
+            return 'normal'
+        elif bmi_lower in ['overweight', 'over weight', 'over_weight']:
+            return 'overweight'
+        elif bmi_lower in ['obese']:
+            return 'obese'
+        elif bmi_lower in ['underweight', 'under weight', 'under_weight']:
+            return 'underweight'
+        return bmi_lower
+    
+    def normalize_activity(self, activity: str) -> str:
+        """Normalize activity level variations"""
+        if not activity:
+            return ''
+        activity_lower = activity.lower()
+        if 'heavy' in activity_lower or activity_lower == 'very_active':
+            return 'heavy'
+        elif 'moderate' in activity_lower:
+            return 'moderate'
+        elif 'light' in activity_lower:
+            return 'light'
+        elif 'sedentary' in activity_lower:
+            return 'sedentary'
+        return activity_lower
     
     def exact_match(self, user_profile: dict) -> list:
         """
-        Find plans that match ALL criteria EXACTLY
-        
-        Required matches:
-        - Gender (exact)
-        - Age (exact)
-        - Height (exact)
-        - Weight (exact)
-        - Activity Level (exact)
-        - Diet Type (exact)
-        - Region (exact)
-        - Category/Goal (exact)
+        Find plans matching EXACTLY on 6 factors in hierarchical order:
+        1. GOAL → category
+        2. region
+        3. diet_type
+        4. gender
+        5. bmi_category
+        6. activity_level
         
         Args:
             user_profile: User profile dictionary
@@ -89,103 +128,51 @@ class ExactMatchRecommender:
             List of exactly matching plans (empty if none match)
         """
         # Extract user criteria
+        goal = user_profile.get('goal', '')
+        if not goal and user_profile.get('goals'):
+            goal = user_profile['goals'][0] if isinstance(user_profile['goals'], list) else user_profile['goals']
+        
         gender = user_profile.get('gender', '').lower()
-        age = user_profile.get('age', 0)
-        height = user_profile.get('height', 0)
-        weight = user_profile.get('weight', 0)
-        activity = user_profile.get('activity_level', '').lower()
         diet = self.normalize_diet_type(user_profile.get('diet_type', ''))
         region = user_profile.get('region', '').lower()
+        bmi_category = self.normalize_bmi(user_profile.get('bmi_category', ''))
+        activity = self.normalize_activity(user_profile.get('activity_level', ''))
         
-        # Map goal to category - try multiple related categories
-        primary_goal = user_profile.get('goals', ['maintain'])[0] if user_profile.get('goals') else 'maintain'
-        medical_conditions = user_profile.get('medical_conditions', [])
+        # Map goal to category
+        category = self.GOAL_TO_CATEGORY.get(goal)
+        if not category:
+            print(f"\n[HIERARCHICAL EXACT MATCH] ❌ Goal '{goal}' has no matching category")
+            return []
         
-        # Check if user has PCOS or diabetes in medical conditions
-        has_pcos = any('pcos' in str(condition).lower() for condition in medical_conditions) if medical_conditions else False
-        has_diabetes = any('diabetes' in str(condition).lower() or 'diabetic' in str(condition).lower() for condition in medical_conditions) if medical_conditions else False
-        
-        # Build category list based on goal and medical conditions
-        goal_category_map = {
-            'weight_gain': ['weight_gain'],
-            'muscle_building': ['weight_gain', 'high_protein_balanced', 'high_protein_high_fiber'],
-            'maintain': ['maintenance'],
-            'clear_skin': ['skin_health', 'skin_detox'],
-            'skin_health': ['skin_health', 'skin_detox'],
-            'gut_health': ['gut_health', 'gut_detox', 'gut_cleanse_digestive_detox', 'probiotic'],
-            'energy': ['energy_boost'],
-            'better_sleep': ['sleep_improvement'],
-            'pcos': ['weight_loss_pcos', 'pcos'],
-            'diabetes': ['weight_loss_diabetes', 'diabetes'],
-            'hair_loss': ['hair_loss'],
-            'anti_aging': ['anti_aging'],
-            'detox': ['detox', 'liver_detox', 'ayurvedic_detox', 'skin_detox', 'gut_detox'],
-            'anti_inflammatory': ['anti_inflammatory'],
-            'probiotic': ['probiotic', 'gut_cleanse_digestive_detox'],
-            'gas_bloating': ['gas_bloating', 'gut_cleanse_digestive_detox'],
-        }
-        
-        # Special handling for weight_loss based on medical conditions
-        if primary_goal == 'weight_loss':
-            target_categories = ['weight_loss']
-            if has_pcos:
-                target_categories.append('weight_loss_pcos')
-            if has_diabetes:
-                target_categories.append('weight_loss_diabetes')
-        else:
-            target_categories = goal_category_map.get(primary_goal, [primary_goal])
-            if not isinstance(target_categories, list):
-                target_categories = [target_categories]
-        
-        print(f"\n[ExactMatch] Looking for EXACT match:")
-        print(f"  Gender: {gender}")
-        print(f"  Age: {age}")
-        print(f"  Height: {height} cm")
-        print(f"  Weight: {weight} kg")
-        print(f"  Activity: {activity}")
-        print(f"  Diet: {diet}")
-        print(f"  Region: {region}")
-        print(f"  Categories: {target_categories}")
+        print(f"\n[HIERARCHICAL EXACT MATCH] Matching on 6 factors:")
+        print(f"  1. GOAL: '{goal}' → Category: '{category}'")
+        print(f"  2. Region: {region}")
+        print(f"  3. Diet: {diet}")
+        print(f"  4. Gender: {gender}")
+        print(f"  5. BMI: {bmi_category}")
+        print(f"  6. Activity: {activity}")
         
         exact_matches = []
         
         for plan in self.plans:
-            # All fields must match EXACTLY
+            plan_category = plan.get('category', '')
             plan_gender = (plan.get('gender') or '').lower()
-            plan_activity = (plan.get('activity') or plan.get('activity_level') or '').lower()
-            plan_diet = self.normalize_diet_type(plan.get('diet_type') or 'vegetarian')  # Normalize and default
+            plan_diet = self.normalize_diet_type(plan.get('diet_type') or 'vegetarian')
             plan_region = (plan.get('region') or '').lower()
-            plan_category = (plan.get('category') or '').lower()
+            plan_bmi = self.normalize_bmi(plan.get('bmi_category') or '')
+            plan_activity = self.normalize_activity(plan.get('activity') or '')
             
-            # Get plan age from age_info
-            plan_age = None
-            if 'age_info' in plan and plan['age_info']:
-                age_info = plan['age_info']
-                # Use exact age if available, otherwise use average
-                if age_info.get('age_min') == age_info.get('age_max'):
-                    plan_age = age_info.get('age_min')
-                elif age_info.get('age_avg'):
-                    plan_age = age_info.get('age_avg')
-                elif age_info.get('age_min'):
-                    plan_age = age_info.get('age_min')
-            
-            # Activity matching: very_active matches both "very_active" and "heavy"
-            activity_match = (plan_activity == activity) or (activity == 'very_active' and plan_activity == 'heavy')
-            
-            # Check EXACT match on all fields (category can match any in target list)
-            # Note: PDFs don't store height/weight, so we match: gender, age, activity, diet, region, category
-            # Skip plans without age info
-            if (plan_age is not None and
-                plan_gender == gender and
-                plan_age == age and
-                activity_match and
-                plan_diet == diet and
+            # ALL 6 factors must match EXACTLY
+            if (plan_category == category and
                 plan_region == region and
-                plan_category in target_categories):
+                plan_diet == diet and
+                plan_gender == gender and
+                plan_bmi == bmi_category and
+                plan_activity == activity):
                 
                 exact_matches.append(plan)
         
-        print(f"[ExactMatch] Found {len(exact_matches)} exact matches")
+        print(f"[HIERARCHICAL EXACT MATCH] ✓ Found {len(exact_matches)} plans matching ALL 6 factors")
         
         return exact_matches
     

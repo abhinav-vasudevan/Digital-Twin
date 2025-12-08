@@ -89,8 +89,9 @@ def parse_file(txt_path: Path) -> List[Dict]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description="Parse structured meal items from extracted text")
-    ap.add_argument("--in", dest="in_dir", default=r"D:\\Documents\\Diet plan\\outputs\\raw")
-    ap.add_argument("--out", dest="out_dir", default=r"D:\\Documents\\Diet plan\\outputs\\structured")
+    project_root = Path(__file__).parent.parent
+    ap.add_argument("--in", dest="in_dir", default=str(project_root / "outputs" / "raw"))
+    ap.add_argument("--out", dest="out_dir", default=str(project_root / "outputs" / "structured"))
     ap.add_argument("--overwrite", action="store_true")
     args = ap.parse_args()
 
