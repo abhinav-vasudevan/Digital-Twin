@@ -12,7 +12,7 @@
 ```.venv\Scripts\Activate.ps1```
 
 ##### if on nix-based:
-```source .venv/scripts/activate```
+```source .venv/bin/activate```
 
 ### Install python3 dependencies
 ```pip install -r requirements.txt```
