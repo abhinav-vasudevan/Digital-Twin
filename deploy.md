@@ -21,7 +21,7 @@
 ```python -m uvicorn service.api:app --reload --port 8000```
 
 
-### Running the ML model
-The ML model runs on google colab and uses ngrok to expose the API endpoints of the LLM using FastAPI.
-For this upload the python notebook from `notebooks/Colab_Llama_FoodModel.ipynb` to google colab and run it
-with your preferred GPU.
+### ML model
+It is better to have the server running on colab from my end as I have access to
+hidden repositories from hugging face and all the authentication tokens for ngrok and hugging face are
+already properly setup from my side
