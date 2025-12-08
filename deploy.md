@@ -1,5 +1,9 @@
 ### Clone the repository
-```git clone https://github.com/abhinav-vasudevan/Digital-Twin/```
+```
+   git clone https://github.com/abhinav-vasudevan/Digital-Twin/
+   git checkout feature/three-recommendation-systems/
+```
+
 
 ### Create a python venv and activate it
 ```python -m venv .venv```
